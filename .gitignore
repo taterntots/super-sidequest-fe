@@ -7,9 +7,11 @@
 
 # testing
 /coverage
+.env.development.local
 
 # production
 /build
+.env.production.local
 
 # misc
 .DS_Store
@@ -21,3 +23,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+yarn.lock
