@@ -1,89 +1,48 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// Initial state
 export const initialState = {
   users: [],
   loading: false,
   error: false,
 };
 
+// API call to grab all users
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
+  const response = await axios({
+    method: 'get',
+    url: `https://music-chunks-test-server.herokuapp.com/api/users`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `fnAD22PlewACAJNhiqikiSxV60EEH3A3N7xdBAi1`,
+    },
+  })
+  return response.data
+});
+
+// User slice for state change
 export const userSlice = createSlice({
   name: 'users',
   initialState: initialState,
-  reducers: {
-    getUsers: state => {
+  extraReducers: {
+    [fetchUsers.pending]: (state, action) => {
       state.loading = true
     },
-    getUsersSuccess: (state, { payload }) => {
+    [fetchUsers.fulfilled]: (state, { payload }) => {
       state.users = payload
       state.loading = false
       state.error = false
     },
-    getUsersFailure: state => {
+    [fetchUsers.rejected]: (state, action) => {
       state.loading = false
       state.error = true
-    },
-  },
-  // reducers: {
-  //   getUser: (state, action) => {
-  //     // state.users = action.payload;
-  //     state.loading = true;
-  //     state.error = false;
-  //   },
-  //   createUser: (state, action) => {
-  //     state.users.unshift(action.payload);
-  //     state.loading = false;
-  //   },
-  //   deleteUser: (state, action) => {
-  //     state.users.filter((user) => user.id !== action.payload.id);
-  //     state.loading = false;
-  //   },
-  // },
-  // extraReducers: {
-  //   [GetUsers.fulfilled]: (state, action) => {
-  //     state.users = action.payload.data;
-  //   }
-  // }
+    }
+  }
 });
 
-// Three actions generated from the slice
-export const { getUsers, getUsersSuccess, getUsersFailure } = userSlice.actions;
-
-// A selector
+// A selector for grabbing state in components
 export const userSelector = state => state.users
-
-// Asynchronous thunk action
-export function fetchUsers() {
-  return async dispatch => {
-    dispatch(getUsers())
-
-    await axios({
-      method: 'get',
-      url: `https://music-chunks-test-server.herokuapp.com/api/users`,
-      headers: {
-        Accept: 'application/json',
-        Authorization: `fnAD22PlewACAJNhiqikiSxV60EEH3A3N7xdBAi1`,
-      },
-    })
-      .then(res => {
-        dispatch(getUsersSuccess(res.data))
-      })
-      .catch(err => {
-        dispatch(getUsersFailure())
-      })
-  }
-}
-// export const fetchUsers = createAsyncThunk(
-//   'user/getUsers',
-//   async () => await axios.get(`https://music-chunks-test-server.herokuapp.com/api/users`)
-// );
-
-// thunk
-// const fetchUsers = () => async dispatch => {
-//   dispatch(getUser())
-//   const response = await usersAPI.fetchAll()
-//   dispatch(fetchItemsSuccess(response.data))
-// }
 
 // The reducer
 export default userSlice.reducer;
