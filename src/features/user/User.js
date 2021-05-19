@@ -26,7 +26,7 @@ export function User() {
 
   return (
     <div>
-      <h1>Users</h1>
+      <h1 className='text-6xl'>Users</h1>
       <div>
         {renderUsers()}
       </div>
