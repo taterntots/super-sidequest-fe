@@ -6,10 +6,19 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
+// ROUTING
+import { BrowserRouter as Router } from 'react-router-dom';
+
+// NEW BROSER HISTORY
+import { createBrowserHistory } from 'history';
+const history = createBrowserHistory();
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router history={history}>
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
