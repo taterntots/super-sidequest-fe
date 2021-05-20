@@ -18,14 +18,14 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
-    <>
+    <div className='min-h-screen bg-sitewidebackground' >
       <NavBar />
       <Switch>
         <Route exact path='/' component={HomePage} />
         <Route path='/counter' component={Counter} />
         <Route path='/support' component={User} />
       </Switch>
-    </>
+    </div>
   );
 }
 

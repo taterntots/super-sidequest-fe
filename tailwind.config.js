@@ -4,9 +4,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        navbarbuttonhighlight: '#F5F5F5'
+        sitewidebackground: '#414141',
+        navbarbuttonhighlight: '#F5F5F5',
+        cardhover: '#08f78f',
+        easy: '#00BFFF',
+        medium: '#FF8C00',
+        hard: '#B22222'
       }
-    },
+    }
   },
   variants: {
     extend: {},

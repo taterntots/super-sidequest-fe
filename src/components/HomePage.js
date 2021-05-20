@@ -1,4 +1,5 @@
 import React from 'react';
+import ChallengeList from '../features/challenge/ChallengeList.js';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ HOMEPAGE ------------------------------------
@@ -6,9 +7,9 @@ import React from 'react';
 
 const HomePage = () => {
   return (
-    <div>
-      Pooooop
-    </div>
+    <>
+      <ChallengeList />
+    </>
   );
 }
 
