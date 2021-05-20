@@ -19,7 +19,7 @@ export function User() {
     if (error) return <p>Cannot display users...</p>
     return users.map(user =>
       <div key={user.id} className='tile'>
-        <h2>{user.id}</h2>
+        <h2>{user.username}</h2>
       </div>
     )
   }

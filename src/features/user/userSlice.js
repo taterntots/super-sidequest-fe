@@ -12,10 +12,10 @@ export const initialState = {
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await axios({
     method: 'get',
-    url: `https://music-chunks-test-server.herokuapp.com/api/users`,
+    url: process.env.REACT_APP_API + `users`,
     headers: {
       Accept: 'application/json',
-      Authorization: `fnAD22PlewACAJNhiqikiSxV60EEH3A3N7xdBAi1`,
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
     },
   })
   return response.data
