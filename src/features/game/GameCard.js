@@ -16,13 +16,14 @@ const GameCard = ({ data }) => {
   } = data;
 
   return (
-    <div key={id} className={`hover:bg-cardhover max-w-359 hover:bg-opacity-25 p-2 rounded-md text-white`}>
+    <div key={id} className={`hover:bg-cardhover max-w-359 hover:bg-opacity-25 p-2 rounded-lg text-white`}>
       <div className={`overflow-hidden`}>
         {/* TOP IMG */}
         <img
           src={banner_pic_URL}
           alt='img for a challenge'
-          className='object-fill w-full h-full min-h-full max-h-40 rounded-t-md'
+          className='rounded-t-lg h-44 w-full'
+          // className='object-fill w-full h-full min-h-full max-h-40 rounded-t-md'
         />
         {/* color bar */}
         <div className={`relative w-full`}>

@@ -19,13 +19,15 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
-    <div className='min-h-screen bg-sitewidebackground' >
+    <div className='min-h-screen bg-sitewidebackground'>
       <NavBar />
       <Switch>
-        <Route exact path='/' component={HomePage} />
-        <Route path='/games' component={GamesPage} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/support' component={User} />
+        <div className='mx-10'>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/games' component={GamesPage} />
+          <Route path='/counter' component={Counter} />
+          <Route path='/support' component={User} />
+        </div>
       </Switch>
     </div>
   );
