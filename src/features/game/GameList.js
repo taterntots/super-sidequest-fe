@@ -27,7 +27,8 @@ const GameList = ({ searchTerm }) => {
   // Game search function
   useEffect(() => {
     const results = games.filter(game =>
-      game.name.toLowerCase().includes(searchTerm.toLowerCase())
+      // Accounts for accented letters
+      game.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(searchTerm.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ""))
     );
     setSearchResults(results);
   }, [searchTerm, games]);
