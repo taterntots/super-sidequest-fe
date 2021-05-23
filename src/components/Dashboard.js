@@ -8,7 +8,8 @@ import { Counter } from '../features/counter/Counter';
 import { User } from '../features/user/User';
 import NavBar from './NavBar';
 import HomePage from '../components/HomePage';
-import GamesPage from '../components/GamesPage';
+import GameList from '../features/game/GameList';
+import GamePage from '../components/GamePage';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -48,7 +49,17 @@ const Dashboard = () => {
           exact
           path={`/games`}
           render={(props) => (
-            <GamesPage
+            <GameList
+              searchTerm={searchTerm}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={`/games/:gameId`}
+          render={(props) => (
+            <GamePage
               searchTerm={searchTerm}
               {...props}
             />

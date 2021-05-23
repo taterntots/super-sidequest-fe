@@ -6,7 +6,7 @@ import {
 } from './gameSlice';
 
 // ROUTING
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
 import GameCard from './GameCard';
@@ -17,6 +17,7 @@ import GameCard from './GameCard';
 
 const GameList = ({ searchTerm }) => {
   const dispatch = useDispatch();
+  const { url } = useRouteMatch();
   const { games, loading, error } = useSelector(gameSelector)
   const [searchResults, setSearchResults] = useState([]);
 
@@ -50,7 +51,7 @@ const GameList = ({ searchTerm }) => {
           {searchResults.map((i) => (
             <Link
               key={i.id}
-            // to={`${match.url}/${i.id}`}
+              to={`${url}/${i.id}`}
             >
               <GameCard
                 key={i.id}

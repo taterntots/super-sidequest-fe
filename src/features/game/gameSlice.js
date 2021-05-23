@@ -8,6 +8,7 @@ import axios from 'axios';
 // Initial state
 export const initialState = {
   games: [],
+  game: {},
   loading: false,
   error: false,
 };
@@ -25,6 +26,20 @@ export const fetchGames = createAsyncThunk('games/fetchGames', async () => {
   return response.data
 });
 
+// API call to grab a single game by ID
+export const fetchGameById = createAsyncThunk('games/fetchGameById', async (gameId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `games/${gameId}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  console.log('RESPONSE', response)
+  return response.data
+});
+
 // Game slice for state change
 export const gameSlice = createSlice({
   name: 'games',
@@ -39,6 +54,18 @@ export const gameSlice = createSlice({
       state.error = false
     },
     [fetchGames.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchGameById.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchGameById.fulfilled]: (state, { payload }) => {
+      state.game = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchGameById.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
