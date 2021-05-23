@@ -11,19 +11,8 @@ import SearchError from '../../components/SearchError';
 // --------------------------------- CHALLENGE LIST ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeList = ({ challenges, loading, error, searchTerm, handleClearSearchBar }) => {
+const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar }) => {
   const [searchResults, setSearchResults] = useState([]);
-
-  // Error handling & map successful query data 
-  const renderChallenges = () => {
-    if (loading) return <p>Loading challenges...</p>
-    if (error) return <p>Cannot display challenges...</p>
-    return challenges.map(challenge =>
-      <div key={challenge.id} className='tile'>
-        <h2>{challenge.game_title}</h2>
-      </div>
-    )
-  }
 
   // Challenge search function
   useEffect(() => {

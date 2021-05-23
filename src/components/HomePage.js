@@ -7,6 +7,8 @@ import {
 
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList.js';
+import LoadingSpinner from './LoadSpinnser';
+import ServerFailure from './ServerFailure';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ HOMEPAGE ------------------------------------
@@ -22,26 +24,34 @@ const HomePage = ({ searchTerm, handleClearSearchBar }) => {
 
   return (
     <>
-      <div>
-        <h1 className='text-white font-medium text-2xl border-b-2'>
-          Featured Challenges
-        </h1>
-        <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
-      </div>
+      {loading ? (
+        <LoadingSpinner loading={loading} />
+      ) : error ? (
+        <ServerFailure />
+      ) : (
+        <div>
+          <div>
+            <h1 className='text-white font-medium text-2xl border-b-2'>
+              Featured Challenges
+            </h1>
+            <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+          </div>
 
-      <div>
-        <h1 className='text-white font-medium text-2xl border-b-2'>
-          Popular Challenges
-        </h1>
-        <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
-      </div>
+          <div>
+            <h1 className='text-white font-medium text-2xl border-b-2'>
+              Popular Challenges
+            </h1>
+            <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+          </div>
 
-      <div>
-        <h1 className='text-white font-medium text-2xl border-b-2'>
-          Latest Challenges
-        </h1>
-        <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
-      </div>
+          <div>
+            <h1 className='text-white font-medium text-2xl border-b-2'>
+              Latest Challenges
+            </h1>
+            <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -11,6 +11,8 @@ import { useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
+import LoadingSpinner from './LoadSpinnser';
+import ServerFailure from './ServerFailure';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ GAME PAGE -----------------------------------
@@ -28,10 +30,18 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
 
   return (
     <>
-      <div className='text-white text-xl'>
-        {game.name}
-      </div>
-      <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+      {loading ? (
+        <LoadingSpinner loading={loading} />
+      ) : error ? (
+        <ServerFailure />
+      ) : (
+        <div>
+          <div className='text-white text-xl'>
+            {game.name}
+          </div>
+          <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+        </div>
+      )}
     </>
   );
 }
