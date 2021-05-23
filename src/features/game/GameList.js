@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 // COMPONENTS
 import GameCard from './GameCard';
 import SearchError from '../../components/SearchError';
+import LoadingSpinner from '../../components/LoadSpinnser';
+import ServerFailure from '../../components/ServerFailure';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ GAME LIST -----------------------------------
@@ -36,22 +38,30 @@ const GameList = ({ searchTerm, handleClearSearchBar }) => {
 
   return (
     <>
-      {searchResults.length === 0 && searchTerm !== '' ? (
-        <SearchError searchTerm={searchTerm} />
+      {loading ? (
+        <LoadingSpinner loading={loading} />
+      ) : error ? (
+        <ServerFailure />
       ) : (
-        <div className='grid justify-center gap-10 mt-2 grig-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
-          {searchResults.map((i) => (
-            <Link
-              key={i.id}
-              to={`/games/${i.id}`}
-              onClick={handleClearSearchBar}
-            >
-              <GameCard
-                key={i.id}
-                data={i}
-              />
-            </Link>
-          ))}
+        <div>
+          {searchResults.length === 0 && searchTerm !== '' ? (
+            <SearchError searchTerm={searchTerm} />
+          ) : (
+            <div className='grid justify-center gap-10 mt-2 grig-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
+              {searchResults.map((i) => (
+                <Link
+                  key={i.id}
+                  to={`/games/${i.id}`}
+                  onClick={handleClearSearchBar}
+                >
+                  <GameCard
+                    key={i.id}
+                    data={i}
+                  />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>

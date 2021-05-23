@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.1.2",
+    "@emotion/react": "^11.4.0",
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -15,7 +16,8 @@
     "react-hook-form": "^7.6.4",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "react-spinners": "^0.11.0"
   },
   "scripts": {
     "start": "craco start",
@@ -39,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.3.0",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.35",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2"
