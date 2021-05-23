@@ -16,7 +16,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // ------------------------------------ GAME PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GamePage = ({ searchTerm }) => {
+const GamePage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
   const { game, challenges, loading, error } = useSelector(gameSelector)
@@ -31,7 +31,7 @@ const GamePage = ({ searchTerm }) => {
       <div className='text-white text-xl'>
         {game.name}
       </div>
-      <ChallengeList challenges={challenges} loading={loading} error={error} />
+      <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
     </>
   );
 }

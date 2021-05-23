@@ -40,6 +40,8 @@ const Dashboard = () => {
           path={`/`}
           render={(props) => (
             <HomePage
+              searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
               {...props}
             />
           )}
@@ -51,6 +53,7 @@ const Dashboard = () => {
           render={(props) => (
             <GameList
               searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
               {...props}
             />
           )}
@@ -61,6 +64,7 @@ const Dashboard = () => {
           render={(props) => (
             <GamePage
               searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
               {...props}
             />
           )}

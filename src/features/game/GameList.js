@@ -6,18 +6,18 @@ import {
 } from './gameSlice';
 
 // ROUTING
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import GameCard from './GameCard';
+import SearchError from '../../components/SearchError';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ GAME LIST -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GameList = ({ searchTerm }) => {
+const GameList = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { url } = useRouteMatch();
   const { games, loading, error } = useSelector(gameSelector)
   const [searchResults, setSearchResults] = useState([]);
 
@@ -37,21 +37,14 @@ const GameList = ({ searchTerm }) => {
   return (
     <>
       {searchResults.length === 0 && searchTerm !== '' ? (
-        <div className='flex flex-col items-center justify-center p-16 '>
-          <p className='text-lg font-bold leading-6 text-emptySearchResults'>
-            Couldn't find
-        </p>
-          <p className='text-lg font-bold text-emptySearchResults'>"{searchTerm}"</p>
-          <p className='text-sm text-center text-white'>
-            Try searching again using a different spelling or keyword.
-        </p>
-        </div>
+        <SearchError searchTerm={searchTerm} />
       ) : (
         <div className='grid justify-center gap-10 mt-2 grig-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
           {searchResults.map((i) => (
             <Link
               key={i.id}
-              to={`${url}/${i.id}`}
+              to={`/games/${i.id}`}
+              onClick={handleClearSearchBar}
             >
               <GameCard
                 key={i.id}
