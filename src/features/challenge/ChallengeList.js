@@ -1,9 +1,4 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchChallenges,
-  challengeSelector
-} from './challengeSlice';
+import React from 'react';
 
 // ROUTING
 import { Link } from 'react-router-dom';
@@ -15,13 +10,7 @@ import ChallengeCard from './ChallengeCard';
 // --------------------------------- CHALLENGE LIST ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeList = () => {
-  const dispatch = useDispatch();
-  const { challenges, loading, error } = useSelector(challengeSelector)
-
-  useEffect(() => {
-    dispatch(fetchChallenges())
-  }, [dispatch])
+const ChallengeList = ({ challenges, loading, error }) => {
 
   // Error handling & map successful query data 
   const renderChallenges = () => {
@@ -52,11 +41,7 @@ const ChallengeList = () => {
           <Link
             key={i.challenge_id}
           // to={`${match.url}/${i.id}`}
-          // onClick={() => {
-          //   handleClearSearchBar();
-          // }}
           >
-            {/* <h2>{i.game_title}</h2> */}
             <ChallengeCard
               key={i.challenge_id}
               data={i}

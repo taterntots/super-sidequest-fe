@@ -9,6 +9,7 @@ import axios from 'axios';
 export const initialState = {
   games: [],
   game: {},
+  challenges: [],
   loading: false,
   error: false,
 };
@@ -31,6 +32,20 @@ export const fetchGameById = createAsyncThunk('games/fetchGameById', async (game
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `games/${gameId}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  console.log('RESPONSE', response)
+  return response.data
+});
+
+// API call to grab all challenges associated with a game
+export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges', async (gameId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `games/${gameId}/challenges`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -66,6 +81,18 @@ export const gameSlice = createSlice({
       state.error = false
     },
     [fetchGameById.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchGameChallenges.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchGameChallenges.fulfilled]: (state, { payload }) => {
+      state.challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchGameChallenges.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }

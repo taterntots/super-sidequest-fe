@@ -2,32 +2,36 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchGameById,
+  fetchGameChallenges,
   gameSelector
 } from '../features/game/gameSlice';
 
 // ROUTING
-import { Link, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
+
+// COMPONENTS
+import ChallengeList from '../features/challenge/ChallengeList';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ GAME PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GamePage = ({ props, searchTerm }) => {
+const GamePage = ({ searchTerm }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
-  const { game, loading, error } = useSelector(gameSelector)
+  const { game, challenges, loading, error } = useSelector(gameSelector)
 
   useEffect(() => {
     dispatch(fetchGameById(route.params.gameId))
+    dispatch(fetchGameChallenges(route.params.gameId))
   }, [dispatch])
-
-  console.log(game)
 
   return (
     <>
-    <div className='text-white text-xl'>
-      {game.name}
-    </div>
+      <div className='text-white text-xl'>
+        {game.name}
+      </div>
+      <ChallengeList challenges={challenges} loading={loading} error={error} />
     </>
   );
 }
