@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchGameById,
@@ -24,12 +24,25 @@ import { ReactComponent as BlankPublisher } from '../img/BlankPublisher.svg';
 const GamePage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
-  const { game, challenges, loading, error } = useSelector(gameSelector)
+  const { game, challenges, loading, error } = useSelector(gameSelector);
+  const [filteredChallenges, setFilteredChallenges] = useState(challenges);
 
   useEffect(() => {
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges(route.params.gameId))
   }, [dispatch])
+
+  const filterByAll = () => {
+    setFilteredChallenges(challenges)
+  }
+
+  const filterByDifficulty = () => {
+    var selectBox = document.getElementById("difficultyBox");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+    var filtered = challenges.filter(fc => fc.difficulty === selectedValue)
+    setFilteredChallenges(filtered)
+  }
 
   return (
     <>
@@ -69,10 +82,15 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
 
               {/* Tabs */}
               <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
-                <Link to={`/`} className='mr-0 md:mr-10 hover:text-mcgreen'>HOME</Link>
-                <Link to={`/`} className='mr-0 md:mr-10 hover:text-mcgreen'>PLAYLISTS</Link>
-                <Link to={`/`} className='mr-0 md:mr-10 hover:text-mcgreen'>COLLECTIONS</Link>
-                <Link to={`/`} className='hover:text-mcgreen'>ABOUT</Link>
+                <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} placeholder='doop' className='mr-0 md:mr-10 hover:text-mcgreen text-black'>
+                  <option value='Select' disabled selected>Difficulty</option>
+                  <option value='Easy'>Easy</option>
+                  <option value='Medium'>Medium</option>
+                  <option value='Hard'>Hard</option>
+                </select>
+
+                <Link to={`/`} className='mr-0 md:mr-10 hover:text-mcgreen'>RECENT</Link>
+                <Link onClick={filterByAll} className='hover:text-mcgreen'>ALL</Link>
                 {/* {isAdmin ? (
                 <Link to={`/`} className='mr0 md:ml-10 hover:text-mcgreen'>ADMIN</Link>
               ) : null} */}
@@ -82,7 +100,7 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
 
           {/* LIST OF GAME CHALLENGES */}
           <div>
-            <ChallengeList challenges={challenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+            <ChallengeList challenges={filteredChallenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
           </div>
         </div>
       )}

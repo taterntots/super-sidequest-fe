@@ -37,7 +37,6 @@ export const fetchGameById = createAsyncThunk('games/fetchGameById', async (game
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
     },
   })
-  console.log('RESPONSE', response)
   return response.data
 });
 
@@ -51,7 +50,6 @@ export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
     },
   })
-  console.log('RESPONSE', response)
   return response.data
 });
 
