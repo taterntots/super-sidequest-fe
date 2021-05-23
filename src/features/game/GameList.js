@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchGames,
@@ -15,17 +15,26 @@ import GameCard from './GameCard';
 // ------------------------------------ GAME LIST -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GameList = () => {
+const GameList = ({ searchTerm }) => {
   const dispatch = useDispatch();
   const { games, loading, error } = useSelector(gameSelector)
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     dispatch(fetchGames())
   }, [dispatch])
 
+  // Game search function
+  useEffect(() => {
+    const results = games.filter(game =>
+      game.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setSearchResults(results);
+  }, [searchTerm, games]);
+
   return (
     <>
-      {/* {chunks.length === 0 && searchTerm !== '' ? (
+      {searchResults.length === 0 && searchTerm !== '' ? (
         <div className='flex flex-col items-center justify-center p-16 '>
           <p className='text-lg font-bold leading-6 text-emptySearchResults'>
             Couldn't find
@@ -35,25 +44,21 @@ const GameList = () => {
             Try searching again using a different spelling or keyword.
         </p>
         </div>
-      ) : ( */}
-      <div className='grid justify-center gap-10 mt-2 grig-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
-        {games.map((i) => (
-          <Link
-            key={i.id}
-          // to={`${match.url}/${i.id}`}
-          // onClick={() => {
-          //   handleClearSearchBar();
-          // }}
-          >
-            {/* <h2>{i.game_title}</h2> */}
-            <GameCard
+      ) : (
+        <div className='grid justify-center gap-10 mt-2 grig-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
+          {searchResults.map((i) => (
+            <Link
               key={i.id}
-              data={i}
-            />
-          </Link>
-        ))}
-      </div>
-      {/* )} */}
+            // to={`${match.url}/${i.id}`}
+            >
+              <GameCard
+                key={i.id}
+                data={i}
+              />
+            </Link>
+          ))}
+        </div>
+      )}
     </>
   );
 }

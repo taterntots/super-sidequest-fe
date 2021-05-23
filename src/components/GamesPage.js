@@ -5,10 +5,10 @@ import GameList from '../features/game/GameList.js';
 // ----------------------------------- GAMES PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GamesPage = () => {
+const GamesPage = ({ searchTerm }) => {
   return (
     <>
-      <GameList />
+      <GameList searchTerm={searchTerm} />
     </>
   );
 }

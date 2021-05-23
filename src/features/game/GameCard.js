@@ -23,7 +23,6 @@ const GameCard = ({ data }) => {
           src={banner_pic_URL}
           alt='img for a challenge'
           className='rounded-t-lg h-44 w-full'
-          // className='object-fill w-full h-full min-h-full max-h-40 rounded-t-md'
         />
         {/* color bar */}
         <div className={`relative w-full`}>
