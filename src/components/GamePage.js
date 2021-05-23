@@ -5,6 +5,10 @@ import {
   fetchGameChallenges,
   gameSelector
 } from '../features/game/gameSlice';
+import {
+  fetchDifficulties,
+  difficultySelector
+} from '../features/difficulty/difficultySlice';
 
 // ROUTING
 import { Link, useRouteMatch } from 'react-router-dom';
@@ -25,21 +29,32 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
   const { game, challenges, loading, error } = useSelector(gameSelector);
+  const { difficulties } = useSelector(difficultySelector);
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
 
+  // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges(route.params.gameId))
+    dispatch(fetchDifficulties())
   }, [dispatch])
 
+  // Resets filter when clicking away from page
+  useEffect(() => {
+    setFilteredChallenges(challenges)
+  }, [challenges])
+
+  // Filter all challenges
   const filterByAll = () => {
     setFilteredChallenges(challenges)
+    var selectBox = document.getElementById("difficultyBox");
+    selectBox.selectedIndex = 0;
   }
 
+  // Filter by difficulty
   const filterByDifficulty = () => {
     var selectBox = document.getElementById("difficultyBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-
     var filtered = challenges.filter(fc => fc.difficulty === selectedValue)
     setFilteredChallenges(filtered)
   }
@@ -80,20 +95,15 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
                 </div>
               </div>
 
-              {/* Tabs */}
+              {/* FILTERS */}
               <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
-                <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} placeholder='doop' className='mr-0 md:mr-10 hover:text-mcgreen text-black'>
+                <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
+                <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} placeholder='doop' className='hover:text-mcgreen text-black'>
                   <option value='Select' disabled selected>Difficulty</option>
-                  <option value='Easy'>Easy</option>
-                  <option value='Medium'>Medium</option>
-                  <option value='Hard'>Hard</option>
+                  {difficulties.map(difficulty => (
+                    <option value={difficulty.name}>{difficulty.name}</option>
+                  ))}
                 </select>
-
-                <Link to={`/`} className='mr-0 md:mr-10 hover:text-mcgreen'>RECENT</Link>
-                <Link onClick={filterByAll} className='hover:text-mcgreen'>ALL</Link>
-                {/* {isAdmin ? (
-                <Link to={`/`} className='mr0 md:ml-10 hover:text-mcgreen'>ADMIN</Link>
-              ) : null} */}
               </div>
             </div>
           </div>
