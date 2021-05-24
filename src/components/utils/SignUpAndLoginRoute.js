@@ -11,7 +11,6 @@ const SignUpAndLoginRoute = ({ component: Component, ...rest }) => {
   // Don't ask me why, but this needs to be a parameter for redirect to work on SignUp, despite not ever changing state to true.
   const { isLoggedIn } = useSelector(userSelector)
 
-  console.log(isLoggedIn)
   return (
     <Route
       {...rest}
