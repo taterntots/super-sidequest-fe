@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 // ROUTING
 import { useHistory, Link } from 'react-router-dom';
@@ -41,6 +42,37 @@ const Signup = () => {
 
     // console.log(data.username.toLowerCase().replace(/ /g, ""))
     console.log(data)
+
+    axios
+      ({
+        method: 'post',
+        url: process.env.REACT_APP_API + `auth/signup`,
+        headers: {
+          Accept: 'application/json',
+          Authorization: process.env.REACT_APP_HEROKU_SERVER_KEY
+        }, data: {
+          email: data.email,
+          password: data.password,
+          username: data.username
+        }
+      })
+      .then((res) => {
+        setSubmitting(false);
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('username', res.data.username);
+        localStorage.setItem('email', res.data.email);
+        cogoToast.success('Successfully created account', {
+          hideAfter: 3,
+        });
+        history.push(`/`);
+      })
+      .catch((err) => {
+        console.log(err);
+        cogoToast.error('There was an error signup up', {
+          hideAfter: 3,
+        });
+        setSubmitting(false);
+      });
 
     // await Auth.signIn(data.username, data.password)
     //   .then(() => {

@@ -1,13 +1,28 @@
 import React from 'react';
 
 // ROUTING
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
+// TOAST
+import cogoToast from 'cogo-toast';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ NAVBAR --------------------------------------
 // ----------------------------------------------------------------------------------
 
 const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
+  const history = useHistory();
+
+  // Function for logging out
+  const logout = () => {
+    localStorage.clear('token');
+    localStorage.clear('username');
+    localStorage.clear('email');
+    cogoToast.success('Successfully logged out', {
+      hideAfter: 3,
+    });
+    history.push('/');
+  }
   return (
     <>
       <div className='flex justify-between items-center text-md md:text-xl py-2 px-10 bg-black text-white font-medium sticky top-0 z-50'>
@@ -22,8 +37,14 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
           onChange={handleInputChange}
           type='search'
         />
-        <Link to='/signup' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Sign Up</Link>
-        <Link to='/login' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Login</Link>
+        {localStorage.getItem('token') ? null : (
+          <Link to='/signup' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Sign Up</Link>
+        )}
+        {localStorage.getItem('token') ? (
+          <button to='/' className='px-3 font-medium hover:text-navbarbuttonhighlight' onClick={() => { handleClearSearchBar(); logout() }} >Logout</button>
+        ) : (
+          <Link to='/login' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Login</Link>
+        )}
       </div>
     </>
   );
