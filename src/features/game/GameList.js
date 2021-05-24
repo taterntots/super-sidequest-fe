@@ -47,7 +47,7 @@ const GameList = ({ searchTerm, handleClearSearchBar }) => {
           {searchResults.length === 0 && searchTerm !== '' ? (
             <SearchError searchTerm={searchTerm} />
           ) : (
-            <div className='grid justify-center gap-10 mt-2 grig-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
+            <div className='grid justify-center gap-10 grig-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
               {searchResults.map((i) => (
                 <Link
                   key={i.id}

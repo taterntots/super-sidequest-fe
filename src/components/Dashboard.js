@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import { Counter } from '../features/counter/Counter';
 import { User } from '../features/user/User';
 import NavBar from './NavBar';
+import Login from '../components/Auth/Login';
 import HomePage from '../components/HomePage';
 import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
@@ -34,13 +35,24 @@ const Dashboard = () => {
   return (
     <>
       <NavBar handleClearSearchBar={handleClearSearchBar} handleInputChange={handleInputChange} />
-      <div className='mx-10'>
+      <div className='mx-10 my-3'>
         <Route
           exact
           path={`/`}
           render={(props) => (
             <HomePage
               searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
+              {...props}
+            />
+          )}
+        />
+
+        <Route
+          exact
+          path={`/login`}
+          render={(props) => (
+            <Login
               handleClearSearchBar={handleClearSearchBar}
               {...props}
             />

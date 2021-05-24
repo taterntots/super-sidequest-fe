@@ -67,7 +67,7 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
         <ServerFailure />
       ) : (
         <div>
-          <div className='mt-4 mb-4'>
+          <div className='mb-4'>
             <div>
               <img
                 className='object-cover h-72 w-full rounded-t-md'

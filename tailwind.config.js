@@ -4,6 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        taterpurple: '#483D8B',
+        purplebutton: '#9370DB',
+        logintext: '#BA55D3',
         sitewidebackground: '#414141',
         navbarbuttonhighlight: '#F5F5F5',
         cardhover: '#08f78f',
