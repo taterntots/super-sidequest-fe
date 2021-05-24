@@ -12,6 +12,7 @@ import Signup from './Auth/Signup';
 import HomePage from '../components/HomePage';
 import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
+import SignUpAndLoginRoute from '../components/utils/SignUpAndLoginRoute';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -49,26 +50,8 @@ const Dashboard = () => {
           )}
         />
 
-        <Route
-          exact
-          path={`/login`}
-          render={(props) => (
-            <Login
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`/signup`}
-          render={(props) => (
-            <Signup
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
+        <SignUpAndLoginRoute path={'/login'} handleClearSearchBar={handleClearSearchBar} component={Login} />
+        <SignUpAndLoginRoute path={'/signup'} handleClearSearchBar={handleClearSearchBar} component={Signup} />
 
         <Route
           exact

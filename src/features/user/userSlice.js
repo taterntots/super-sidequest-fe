@@ -1,11 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// TOAST
+import cogoToast from 'cogo-toast';
+
+// ----------------------------------------------------------------------------------
+// --------------------------------- USER SLICE -------------------------------------
+// ----------------------------------------------------------------------------------
+
 // Initial state
 export const initialState = {
   users: [],
   loading: false,
   error: false,
+  isLoggedIn: false
 };
 
 // API call to grab all users
@@ -23,7 +31,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 
 // API call to sign in user
 export const signInUser = createAsyncThunk('users/signInUser', async (credentials) => {
-  const response = await axios({
+  await axios({
     method: 'post',
     url: process.env.REACT_APP_API + `auth/login`,
     headers: {
@@ -33,12 +41,25 @@ export const signInUser = createAsyncThunk('users/signInUser', async (credential
       password: credentials.password
     }
   })
-  return response.data
+    .then(res => {
+      localStorage.setItem('id', res.data.id);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('username', res.data.username);
+      localStorage.setItem('email', res.data.email);
+      cogoToast.success('Successfully logged in', {
+        hideAfter: 3,
+      });
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.message, {
+        hideAfter: 3,
+      });
+    })
 });
 
 // API call to sign up user
 export const signUpUser = createAsyncThunk('users/signUpUser', async (credentials) => {
-  const response = await axios({
+  await axios({
     method: 'post',
     url: process.env.REACT_APP_API + `auth/signup`,
     headers: {
@@ -49,7 +70,20 @@ export const signUpUser = createAsyncThunk('users/signUpUser', async (credential
       username: credentials.username.replace(/ /g, "")
     }
   })
-  return response.data
+    .then(res => {
+      localStorage.setItem('id', res.data.id);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('username', res.data.username);
+      localStorage.setItem('email', res.data.email);
+      cogoToast.success('Successfully created account', {
+        hideAfter: 3,
+      });
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.errorMessage, {
+        hideAfter: 3,
+      });
+    })
 });
 
 // User slice for state change

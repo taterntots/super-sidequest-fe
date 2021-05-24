@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  signInUser
+  signInUser,
+  userSelector
 } from '../../features/user/userSlice';
 
 // ROUTING
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // FORMS
 import { useForm } from "react-hook-form";
-
-// TOAST
-import cogoToast from 'cogo-toast';
 
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
@@ -23,33 +21,12 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 const Login = () => {
   // State
   const dispatch = useDispatch();
+  const { loading } = useSelector(userSelector)
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [submitting, setSubmitting] = useState(false);
-  const history = useHistory();
 
   // Function to handle submitting Login form
   const onSubmit = async (data) => {
-    setSubmitting(true);
-
     dispatch(signInUser(data))
-      .then((res) => {
-        setSubmitting(false);
-        localStorage.setItem('id', res.payload.id);
-        localStorage.setItem('token', res.payload.token);
-        localStorage.setItem('username', res.payload.username);
-        localStorage.setItem('email', res.payload.email);
-        cogoToast.success('Successfully logged in', {
-          hideAfter: 3,
-        });
-        history.push(`/`);
-      })
-      .catch((err) => {
-        console.log(err);
-        cogoToast.error('Username and password do not match', {
-          hideAfter: 3,
-        });
-        setSubmitting(false);
-      });
   };
 
   return (
@@ -115,9 +92,9 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className={`${submitting && 'opacity-50 pointer-events-none'
+            className={`${loading && 'opacity-50 pointer-events-none'
               } flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}>
-            {submitting && (
+            {loading && (
               <LoadingSpinner />
             )}
               SIGN IN
