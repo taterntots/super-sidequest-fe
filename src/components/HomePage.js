@@ -7,7 +7,7 @@ import {
 
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList.js';
-import LoadingSpinner from './LoadSpinnser';
+import LoadSpinner from './LoadSpinner';
 import ServerFailure from './ServerFailure';
 
 // ----------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ const HomePage = ({ searchTerm, handleClearSearchBar }) => {
   return (
     <>
       {loading ? (
-        <LoadingSpinner loading={loading} />
+        <LoadSpinner loading={loading} />
       ) : error ? (
         <ServerFailure />
       ) : (

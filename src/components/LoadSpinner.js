@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 // ---------------------------------- LOAD SPINNER ----------------------------------
 // ----------------------------------------------------------------------------------
 
-const LoadingSpinner = ({ loading }) => {
+const LoadSpinner = ({ loading }) => {
   const color = '#FFFF00';
   const override = css`
   position: absolute;
@@ -21,4 +21,4 @@ const LoadingSpinner = ({ loading }) => {
   );
 }
 
-export default LoadingSpinner;
+export default LoadSpinner;

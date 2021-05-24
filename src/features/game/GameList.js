@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 // COMPONENTS
 import GameCard from './GameCard';
 import SearchError from '../../components/SearchError';
-import LoadingSpinner from '../../components/LoadSpinnser';
+import LoadSpinner from '../../components/LoadSpinner';
 import ServerFailure from '../../components/ServerFailure';
 
 // ----------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ const GameList = ({ searchTerm, handleClearSearchBar }) => {
   return (
     <>
       {loading ? (
-        <LoadingSpinner loading={loading} />
+        <LoadSpinner loading={loading} />
       ) : error ? (
         <ServerFailure />
       ) : (

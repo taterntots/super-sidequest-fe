@@ -15,7 +15,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
-import LoadingSpinner from './LoadSpinnser';
+import LoadSpinner from './LoadSpinner';
 import ServerFailure from './ServerFailure';
 
 // IMAGES
@@ -62,7 +62,7 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
   return (
     <>
       {loading ? (
-        <LoadingSpinner loading={loading} />
+        <LoadSpinner loading={loading} />
       ) : error ? (
         <ServerFailure />
       ) : (

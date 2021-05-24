@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import {
+  signUpUser
+} from '../../features/user/userSlice';
 
 // ROUTING
 import { useHistory, Link } from 'react-router-dom';
@@ -13,54 +16,28 @@ import cogoToast from 'cogo-toast';
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 
-// COMPONENTS
-// import CustomConfirmation from './CustomConfirmation';
-// import CustomResetPassword from './CustomResetPassword';
-
 // ----------------------------------------------------------------------------------
 // ------------------------------------ SIGNUP --------------------------------------
 // ----------------------------------------------------------------------------------
 
 const Signup = () => {
   // State
+  const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [submitting, setSubmitting] = useState(false);
-  const [password, setPassword] = useState();
-  const [email, setEmail] = useState()
-  const [confirmFromSignup, setConfirmFromSignup] = useState(false);
-  const [input, setInput] = useState({
-    username: '',
-    password: ''
-  })
-
-  // React Router
   const history = useHistory();
 
   // Function to handle submitting Login form
   const onSubmit = async (data) => {
     setSubmitting(true);
 
-    // console.log(data.username.toLowerCase().replace(/ /g, ""))
-    console.log(data)
-
-    axios
-      ({
-        method: 'post',
-        url: process.env.REACT_APP_API + `auth/signup`,
-        headers: {
-          Accept: 'application/json',
-          Authorization: process.env.REACT_APP_HEROKU_SERVER_KEY
-        }, data: {
-          email: data.email,
-          password: data.password,
-          username: data.username
-        }
-      })
+    dispatch(signUpUser(data))
       .then((res) => {
         setSubmitting(false);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('username', res.data.username);
-        localStorage.setItem('email', res.data.email);
+        localStorage.setItem('id', res.payload.id);
+        localStorage.setItem('token', res.payload.token);
+        localStorage.setItem('username', res.payload.username);
+        localStorage.setItem('email', res.payload.email);
         cogoToast.success('Successfully created account', {
           hideAfter: 3,
         });
@@ -68,38 +45,11 @@ const Signup = () => {
       })
       .catch((err) => {
         console.log(err);
-        cogoToast.error('There was an error signup up', {
+        cogoToast.error('There was an error signing up', {
           hideAfter: 3,
         });
         setSubmitting(false);
       });
-
-    // await Auth.signIn(data.username, data.password)
-    //   .then(() => {
-    //     setSubmitting(false);
-    //     cogoToast.success('Successfully logged in', {
-    //       hideAfter: 3,
-    //     });
-    //     history.push('/dashboard')
-    //   })
-    //   .catch(err => {
-    //     if (err.message === 'User is not confirmed.') {
-    //       setSubmitting(false);
-    //       setPassword(data.password)
-    //       setEmail(data.username)
-    //       setScreen('code');
-    //       cogoToast.warn(err.message + ' Please confirm your account.', {
-    //         hideAfter: 5,
-    //       });
-    //       console.log(err)
-    //     } else {
-    //       setSubmitting(false);
-    //       cogoToast.error(err.message, {
-    //         hideAfter: 3,
-    //       });
-    //       console.log(err)
-    //     }
-    //   })
   };
 
   return (
