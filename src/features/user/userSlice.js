@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // TOAST
@@ -86,6 +86,56 @@ export const signUpUser = createAsyncThunk('users/signUpUser', async (credential
     })
 });
 
+// API call to request password reset
+export const forgotPassword = createAsyncThunk('users/forgotPassword', async (credentials) => {
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: process.env.REACT_APP_API + `auth/forgot-password`,
+      headers: {
+        Accept: 'application/json'
+      }, data: {
+        email: credentials.email.toLowerCase().replace(/ /g, "")
+      }
+    })
+    cogoToast.success(response.data.message, {
+      hideAfter: 5,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.error, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.error)
+  }
+});
+
+// API call to update password
+export const resetPassword = createAsyncThunk('users/resetPassword', async (credentials) => {
+  const newPasswordToken = new URLSearchParams(window.location.search).get('key')
+
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: process.env.REACT_APP_API + `auth/reset-password/${newPasswordToken}`,
+      headers: {
+        Accept: 'application/json'
+      }, data: {
+        password: credentials.password.replace(/ /g, "")
+      }
+    })
+    cogoToast.success(response.data.message, {
+      hideAfter: 5,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.message, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.message)
+  }
+});
+
 // User slice for state change
 export const userSlice = createSlice({
   name: 'users',
@@ -122,6 +172,28 @@ export const userSlice = createSlice({
       state.error = false
     },
     [signUpUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [forgotPassword.pending]: (state, action) => {
+      state.loading = true
+    },
+    [forgotPassword.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [forgotPassword.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [resetPassword.pending]: (state, action) => {
+      state.loading = true
+    },
+    [resetPassword.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [resetPassword.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
