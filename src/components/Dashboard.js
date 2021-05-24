@@ -8,6 +8,7 @@ import { Counter } from '../features/counter/Counter';
 import { User } from '../features/user/User';
 import NavBar from './NavBar';
 import Login from '../components/Auth/Login';
+import Signup from './Auth/Signup';
 import HomePage from '../components/HomePage';
 import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
@@ -53,6 +54,16 @@ const Dashboard = () => {
           path={`/login`}
           render={(props) => (
             <Login
+              handleClearSearchBar={handleClearSearchBar}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={`/signup`}
+          render={(props) => (
+            <Signup
               handleClearSearchBar={handleClearSearchBar}
               {...props}
             />
