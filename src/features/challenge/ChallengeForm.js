@@ -32,73 +32,77 @@ const ChallengeForm = () => {
   return (
     <div className="">
       <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
-        <h4 className='text-2xl mb-4'>Sign in to your account</h4>
+        <h4 className='text-2xl mb-4'>Create a challenge</h4>
         <div className="form-group">
-          <label className='mr-3'>Email address</label>
-          {errors.email && (
-            <span className='text-red-500'>{errors.email.message}</span>
+          <label className='mr-3'>Challenge Title</label>
+          {errors.name && (
+            <span className='text-red-500'>{errors.name.message}</span>
           )}
           <input
-            name='email'
-            type='email'
-            placeholder='Enter your email'
+            name='name'
+            type='name'
+            placeholder='Enter a snazzy name for your challenge'
             className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
-            {...register('email', {
-              required: 'Required field',
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "(Invalid email address)"
-              }
+            {...register('name', {
+              required: 'Required field'
             })}
           />
         </div>
         <div className="form-group">
-          <label className='mr-3'>Password</label>
-          {errors.password && (
-            <span className='text-red-500'>{errors.password.message}</span>
+          <label className='mr-3'>Game</label>
+          {errors.game_id && (
+            <span className='text-red-500'>{errors.game_id.message}</span>
           )}
           <input
-            name='password'
-            type='password'
-            placeholder='Enter your password'
-            className='form-control text-black w-full flex items-center mb-3 mt-3 p-2 rounded-md text-lg'
-            {...register('password', {
+            name='game_id'
+            type='game_id'
+            placeholder='Pick a game'
+            className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+            {...register('game_id', {
               required: 'Required field'
-            })} />
+            })}
+          />
+        </div>
+        <div className="form-group">
+          <label className='mr-3'>Description</label>
+          {errors.description && (
+            <span className='text-red-500'>{errors.description.message}</span>
+          )}
+          <input
+            name='description'
+            type='description'
+            placeholder='What exactly is the challenge?'
+            className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+            {...register('description', {
+              required: 'Required field'
+            })}
+          />
+        </div>
+        <div className="form-group">
+          <label className='mr-3'>System</label>
+          {errors.system && (
+            <span className='text-red-500'>{errors.system.message}</span>
+          )}
+          <input
+            name='system'
+            type='system'
+            placeholder='Enter the name of the system you are competing on'
+            className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+            {...register('system', {
+              required: 'Required field'
+            })}
+          />
         </div>
 
-        <div className='md:mb-7 md:mr-20 md:mb-0 flex justify-center md:justify-start'>
-          <p className='mb-7'>
-            Forgot your password?
-          </p>
-          <Link
-            to='/forgot-password'
-            className='ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
-          >
-            Reset password
-          </Link>
-        </div>
-
-        <div className='mx-10 md:mx-0 md:flex md:items-center'>
-          <div className='mb-7 md:mr-20 md:mb-0 flex text-xl'>
-            <p>
-              No account?
-            </p>
-            <Link
-              to='/signup'
-              className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
-            >
-              Create account
-					  </Link>
-          </div>
+        <div className='flex justify-center md:mx-0 md:flex md:justify-end md:items-center'>
           <button
             type="submit"
             className={`${loading && 'opacity-50 pointer-events-none'
-              } flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}>
+              } w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}>
             {loading && (
               <LoadingSpinner />
             )}
-              SIGN IN
+            SUBMIT
           </button>
         </div>
       </form>

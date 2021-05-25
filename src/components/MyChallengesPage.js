@@ -73,12 +73,12 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
               <img
                 className='object-cover h-72 w-full rounded-t-md'
                 src={UserBannerPlaceholder}
-                alt='banner for a single game'
+                alt='banner for a user'
               />
             </div>
 
             {/* Info Bar */}
-            <div className='px-0 sm:px-10 pt-4 pb-1 bg-green-600 rounded-b-lg'>
+            <div className='px-0 sm:px-10 pt-4 pb-1 bg-purplebutton rounded-b-lg'>
               {/* Game Info */}
               <div className='sm:flex justify-between'>
                 {/* Left Side */}
@@ -117,7 +117,7 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
           </div>
         </div>
       )}
-      
+
       {/* <ChallengeList challenges={filteredChallenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} /> */}
 
       {/* PAGE ELEMENTS BASED ON TAB */}
