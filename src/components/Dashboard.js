@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 
 // COMPONENTS
-import { Counter } from '../features/counter/Counter';
 import { User } from '../features/user/User';
 import NavBar from './NavBar';
 import Login from '../components/Auth/Login';
@@ -12,6 +11,7 @@ import Signup from './Auth/Signup';
 import ForgotPassword from './Auth/ForgotPassword';
 import ResetPassword from './Auth/ResetPassword';
 import HomePage from '../components/HomePage';
+import MyChallengesPage from '../components/MyChallengesPage';
 import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
 import SignUpAndLoginRoute from '../components/utils/SignUpAndLoginRoute';
@@ -52,10 +52,16 @@ const Dashboard = () => {
           )}
         />
 
-        <SignUpAndLoginRoute path={'/login'} handleClearSearchBar={handleClearSearchBar} component={Login} />
-        <SignUpAndLoginRoute path={'/signup'} handleClearSearchBar={handleClearSearchBar} component={Signup} />
-        <SignUpAndLoginRoute path={'/forgot-password'} handleClearSearchBar={handleClearSearchBar} component={ForgotPassword} />
-        <SignUpAndLoginRoute path={'/reset-password'} handleClearSearchBar={handleClearSearchBar} component={ResetPassword} />
+        <Route
+          path={`/${localStorage.getItem('username')}`}
+          render={(props) => (
+            <MyChallengesPage
+              searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
+              {...props}
+            />
+          )}
+        />
 
         <Route
           exact
@@ -82,16 +88,6 @@ const Dashboard = () => {
 
         <Route
           exact
-          path={`/counter`}
-          render={(props) => (
-            <Counter
-              {...props}
-            />
-          )}
-        />
-
-        <Route
-          exact
           path={`/support`}
           render={(props) => (
             <User
@@ -100,6 +96,11 @@ const Dashboard = () => {
           )}
         />
       </div>
+
+      <SignUpAndLoginRoute path={'/login'} handleClearSearchBar={handleClearSearchBar} component={Login} />
+      <SignUpAndLoginRoute path={'/signup'} handleClearSearchBar={handleClearSearchBar} component={Signup} />
+      <SignUpAndLoginRoute path={'/forgot-password'} handleClearSearchBar={handleClearSearchBar} component={ForgotPassword} />
+      <SignUpAndLoginRoute path={'/reset-password'} handleClearSearchBar={handleClearSearchBar} component={ResetPassword} />
     </>
   );
 }

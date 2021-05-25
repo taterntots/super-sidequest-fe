@@ -11,6 +11,7 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   users: [],
+  user: {},
   loading: false,
   error: false,
   isLoggedIn: false
@@ -21,6 +22,19 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a user by ID
+export const fetchUserById = createAsyncThunk('users/fetchUserById', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -150,6 +164,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUsers.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserById.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserById.fulfilled]: (state, { payload }) => {
+      state.user = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserById.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
