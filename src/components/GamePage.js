@@ -98,7 +98,7 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
               {/* FILTERS */}
               <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
                 <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
-                <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} placeholder='doop' className='hover:text-mcgreen text-black'>
+                <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='hover:text-mcgreen text-black'>
                   <option value='Select' disabled selected>Difficulty</option>
                   {difficulties.map(difficulty => (
                     <option value={difficulty.name}>{difficulty.name}</option>

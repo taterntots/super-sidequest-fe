@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   signInUser,
   userSelector
 } from '../../features/user/userSlice';
+import {
+  fetchGames,
+  gameSelector
+} from '../../features/game/gameSlice';
 
 // ROUTING
 import { Link } from 'react-router-dom';
 
 // FORMS
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import Select from 'react-select';
 
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
@@ -21,12 +26,19 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 const ChallengeForm = () => {
   // State
   const dispatch = useDispatch();
-  const { loading } = useSelector(userSelector)
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { loading: userLoading } = useSelector(userSelector) // REPLACE LOADING WITH ADD CHALLENGE LOADING
+  const { games, loading: gameLoading } = useSelector(gameSelector)
+  const { register, handleSubmit, control, formState: { errors } } = useForm();
+
+  // Grabs all necessary data from server
+  useEffect(() => {
+    dispatch(fetchGames())
+  }, [dispatch])
 
   // Function to handle submitting Login form
   const onSubmit = async (data) => {
-    dispatch(signInUser(data))
+    console.log('DATA', data)
+    // dispatch(signInUser(data))
   };
 
   return (
@@ -42,7 +54,7 @@ const ChallengeForm = () => {
             name='name'
             type='name'
             placeholder='Enter a snazzy name for your challenge'
-            className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+            className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('name', {
               required: 'Required field'
             })}
@@ -50,17 +62,26 @@ const ChallengeForm = () => {
         </div>
         <div className="form-group">
           <label className='mr-3'>Game</label>
-          {errors.game_id && (
-            <span className='text-red-500'>{errors.game_id.message}</span>
+          {errors.game && (
+            <span className='text-red-500'>{errors.game.message}</span>
           )}
-          <input
-            name='game_id'
-            type='game_id'
-            placeholder='Pick a game'
-            className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
-            {...register('game_id', {
+          <Controller
+            name='game'
+            control={control}
+            {...register('game', {
               required: 'Required field'
             })}
+            render={({ field }) => (
+              <Select
+                {...field}
+                as={Select}
+                className='text-black mb-7 mt-3 rounded-md text-lg'
+                options={games.map(g => ({ label: `${g.name}`, value: g.id }))}
+                id='game'
+                name='game'
+                isLoading={gameLoading}
+              />
+            )}
           />
         </div>
         <div className="form-group">
@@ -72,7 +93,7 @@ const ChallengeForm = () => {
             name='description'
             type='description'
             placeholder='What exactly is the challenge?'
-            className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+            className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('description', {
               required: 'Required field'
             })}
@@ -87,7 +108,7 @@ const ChallengeForm = () => {
             name='system'
             type='system'
             placeholder='Enter the name of the system you are competing on'
-            className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+            className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('system', {
               required: 'Required field'
             })}
@@ -97,9 +118,9 @@ const ChallengeForm = () => {
         <div className='flex justify-center md:mx-0 md:flex md:justify-end md:items-center'>
           <button
             type="submit"
-            className={`${loading && 'opacity-50 pointer-events-none'
+            className={`${gameLoading && 'opacity-50 pointer-events-none'
               } w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}>
-            {loading && (
+            {gameLoading && (
               <LoadingSpinner />
             )}
             SUBMIT
