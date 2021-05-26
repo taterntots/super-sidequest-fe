@@ -32,7 +32,7 @@ const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar }) => {
           {searchResults.map((i) => (
             <Link
               key={i.challenge_id}
-              to={`/challenges/${i.challenge_id}`}
+              to={`/${i.username}/challenges/${i.challenge_id}`}
               onClick={handleClearSearchBar}
             >
               <ChallengeCard

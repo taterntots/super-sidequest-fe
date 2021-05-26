@@ -18,6 +18,7 @@ import { Route, Link, useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
+import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 import LoadSpinner from './LoadSpinner';
 import ServerFailure from './ServerFailure';
@@ -104,16 +105,30 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
 
               {/* FILTERS */}
               <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
-                <Link className='mr-0 md:mr-10 hover:text-red-600'>Profile</Link>
+                <Link
+                  to={`/${localStorage.getItem('username')}`}
+                  className='mr-0 md:mr-10 hover:text-red-600'
+                >
+                  Profile
+                </Link>
                 <Link
                   to={`/${localStorage.getItem('username')}/my-challenges`}
                   className='mr-0 md:mr-10 hover:text-red-600'
                 >
                   My Challenges
-                  </Link>
-                <Link className='mr-0 md:mr-10 hover:text-red-600'>Accepted</Link>
-                <Link className='mr-0 md:mr-10 hover:text-red-600'>Completed</Link>
-
+                </Link>
+                <Link
+                  to={`/${localStorage.getItem('username')}/accepted`}
+                  className='mr-0 md:mr-10 hover:text-red-600'
+                >
+                  Accepted
+                </Link>
+                <Link
+                  to={`/${localStorage.getItem('username')}/completed`}
+                  className='mr-0 md:mr-10 hover:text-red-600'
+                >
+                  Completed
+                </Link>
                 {/* <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
                 <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='mr-0 md:mr-10 text-black hover:text-mcgreen'>
                   <option value='Select' disabled selected>Difficulty</option>
@@ -134,8 +149,6 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
         </div>
       )}
 
-      {/* <ChallengeList challenges={filteredChallenges} loading={loading} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} /> */}
-
       {/* PAGE ELEMENTS BASED ON TAB */}
       <Route
         exact
@@ -144,6 +157,17 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
           <ChallengeList
             challenges={filteredChallenges}
             loading={challengeLoading}
+            searchTerm={searchTerm}
+            handleClearSearchBar={handleClearSearchBar}
+            {...props}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/:username/challenges/:challengeId`}
+        render={(props) => (
+          <ChallengeDetails
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
             {...props}

@@ -11,6 +11,7 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   challenges: [],
+  challenge: {},
   loading: false,
   error: false,
 };
@@ -20,6 +21,19 @@ export const fetchChallenges = createAsyncThunk('challenges/fetchChallenges', as
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `challenges`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a single challenge by ID
+export const fetchChallengeById = createAsyncThunk('challenges/fetchChallengeById', async (challengeId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/${challengeId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -93,6 +107,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchChallengeById.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchChallengeById.fulfilled]: (state, { payload }) => {
+      state.challenge = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchChallengeById.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
