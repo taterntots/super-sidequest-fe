@@ -30,14 +30,14 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
   const { user, loading, error } = useSelector(userSelector);
-  const { difficulties } = useSelector(difficultySelector);
+  const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
   // const [filteredChallenges, setFilteredChallenges] = useState(challenges);
 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchUserById(localStorage.getItem('id')))
     // dispatch(fetchGameChallenges(route.params.gameId))
-    // dispatch(fetchDifficulties())
+    dispatch(fetchDifficulties())
   }, [dispatch])
 
   // Resets filter when clicking away from page

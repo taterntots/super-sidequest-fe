@@ -1,5 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit';
 import axios from 'axios';
+
+// TOAST
+import cogoToast from 'cogo-toast';
 
 // ----------------------------------------------------------------------------------
 // -------------------------------- CHALLENGE SLICE ---------------------------------
@@ -25,6 +28,44 @@ export const fetchChallenges = createAsyncThunk('challenges/fetchChallenges', as
   return response.data
 });
 
+// API call to add a challenge (requires token from valid user being signed in)
+export const addChallenge = createAsyncThunk('challenges/addChallenge', async (formData) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'post',
+      url: process.env.REACT_APP_API + `challenges`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        user_id: localStorage.getItem('id'),
+        name: formData.name,
+        game_id: formData.game.value,
+        description: formData.description,
+        system_id: formData.system.value,
+        difficulty_id: formData.difficulty.value,
+        rules: formData.rules,
+        is_speedrun: formData.is_speedrun,
+        is_high_score: formData.is_high_score,
+        prize: formData.prize ? formData.prize : null,
+        start_date: formData.start_date ? formData.start_date : null,
+        end_date: formData.end_date ? formData.end_date : null
+      }
+    })
+    cogoToast.success('Successfully added challenge', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // Challenge slice for state change
 export const challengeSlice = createSlice({
   name: 'challenges',
@@ -39,6 +80,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [addChallenge.pending]: (state, action) => {
+      state.loading = true
+    },
+    [addChallenge.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [addChallenge.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
