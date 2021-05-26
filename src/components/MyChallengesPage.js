@@ -6,6 +6,7 @@ import {
 } from '../features/user/userSlice';
 import {
   fetchUserCreatedChallenges,
+  fetchUserAcceptedChallenges,
   challengeSelector
 } from '../features/challenge/challengeSlice';
 import {
@@ -33,24 +34,26 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 
 const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const route = useRouteMatch();
   const { user, loading: userLoading, error } = useSelector(userSelector);
-  const { challenges, loading: challengeLoading } = useSelector(challengeSelector);
+  const { created_challenges, accepted_challenges, loading: challengeLoading } = useSelector(challengeSelector);
   const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
-  const [filteredChallenges, setFilteredChallenges] = useState(challenges);
+  const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
+  const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchUserById(localStorage.getItem('id')))
+    dispatch(fetchDifficulties())
     // dispatch(fetchGameChallenges(route.params.gameId))
     dispatch(fetchUserCreatedChallenges(localStorage.getItem('id')))
-    dispatch(fetchDifficulties())
+    dispatch(fetchUserAcceptedChallenges(localStorage.getItem('id')))
   }, [dispatch])
 
   // Resets filter when clicking away from page
   useEffect(() => {
-    setFilteredChallenges(challenges)
-  }, [challenges])
+    setFilteredCreatedChallenges(created_challenges)
+    setFilteredAcceptedChallenges(accepted_challenges)
+  }, [created_challenges, accepted_challenges])
 
   // Filter all challenges
   const filterByAll = () => {
@@ -155,7 +158,20 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
         path={`/:username/my-challenges`}
         render={(props) => (
           <ChallengeList
-            challenges={filteredChallenges}
+            challenges={filteredCreatedChallenges}
+            loading={challengeLoading}
+            searchTerm={searchTerm}
+            handleClearSearchBar={handleClearSearchBar}
+            {...props}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/:username/accepted`}
+        render={(props) => (
+          <ChallengeList
+            challenges={filteredAcceptedChallenges}
             loading={challengeLoading}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}

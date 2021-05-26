@@ -11,6 +11,8 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   challenges: [],
+  created_challenges: [],
+  accepted_challenges: [],
   challenge: {},
   loading: false,
   error: false,
@@ -47,6 +49,19 @@ export const fetchUserCreatedChallenges = createAsyncThunk('challenges/fetchUser
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/created-challenges`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all of a user's accepted challenges
+export const fetchUserAcceptedChallenges = createAsyncThunk('challenges/fetchUserAcceptedChallenges', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/accepted-challenges`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -126,11 +141,23 @@ export const challengeSlice = createSlice({
       state.loading = true
     },
     [fetchUserCreatedChallenges.fulfilled]: (state, { payload }) => {
-      state.challenges = payload
+      state.created_challenges = payload
       state.loading = false
       state.error = false
     },
     [fetchUserCreatedChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserAcceptedChallenges.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserAcceptedChallenges.fulfilled]: (state, { payload }) => {
+      state.accepted_challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserAcceptedChallenges.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
