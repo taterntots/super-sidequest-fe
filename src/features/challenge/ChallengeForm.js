@@ -37,7 +37,7 @@ const ChallengeForm = () => {
   const { games, loading: gameLoading } = useSelector(gameSelector)
   const { systems, loading: systemLoading } = useSelector(systemSelector)
   const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
-  const { loading: challengeLoading } = useSelector(difficultySelector);
+  const { loading: challengeLoading } = useSelector(challengeSelector);
   const { register, handleSubmit, control, formState: { errors } } = useForm();
   const history = useHistory();
 
@@ -65,8 +65,58 @@ const ChallengeForm = () => {
     <div className="">
       <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
         <h4 className='text-2xl mb-4'>Create a challenge</h4>
+        <div className='flex justify-between'>
+          <div className="form-group w-5/12">
+            <label className='mr-3'>Game<span className='text-red-500'>*</span></label>
+            {errors.game && (
+              <span className='text-red-500'>{errors.game.message}</span>
+            )}
+            <Controller
+              name='game'
+              control={control}
+              {...register('game', {
+                required: 'Required field'
+              })}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  as={Select}
+                  className='text-black mb-7 mt-3 rounded-md text-lg'
+                  options={games.map(g => ({ label: `${g.name}`, value: g.id }))}
+                  id='game'
+                  name='game'
+                  isLoading={gameLoading}
+                />
+              )}
+            />
+          </div>
+          <div className="form-group w-5/12">
+            <label className='mr-3'>System<span className='text-red-500'>*</span></label>
+            {errors.system && (
+              <span className='text-red-500'>{errors.system.message}</span>
+            )}
+            <Controller
+              name='system'
+              control={control}
+              {...register('system', {
+                required: 'Required field'
+              })}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  as={Select}
+                  className='text-black mb-7 mt-3 rounded-md text-lg'
+                  options={systems.map(g => ({ label: `${g.name}`, value: g.id }))}
+                  id='system'
+                  name='system'
+                  isLoading={systemLoading}
+                />
+              )}
+            />
+          </div>
+        </div>
         <div className="form-group">
-          <label className='mr-3'>Challenge Title</label>
+          <label className='mr-3'>Challenge Title<span className='text-red-500'>*</span></label>
           {errors.name && (
             <span className='text-red-500'>{errors.name.message}</span>
           )}
@@ -81,31 +131,7 @@ const ChallengeForm = () => {
           />
         </div>
         <div className="form-group">
-          <label className='mr-3'>Game</label>
-          {errors.game && (
-            <span className='text-red-500'>{errors.game.message}</span>
-          )}
-          <Controller
-            name='game'
-            control={control}
-            {...register('game', {
-              required: 'Required field'
-            })}
-            render={({ field }) => (
-              <Select
-                {...field}
-                as={Select}
-                className='text-black mb-7 mt-3 rounded-md text-lg'
-                options={games.map(g => ({ label: `${g.name}`, value: g.id }))}
-                id='game'
-                name='game'
-                isLoading={gameLoading}
-              />
-            )}
-          />
-        </div>
-        <div className="form-group">
-          <label className='mr-3'>Description</label>
+          <label className='mr-3'>Description<span className='text-red-500'>*</span></label>
           {errors.description && (
             <span className='text-red-500'>{errors.description.message}</span>
           )}
@@ -119,88 +145,88 @@ const ChallengeForm = () => {
             })}
           />
         </div>
-        <div className="form-group">
-          <label className='mr-3'>System</label>
-          {errors.system && (
-            <span className='text-red-500'>{errors.system.message}</span>
-          )}
-          <Controller
-            name='system'
-            control={control}
-            {...register('system', {
-              required: 'Required field'
-            })}
-            render={({ field }) => (
-              <Select
-                {...field}
-                as={Select}
-                className='text-black mb-7 mt-3 rounded-md text-lg'
-                options={systems.map(g => ({ label: `${g.name}`, value: g.id }))}
-                id='system'
-                name='system'
-                isLoading={systemLoading}
-              />
+        <div className='flex'>
+          <div className="form-group w-1/3">
+            <label className='mr-3'>Difficulty<span className='text-red-500'>*</span></label>
+            {errors.difficulty && (
+              <span className='text-red-500'>{errors.difficulty.message}</span>
             )}
-          />
+            <Controller
+              name='difficulty'
+              control={control}
+              {...register('difficulty', {
+                required: 'Required field'
+              })}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  as={Select}
+                  className='text-black mb-7 mt-3 rounded-md text-lg'
+                  options={difficulties.map(g => ({ label: `${g.name}`, value: g.id }))}
+                  id='difficulty'
+                  name='difficulty'
+                  isLoading={difficultyLoading}
+                />
+              )}
+            />
+          </div>
+          <div className='flex w-2/3 text-center'>
+            <div className='form-group w-1/2 flex items-center justify-center'>
+              <label className='mr-3'>Speedrun</label>
+              <input
+                name='is_speedrun'
+                type='checkbox'
+                placeholder='Provide any special is_speedrun for the challenge'
+                className='w-6 h-6'
+                {...register('is_speedrun')}
+              />
+            </div>
+            <div className='form-group w-1/2 flex items-center justify-center'>
+              <label className='mr-3'>High Score</label>
+              <input
+                name='is_high_score'
+                type='checkbox'
+                placeholder='Provide any special is_high_score for the challenge'
+                className='w-6 h-6'
+                {...register('is_high_score')}
+              />
+            </div>
+          </div>
+        </div>
+        <div className='flex justify-between'>
+          <div className="form-group w-5/12">
+            <label className='mr-3'>Start Date</label>
+            <input
+              name='start_date'
+              type='date'
+              className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+              {...register('start_date')}
+            />
+          </div>
+          <div className="form-group w-5/12">
+            <label className='mr-3'>End Date</label>
+            <input
+              name='end_date'
+              type='date'
+              className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+              {...register('end_date')}
+            />
+          </div>
         </div>
         <div className="form-group">
-          <label className='mr-3'>Difficulty</label>
-          {errors.difficulty && (
-            <span className='text-red-500'>{errors.difficulty.message}</span>
-          )}
-          <Controller
-            name='difficulty'
-            control={control}
-            {...register('difficulty', {
-              required: 'Required field'
-            })}
-            render={({ field }) => (
-              <Select
-                {...field}
-                as={Select}
-                className='text-black mb-7 mt-3 rounded-md text-lg'
-                options={difficulties.map(g => ({ label: `${g.name}`, value: g.id }))}
-                id='difficulty'
-                name='difficulty'
-                isLoading={difficultyLoading}
-              />
-            )}
-          />
-        </div>
-        <div className="form-group">
-          <label className='mr-3'>Rules</label>
+          <label className='mr-3'>Rules<span className='text-red-500'>*</span></label>
           {errors.rules && (
             <span className='text-red-500'>{errors.rules.message}</span>
           )}
           <textarea
             name='rules'
             type='text'
-            rows='6'
+            rows='12'
             placeholder='Provide any special rules for the challenge'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('rules', {
               required: 'Required field'
             })}
-          />
-        </div>
-        <div className="form-group">
-          <label className='mr-3'>Speedrun</label>
-          <input
-            name='is_speedrun'
-            type='checkbox'
-            placeholder='Provide any special is_speedrun for the challenge'
-            className='mb-7 mt-3'
-            {...register('is_speedrun')}
-          />
-        </div>
-        <div className="form-group">
-          <label className='mr-3'>High Score</label>
-          <input
-            name='is_high_score'
-            type='checkbox'
-            placeholder='Provide any special is_high_score for the challenge'
-            className='mb-7 mt-3'
-            {...register('is_high_score')}
           />
         </div>
         <div className="form-group">
@@ -211,24 +237,6 @@ const ChallengeForm = () => {
             placeholder='Provide a special prize for completing the challenge'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('prize')}
-          />
-        </div>
-        <div className="form-group">
-          <label className='mr-3'>Start Date</label>
-          <input
-            name='start_date'
-            type='date'
-            className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
-            {...register('start_date')}
-          />
-        </div>
-        <div className="form-group">
-          <label className='mr-3'>End Date</label>
-          <input
-            name='end_date'
-            type='date'
-            className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
-            {...register('end_date')}
           />
         </div>
 
