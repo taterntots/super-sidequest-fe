@@ -8,9 +8,10 @@ import {
   fetchGames,
   gameSelector
 } from '../../features/game/gameSlice';
-
-// ROUTING
-import { Link } from 'react-router-dom';
+import {
+  fetchSystems,
+  systemSelector
+} from '../../features/system/systemSlice';
 
 // FORMS
 import { useForm, Controller } from "react-hook-form";
@@ -28,11 +29,13 @@ const ChallengeForm = () => {
   const dispatch = useDispatch();
   const { loading: userLoading } = useSelector(userSelector) // REPLACE LOADING WITH ADD CHALLENGE LOADING
   const { games, loading: gameLoading } = useSelector(gameSelector)
+  const { systems, loading: systemLoading } = useSelector(systemSelector)
   const { register, handleSubmit, control, formState: { errors } } = useForm();
 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchGames())
+    dispatch(fetchSystems())
   }, [dispatch])
 
   // Function to handle submitting Login form
@@ -104,16 +107,33 @@ const ChallengeForm = () => {
           {errors.system && (
             <span className='text-red-500'>{errors.system.message}</span>
           )}
-          <input
+          <Controller
             name='system'
-            type='system'
-            placeholder='Enter the name of the system you are competing on'
-            className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+            control={control}
             {...register('system', {
               required: 'Required field'
             })}
+            render={({ field }) => (
+              <Select
+                {...field}
+                as={Select}
+                className='text-black mb-7 mt-3 rounded-md text-lg'
+                options={systems.map(g => ({ label: `${g.name}`, value: g.id }))}
+                id='system'
+                name='system'
+                isLoading={systemLoading}
+              />
+            )}
           />
         </div>
+        <p>difficulty</p>
+        <p>rules</p>
+        <p>is_high_score</p>
+        <p>is_speedrun</p>
+        <p>featured</p>
+        <p>prize</p>
+        <p>start_date</p>
+        <p>end_date</p>
 
         <div className='flex justify-center md:mx-0 md:flex md:justify-end md:items-center'>
           <button
