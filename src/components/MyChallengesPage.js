@@ -5,6 +5,10 @@ import {
   userSelector
 } from '../features/user/userSlice';
 import {
+  fetchUserCreatedChallenges,
+  challengeSelector
+} from '../features/challenge/challengeSlice';
+import {
   fetchDifficulties,
   difficultySelector
 } from '../features/difficulty/difficultySlice';
@@ -29,21 +33,23 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
-  const { user, loading, error } = useSelector(userSelector);
+  const { user, loading: userLoading, error } = useSelector(userSelector);
+  const { challenges, loading: challengeLoading } = useSelector(challengeSelector);
   const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
-  // const [filteredChallenges, setFilteredChallenges] = useState(challenges);
+  const [filteredChallenges, setFilteredChallenges] = useState(challenges);
 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchUserById(localStorage.getItem('id')))
     // dispatch(fetchGameChallenges(route.params.gameId))
+    dispatch(fetchUserCreatedChallenges(localStorage.getItem('id')))
     dispatch(fetchDifficulties())
   }, [dispatch])
 
   // Resets filter when clicking away from page
-  // useEffect(() => {
-  //   setFilteredChallenges(challenges)
-  // }, [challenges])
+  useEffect(() => {
+    setFilteredChallenges(challenges)
+  }, [challenges])
 
   // Filter all challenges
   const filterByAll = () => {
@@ -62,8 +68,8 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
 
   return (
     <>
-      {loading ? (
-        <LoadSpinner loading={loading} />
+      {userLoading ? (
+        <LoadSpinner loading={userLoading} />
       ) : error ? (
         <ServerFailure />
       ) : (
@@ -98,13 +104,23 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
 
               {/* FILTERS */}
               <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
-                <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
+                <Link className='mr-0 md:mr-10 hover:text-red-600'>Profile</Link>
+                <Link
+                  to={`/${localStorage.getItem('username')}/my-challenges`}
+                  className='mr-0 md:mr-10 hover:text-red-600'
+                >
+                  My Challenges
+                  </Link>
+                <Link className='mr-0 md:mr-10 hover:text-red-600'>Accepted</Link>
+                <Link className='mr-0 md:mr-10 hover:text-red-600'>Completed</Link>
+
+                {/* <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
                 <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='mr-0 md:mr-10 text-black hover:text-mcgreen'>
                   <option value='Select' disabled selected>Difficulty</option>
                   {difficulties.map(difficulty => (
                     <option value={difficulty.name}>{difficulty.name}</option>
                   ))}
-                </select>
+                </select> */}
 
                 <Link
                   to={`/${localStorage.getItem('username')}/add-challenge`}
@@ -118,9 +134,22 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
         </div>
       )}
 
-      {/* <ChallengeList challenges={filteredChallenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} /> */}
+      {/* <ChallengeList challenges={filteredChallenges} loading={loading} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} /> */}
 
       {/* PAGE ELEMENTS BASED ON TAB */}
+      <Route
+        exact
+        path={`/:username/my-challenges`}
+        render={(props) => (
+          <ChallengeList
+            challenges={filteredChallenges}
+            loading={challengeLoading}
+            searchTerm={searchTerm}
+            handleClearSearchBar={handleClearSearchBar}
+            {...props}
+          />
+        )}
+      />
       <Route
         exact
         path={`/:username/add-challenge`}

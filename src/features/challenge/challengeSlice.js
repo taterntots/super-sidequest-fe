@@ -28,6 +28,19 @@ export const fetchChallenges = createAsyncThunk('challenges/fetchChallenges', as
   return response.data
 });
 
+// API call to grab all of a user's created challenges
+export const fetchUserCreatedChallenges = createAsyncThunk('challenges/fetchUserCreatedChallenges', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/created-challenges`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
 // API call to add a challenge (requires token from valid user being signed in)
 export const addChallenge = createAsyncThunk('challenges/addChallenge', async (formData) => {
   const token = localStorage.getItem('token');
@@ -80,6 +93,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserCreatedChallenges.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserCreatedChallenges.fulfilled]: (state, { payload }) => {
+      state.challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserCreatedChallenges.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
