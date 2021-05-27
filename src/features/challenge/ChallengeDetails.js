@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   fetchChallengeById,
+  acceptChallenge,
   challengeSelector
 } from '../challenge/challengeSlice';
 
 // ROUTING
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
+
+// IMAGES
+import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------- CHALLENGE DETAILS --------------------------------
@@ -16,15 +20,29 @@ import { useRouteMatch } from 'react-router-dom';
 const ChallengeDetails = () => {
   // State
   const dispatch = useDispatch();
-  const { challenge, loading: challengeLoading, error: challengeError } = useSelector(challengeSelector)
+  const { challenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
+  const history = useHistory();
+
+  console.log(route)
 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchChallengeById(route.params.challengeId))
   }, [dispatch])
 
-  console.log(challenge)
+  // Function to handle submitting Login form
+  const submitChallengeAccepted = async () => {
+    dispatch(acceptChallenge(route.params.challengeId))
+      .then(res => {
+        if (res.payload) {
+          history.push(`/${localStorage.getItem('username')}/accepted`)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
 
   return (
     <>
@@ -49,9 +67,12 @@ const ChallengeDetails = () => {
         <br />
 
         <button
-          to={`/${localStorage.getItem('username')}/add-challenge`}
+          onClick={submitChallengeAccepted}
           className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
         >
+          {challengeLoading && (
+            <LoadingSpinner />
+          )}
           Accept
         </button>
       </div >

@@ -96,11 +96,39 @@ export const addChallenge = createAsyncThunk('challenges/addChallenge', async (f
         end_date: formData.end_date ? formData.end_date : null
       }
     })
-    cogoToast.success('Successfully added challenge', {
+    cogoToast.success('Successfully created the challenge', {
       hideAfter: 3,
     });
     return response.data
   } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
+// API call to accept a challenge (requires token from valid user being signed in)
+export const acceptChallenge = createAsyncThunk('challenges/acceptChallenge', async (challengeId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'post',
+      url: process.env.REACT_APP_API + `challenges/${challengeId}/accept`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        user_id: localStorage.getItem('id')
+      }
+    })
+    cogoToast.success('Challenge accepted!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    console.log(err.response)
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
@@ -169,6 +197,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [addChallenge.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [acceptChallenge.pending]: (state, action) => {
+      state.loading = true
+    },
+    [acceptChallenge.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [acceptChallenge.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
