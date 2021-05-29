@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {
   userSelector
-} from '../../features/user/userSlice';
+} from '../../../features/user/userSlice';
 
 // ROUTING
 import { Route, Redirect } from 'react-router-dom';

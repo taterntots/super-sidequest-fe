@@ -139,7 +139,6 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
                     <option value={difficulty.name}>{difficulty.name}</option>
                   ))}
                 </select> */}
-
                 <Link
                   to={`/${localStorage.getItem('username')}/add-challenge`}
                   className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -13,6 +13,9 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 
+// COMPONENTS
+import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
+
 // ----------------------------------------------------------------------------------
 // ------------------------------- CHALLENGE DETAILS --------------------------------
 // ----------------------------------------------------------------------------------
@@ -23,8 +26,7 @@ const ChallengeDetails = () => {
   const { challenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const history = useHistory();
-
-  console.log(route)
+  const [open, setOpen] = useState(false)
 
   // Grabs all necessary data from server
   useEffect(() => {
@@ -67,7 +69,7 @@ const ChallengeDetails = () => {
         <br />
 
         <button
-          onClick={submitChallengeAccepted}
+          onClick={() => setOpen(true)}
           className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
         >
           {challengeLoading && (
@@ -76,6 +78,9 @@ const ChallengeDetails = () => {
           Accept
         </button>
       </div >
+
+      {/* Modal for accepting challenge */}
+      <AcceptChallengeModal open={open} setOpen={setOpen} submitChallengeAccepted={submitChallengeAccepted} />
     </>
   );
 }

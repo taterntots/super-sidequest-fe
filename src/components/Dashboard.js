@@ -14,7 +14,7 @@ import HomePage from '../components/HomePage';
 import MyChallengesPage from '../components/MyChallengesPage';
 import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
-import SignUpAndLoginRoute from '../components/utils/SignUpAndLoginRoute';
+import SignUpAndLoginRoute from '../components/utils/routes/SignUpAndLoginRoute';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
