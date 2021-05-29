@@ -14,6 +14,7 @@ export const initialState = {
   created_challenges: [],
   accepted_challenges: [],
   challenge: {},
+  challengeIsAccepted: false,
   loading: false,
   error: false,
 };
@@ -62,6 +63,19 @@ export const fetchUserAcceptedChallenges = createAsyncThunk('challenges/fetchUse
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/accepted-challenges`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to check if a user has accepted a challenge already
+export const fetchIfChallengeAlreadyAccepted = createAsyncThunk('challenges/fetchIfChallengeAlreadyAccepted', async (data) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/user/${data.user_id}/accepted`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -212,6 +226,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchUserAcceptedChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchIfChallengeAlreadyAccepted.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchIfChallengeAlreadyAccepted.fulfilled]: (state, { payload }) => {
+      state.challengeIsAccepted = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchIfChallengeAlreadyAccepted.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

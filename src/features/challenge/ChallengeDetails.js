@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   fetchChallengeById,
+  fetchIfChallengeAlreadyAccepted,
   acceptChallenge,
   abandonChallenge,
   challengeSelector
@@ -22,25 +23,33 @@ import AbandonChallengeModal from '../../components/utils/modals/AbandonChalleng
 // ------------------------------- CHALLENGE DETAILS --------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeDetails = () => {
+const ChallengeDetails = ({ refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
-  const { challenge, loading: challengeLoading } = useSelector(challengeSelector)
+  const { challenge, challengeIsAccepted, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const history = useHistory();
-  const [open, setOpen] = useState(false)
+  const [openAccept, setOpenAccept] = useState(false)
+  const [openAbandon, setOpenAbandon] = useState(false)
+  const isChallengeAcceptedData = {
+    user_id: localStorage.getItem('id'),
+    challenge_id: route.params.challengeId
+  }
 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchChallengeById(route.params.challengeId))
-  }, [dispatch])
+    dispatch(fetchIfChallengeAlreadyAccepted(isChallengeAcceptedData))
+  }, [dispatch, refresh])
 
   // Function to handle submitting Login form
   const submitChallengeAccepted = async () => {
     dispatch(acceptChallenge(route.params.challengeId))
       .then(res => {
         if (res.payload) {
-          history.push(`/${localStorage.getItem('username')}/accepted`)
+          setRefresh(!refresh)
+          setOpenAccept(false);
+          // history.push(`/${localStorage.getItem('username')}/accepted`)
         }
       })
       .catch(err => {
@@ -53,7 +62,9 @@ const ChallengeDetails = () => {
     dispatch(abandonChallenge(route.params.challengeId))
       .then(res => {
         if (res.payload) {
-          history.push(`/${localStorage.getItem('username')}/accepted`)
+          setRefresh(!refresh)
+          setOpenAbandon(false);
+          // history.push(`/${localStorage.getItem('username')}/accepted`)
         }
       })
       .catch(err => {
@@ -83,29 +94,34 @@ const ChallengeDetails = () => {
         </p>
         <br />
 
-        <button
-          onClick={() => setOpen(true)}
-          className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-        >
-          {challengeLoading && (
-            <LoadingSpinner />
-          )}
+        {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
+        {!challengeIsAccepted ? (
+          <button
+            onClick={() => setOpenAccept(true)}
+            className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+          >
+            {challengeLoading && (
+              <LoadingSpinner />
+            )}
           Accept
-        </button>
-        <button
-          onClick={() => setOpen(true)}
-          className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-        >
-          {challengeLoading && (
-            <LoadingSpinner />
-          )}
+          </button>
+        ) : (
+          <button
+            onClick={() => setOpenAbandon(true)}
+            className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+          >
+            {challengeLoading && (
+              <LoadingSpinner />
+            )}
           Abandon
-        </button>
+          </button>
+
+        )}
       </div >
 
       {/* Modal for accepting challenge */}
-      {/* <AcceptChallengeModal open={open} setOpen={setOpen} submitChallengeAccepted={submitChallengeAccepted} /> */}
-      <AbandonChallengeModal open={open} setOpen={setOpen} submitChallengeAbandoned={submitChallengeAbandoned} />
+      <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
+      <AbandonChallengeModal open={openAbandon} setOpen={setOpenAbandon} submitChallengeAbandoned={submitChallengeAbandoned} />
     </>
   );
 }

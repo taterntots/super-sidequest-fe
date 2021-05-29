@@ -39,6 +39,7 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
   const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
+  const [refresh, setRefresh] = useState(false)
 
   // Grabs all necessary data from server
   useEffect(() => {
@@ -47,7 +48,7 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
     // dispatch(fetchGameChallenges(route.params.gameId))
     dispatch(fetchUserCreatedChallenges(localStorage.getItem('id')))
     dispatch(fetchUserAcceptedChallenges(localStorage.getItem('id')))
-  }, [dispatch])
+  }, [dispatch, refresh])
 
   // Resets filter when clicking away from page
   useEffect(() => {
@@ -185,6 +186,8 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
           <ChallengeDetails
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
+            refresh={refresh}
+            setRefresh={setRefresh}
             {...props}
           />
         )}
