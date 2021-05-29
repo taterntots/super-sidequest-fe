@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchChallengeById,
   acceptChallenge,
+  abandonChallenge,
   challengeSelector
 } from '../challenge/challengeSlice';
 
@@ -15,6 +16,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
+import AbandonChallengeModal from '../../components/utils/modals/AbandonChallengeModal';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------- CHALLENGE DETAILS --------------------------------
@@ -36,6 +38,19 @@ const ChallengeDetails = () => {
   // Function to handle submitting Login form
   const submitChallengeAccepted = async () => {
     dispatch(acceptChallenge(route.params.challengeId))
+      .then(res => {
+        if (res.payload) {
+          history.push(`/${localStorage.getItem('username')}/accepted`)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle submitting Login form
+  const submitChallengeAbandoned = async () => {
+    dispatch(abandonChallenge(route.params.challengeId))
       .then(res => {
         if (res.payload) {
           history.push(`/${localStorage.getItem('username')}/accepted`)
@@ -77,10 +92,20 @@ const ChallengeDetails = () => {
           )}
           Accept
         </button>
+        <button
+          onClick={() => setOpen(true)}
+          className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+        >
+          {challengeLoading && (
+            <LoadingSpinner />
+          )}
+          Abandon
+        </button>
       </div >
 
       {/* Modal for accepting challenge */}
-      <AcceptChallengeModal open={open} setOpen={setOpen} submitChallengeAccepted={submitChallengeAccepted} />
+      {/* <AcceptChallengeModal open={open} setOpen={setOpen} submitChallengeAccepted={submitChallengeAccepted} /> */}
+      <AbandonChallengeModal open={open} setOpen={setOpen} submitChallengeAbandoned={submitChallengeAbandoned} />
     </>
   );
 }

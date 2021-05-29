@@ -128,7 +128,33 @@ export const acceptChallenge = createAsyncThunk('challenges/acceptChallenge', as
     });
     return response.data
   } catch (err) {
-    console.log(err.response)
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
+// API call to abandon a challenge (requires token from valid user being signed in)
+export const abandonChallenge = createAsyncThunk('challenges/abandonChallenge', async (challengeId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: process.env.REACT_APP_API + `challenges/${challengeId}/abandon`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        user_id: localStorage.getItem('id')
+      }
+    })
+    cogoToast.success('Challenge abandoned!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
@@ -208,6 +234,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [acceptChallenge.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [abandonChallenge.pending]: (state, action) => {
+      state.loading = true
+    },
+    [abandonChallenge.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [abandonChallenge.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
