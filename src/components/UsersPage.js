@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  fetchUserById,
+  fetchUserByUsername,
   userSelector
 } from '../features/user/userSlice';
 import {
@@ -29,10 +29,10 @@ import { ReactComponent as BlankPublisher } from '../img/BlankPublisher.svg';
 import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 
 // ----------------------------------------------------------------------------------
-// ---------------------------------- MY CHALLENGES ---------------------------------
+// ----------------------------------- USERS PAGE------------------------------------
 // ----------------------------------------------------------------------------------
 
-const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
+const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { user, loading: userLoading, error } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, loading: challengeLoading } = useSelector(challengeSelector);
@@ -40,15 +40,21 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [refresh, setRefresh] = useState(false)
+  const route = useRouteMatch();
 
-  // Grabs all necessary data from server
+  // Grabs user data from the server
   useEffect(() => {
-    dispatch(fetchUserById(localStorage.getItem('id')))
-    dispatch(fetchDifficulties())
-    // dispatch(fetchGameChallenges(route.params.gameId))
-    dispatch(fetchUserCreatedChallenges(localStorage.getItem('id')))
-    dispatch(fetchUserAcceptedChallenges(localStorage.getItem('id')))
+    dispatch(fetchUserByUsername(route.params.username))
+    // dispatch(fetchDifficulties())
   }, [dispatch, refresh])
+
+  // Grabs endpoints relying on userID after grabbing user in above useEffect
+  useEffect(() => {
+    if (Object.keys(user).length > 1) {
+      dispatch(fetchUserCreatedChallenges(user.id))
+      dispatch(fetchUserAcceptedChallenges(user.id))
+    }
+  }, [dispatch, user, refresh])
 
   // Resets filter when clicking away from page
   useEffect(() => {
@@ -110,25 +116,25 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
               {/* FILTERS */}
               <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
                 <Link
-                  to={`/${localStorage.getItem('username')}`}
+                  to={`/${user.username}`}
                   className='mr-0 md:mr-10 hover:text-red-600'
                 >
                   Profile
                 </Link>
                 <Link
-                  to={`/${localStorage.getItem('username')}/my-challenges`}
+                  to={`/${user.username}/my-challenges`}
                   className='mr-0 md:mr-10 hover:text-red-600'
                 >
                   My Challenges
                 </Link>
                 <Link
-                  to={`/${localStorage.getItem('username')}/accepted`}
+                  to={`/${user.username}/accepted`}
                   className='mr-0 md:mr-10 hover:text-red-600'
                 >
                   Accepted
                 </Link>
                 <Link
-                  to={`/${localStorage.getItem('username')}/completed`}
+                  to={`/${user.username}/completed`}
                   className='mr-0 md:mr-10 hover:text-red-600'
                 >
                   Completed
@@ -140,12 +146,14 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
                     <option value={difficulty.name}>{difficulty.name}</option>
                   ))}
                 </select> */}
-                <Link
-                  to={`/${localStorage.getItem('username')}/add-challenge`}
-                  className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-                >
-                  Add Challenge
-                </Link>
+                {user.id === localStorage.getItem('id') ? (
+                  <Link
+                    to={`/${localStorage.getItem('username')}/add-challenge`}
+                    className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+                  >
+                    Add Challenge
+                  </Link>
+                ) : null}
               </div>
             </div>
           </div>
@@ -207,4 +215,4 @@ const MyChallengesPage = ({ searchTerm, handleClearSearchBar }) => {
   );
 }
 
-export default MyChallengesPage;
+export default UsersPage;

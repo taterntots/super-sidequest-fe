@@ -95,7 +95,8 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         <br />
 
         {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
-        {!challengeIsAccepted ? (
+
+        {!challengeIsAccepted && localStorage.getItem('token') ? (
           <button
             onClick={() => setOpenAccept(true)}
             className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
@@ -105,7 +106,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
             )}
           Accept
           </button>
-        ) : (
+        ) : challengeIsAccepted && localStorage.getItem('token') ? (
           <button
             onClick={() => setOpenAbandon(true)}
             className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
@@ -115,8 +116,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
             )}
           Abandon
           </button>
-
-        )}
+        ) : null}
       </div >
 
       {/* Modal for accepting challenge */}

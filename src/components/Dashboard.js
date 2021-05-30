@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // ROUTING
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 // COMPONENTS
 import { User } from '../features/user/User';
@@ -11,7 +11,7 @@ import Signup from './Auth/Signup';
 import ForgotPassword from './Auth/ForgotPassword';
 import ResetPassword from './Auth/ResetPassword';
 import HomePage from '../components/HomePage';
-import MyChallengesPage from '../components/MyChallengesPage';
+import UsersPage from '../components/UsersPage';
 import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
 import SignUpAndLoginRoute from '../components/utils/routes/SignUpAndLoginRoute';
@@ -40,67 +40,66 @@ const Dashboard = () => {
     <>
       <NavBar handleClearSearchBar={handleClearSearchBar} handleInputChange={handleInputChange} />
       <div className='mx-10 my-3'>
-        <Route
-          exact
-          path={`/`}
-          render={(props) => (
-            <HomePage
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
-
-        <Route
-          path={`/${localStorage.getItem('username')}`}
-          render={(props) => (
-            <MyChallengesPage
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
-
-        <Route
-          exact
-          path={`/games`}
-          render={(props) => (
-            <GameList
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`/games/:gameId`}
-          render={(props) => (
-            <GamePage
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
-
-        <Route
-          exact
-          path={`/support`}
-          render={(props) => (
-            <User
-              {...props}
-            />
-          )}
-        />
+        <Switch>
+          <Route
+            exact
+            path={`/`}
+            render={(props) => (
+              <HomePage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                {...props}
+              />
+            )}
+          />
+          <SignUpAndLoginRoute path={'/login'} handleClearSearchBar={handleClearSearchBar} component={Login} />
+          <SignUpAndLoginRoute path={'/signup'} handleClearSearchBar={handleClearSearchBar} component={Signup} />
+          <SignUpAndLoginRoute path={'/forgot-password'} handleClearSearchBar={handleClearSearchBar} component={ForgotPassword} />
+          <SignUpAndLoginRoute path={'/reset-password'} handleClearSearchBar={handleClearSearchBar} component={ResetPassword} />
+          <Route
+            exact
+            path={`/games`}
+            render={(props) => (
+              <GameList
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/games/:gameId`}
+            render={(props) => (
+              <GamePage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/support`}
+            render={(props) => (
+              <User
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path={`/:username`}
+            render={(props) => (
+              <UsersPage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                {...props}
+              />
+            )}
+          />
+        </Switch>
       </div>
 
-      <SignUpAndLoginRoute path={'/login'} handleClearSearchBar={handleClearSearchBar} component={Login} />
-      <SignUpAndLoginRoute path={'/signup'} handleClearSearchBar={handleClearSearchBar} component={Signup} />
-      <SignUpAndLoginRoute path={'/forgot-password'} handleClearSearchBar={handleClearSearchBar} component={ForgotPassword} />
-      <SignUpAndLoginRoute path={'/reset-password'} handleClearSearchBar={handleClearSearchBar} component={ResetPassword} />
     </>
   );
 }

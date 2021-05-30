@@ -43,6 +43,19 @@ export const fetchUserById = createAsyncThunk('users/fetchUserById', async (user
   return response.data
 });
 
+// API call to grab a user by username
+export const fetchUserByUsername = createAsyncThunk('users/fetchUserByUsername', async (username) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/username/${username}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
 // API call to sign in user
 export const signInUser = createAsyncThunk('users/signInUser', async (credentials) => {
   await axios({
@@ -176,6 +189,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUserById.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserByUsername.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserByUsername.fulfilled]: (state, { payload }) => {
+      state.user = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserByUsername.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
