@@ -2,7 +2,7 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-const VideoModal = ({ open, setOpen, currentPlayer }) => {
+const ImageModal = ({ open, setOpen, currentPlayer }) => {
   const cancelButtonRef = useRef(null)
 
   return (
@@ -41,13 +41,10 @@ const VideoModal = ({ open, setOpen, currentPlayer }) => {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <iframe
-                width="515"
-                height="290"
-                src={currentPlayer.video_URL}
-                frameBorder="0"
-                allowFullScreen>
-              </iframe>
+              <img
+                className='w-full'
+                src={currentPlayer.image_URL}
+              />
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
@@ -66,4 +63,4 @@ const VideoModal = ({ open, setOpen, currentPlayer }) => {
   )
 }
 
-export default VideoModal;
+export default ImageModal;

@@ -9,6 +9,7 @@ import { ReactComponent as ImageIcon } from '../img/ImageIcon.svg'
 
 // COMPONENTS
 import VideoModal from '../components/utils/modals/VideoModal';
+import ImageModal from '../components/utils/modals/ImageModal';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- LEADERBOARD -----------------------------------
@@ -16,6 +17,7 @@ import VideoModal from '../components/utils/modals/VideoModal';
 
 const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge }) => {
   const [openVideo, setOpenVideo] = useState(false)
+  const [openImage, setOpenImage] = useState(false)
   const [currentPlayer, setCurrentPlayer] = useState({})
 
   return (
@@ -99,9 +101,9 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge 
             ) : (
               <VideoIcon className='invisible w-1/12 h-6' />
             )}
-            {score.video_URL ? (
-              <ImageIcon className='w-1/12 h-6' onClick={() => {
-                // setOpenImage(true)
+            {score.image_URL ? (
+              <ImageIcon className='w-1/12 h-6 cursor-pointer' onClick={() => {
+                setOpenImage(true)
                 setCurrentPlayer(score)
               }}
               />
@@ -114,6 +116,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge 
 
       {/* Modals */}
       <VideoModal open={openVideo} setOpen={setOpenVideo} currentPlayer={currentPlayer} />
+      <ImageModal open={openImage} setOpen={setOpenImage} currentPlayer={currentPlayer} />
     </>
   );
 };
