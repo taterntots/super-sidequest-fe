@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// ROUTING
-import { useRouteMatch } from 'react-router-dom';
-
 // TOAST
 import cogoToast from 'cogo-toast';
 
@@ -18,7 +15,7 @@ export const initialState = {
   accepted_challenges: [],
   challenges_high_scores: [],
   challenge: {},
-  challengeIsAccepted: false,
+  acceptedChallenge: {},
   loading: false,
   error: false,
 };
@@ -279,7 +276,7 @@ export const challengeSlice = createSlice({
       state.loading = true
     },
     [fetchIfChallengeAlreadyAccepted.fulfilled]: (state, { payload }) => {
-      state.challengeIsAccepted = payload
+      state.acceptedChallenge = payload
       state.loading = false
       state.error = false
     },
@@ -335,7 +332,7 @@ export const challengeSlice = createSlice({
     [updateUserChallengeProgress.pending]: (state, action) => {
       state.loading = true
     },
-    [updateUserChallengeProgress.fulfilled]: (state) => {
+    [updateUserChallengeProgress.fulfilled]: (state, { payload }) => {
       state.loading = false
       state.error = false
     },

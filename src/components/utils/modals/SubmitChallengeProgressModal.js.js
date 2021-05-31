@@ -8,9 +8,11 @@ import { useForm } from "react-hook-form";
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../../img/LoadingSpinner.svg';
 
-const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, loading }) => {
+const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, loading, acceptedChallenge }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
+
+  console.log(acceptedChallenge)
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -48,11 +50,7 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div className="inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(event => {
-                submitChallengeProgress(event).then(() => {
-                  reset()
-                })
-              })}>
+              <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(submitChallengeProgress)}>
                 <h4 className='text-2xl mb-4'>Update High Score</h4>
                 <div className="form-group">
                   <label className='mr-3'>High Score</label>
@@ -62,6 +60,7 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
                   <input
                     name='high_score'
                     type='number'
+                    defaultValue={acceptedChallenge.high_score}
                     placeholder='Enter your high_score'
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('high_score', {
@@ -74,6 +73,7 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
                   <input
                     name='video_URL'
                     type='text'
+                    defaultValue={acceptedChallenge.video_URL}
                     placeholder='Enter your video_URL'
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('video_URL')}
@@ -84,13 +84,24 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
                   <input
                     name='image_URL'
                     type='text'
+                    defaultValue={acceptedChallenge.image_URL}
                     placeholder='Enter your image_URL'
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('image_URL')}
                   />
                 </div>
 
-                <div className='flex justify-center sm:justify-end'>
+                <div className='flex justify-evenly'>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false)
+                      reset()
+                    }}
+                    className={`flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+                  >
+                    Cancel
+                  </button>
                   <button
                     type="submit"
                     className={`${loading && 'opacity-50 pointer-events-none'

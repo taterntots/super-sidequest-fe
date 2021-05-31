@@ -27,7 +27,7 @@ import Leaderboard from '../../components/Leaderboard';
 const ChallengeDetails = ({ refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
-  const { challenge, challenges_high_scores, challengeIsAccepted, loading: challengeLoading } = useSelector(challengeSelector)
+  const { challenge, challenges_high_scores, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const history = useHistory();
   const [openAccept, setOpenAccept] = useState(false)
@@ -138,14 +138,14 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       </div >
 
       {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
-      {!challengeIsAccepted && localStorage.getItem('token') ? (
+      {!acceptedChallenge && localStorage.getItem('token') ? (
         <button
           onClick={() => setOpenAccept(true)}
           className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
         >
           Accept
         </button>
-      ) : challengeIsAccepted && localStorage.getItem('token') ? (
+      ) : acceptedChallenge && localStorage.getItem('token') ? (
         <div className='flex'>
           <button
             onClick={() => setOpenAbandon(true)}
@@ -165,7 +165,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       {/* Modal for accepting challenge */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
       <AbandonChallengeModal open={openAbandon} setOpen={setOpenAbandon} submitChallengeAbandoned={submitChallengeAbandoned} />
-      <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} />
+      <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} />
     </>
   );
 }
