@@ -46,7 +46,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
     // dispatch(fetchDifficulties())
-  }, [dispatch, refresh])
+  }, [dispatch, refresh, route.params.username])
 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
   useEffect(() => {

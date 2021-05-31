@@ -13,6 +13,7 @@ export const initialState = {
   challenges: [],
   created_challenges: [],
   accepted_challenges: [],
+  challenges_high_scores: [],
   challenge: {},
   challengeIsAccepted: false,
   loading: false,
@@ -76,6 +77,19 @@ export const fetchIfChallengeAlreadyAccepted = createAsyncThunk('challenges/fetc
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/user/${data.user_id}/accepted`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a challenge's High Score leaderboard
+export const fetchAllChallengeHighScores = createAsyncThunk('challenges/fetchAllChallengeHighScores', async (challengeId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/${challengeId}/highscores`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -238,6 +252,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchIfChallengeAlreadyAccepted.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchAllChallengeHighScores.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchAllChallengeHighScores.fulfilled]: (state, { payload }) => {
+      state.challenges_high_scores = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchAllChallengeHighScores.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
