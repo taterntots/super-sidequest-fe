@@ -204,7 +204,8 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
       }, data: {
         high_score: data.high_score,
         image_URL: data.image_URL ? data.image_URL : null,
-        video_URL: data.video_URL ? data.video_URL : null
+        video_URL: data.video_URL ? data.video_URL : null,
+        completed: true
       }
     })
     cogoToast.success('Challenge updated!', {

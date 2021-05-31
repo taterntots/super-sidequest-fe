@@ -12,8 +12,6 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
 
-  console.log(acceptedChallenge)
-
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -53,7 +51,7 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
               <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(submitChallengeProgress)}>
                 <h4 className='text-2xl mb-4'>Update High Score</h4>
                 <div className="form-group">
-                  <label className='mr-3'>High Score</label>
+                  <label className='mr-3'>High Score<span className='text-red-500'>*</span></label>
                   {errors.high_score && (
                     <span className='text-red-500'>{errors.high_score.message}</span>
                   )}
@@ -61,31 +59,35 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
                     name='high_score'
                     type='number'
                     defaultValue={acceptedChallenge.high_score}
-                    placeholder='Enter your high_score'
+                    placeholder='Enter your high score'
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('high_score', {
-                      required: 'Required field'
+                      required: 'Required field',
+                      maxLength: {
+                        value: 10,
+                        message: 'Number is too large'
+                      }
                     })}
                   />
                 </div>
                 <div className="form-group">
-                  <label className='mr-3'>Video</label>
+                  <label className='mr-3'>Video URL</label>
                   <input
                     name='video_URL'
                     type='text'
                     defaultValue={acceptedChallenge.video_URL}
-                    placeholder='Enter your video_URL'
+                    placeholder='Provide a video for proof'
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('video_URL')}
                   />
                 </div>
                 <div className="form-group">
-                  <label className='mr-3'>Image</label>
+                  <label className='mr-3'>Image URL</label>
                   <input
                     name='image_URL'
                     type='text'
                     defaultValue={acceptedChallenge.image_URL}
-                    placeholder='Enter your image_URL'
+                    placeholder='Provide an image for proof'
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('image_URL')}
                   />
