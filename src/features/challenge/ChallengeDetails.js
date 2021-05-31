@@ -91,7 +91,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   return (
     <>
       <div className="flex justify-between">
-        <div className="mr-3 w-2/5 p-10 bg-taterpurple rounded-lg text-white">
+        <div className="mr-3 w-2/5 h-full p-10 bg-taterpurple rounded-lg text-white">
           <h1>
             {challenge.name}
           </h1>
@@ -110,38 +110,29 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
             {challenge.rules}
           </p>
           <br />
+          {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
+          {!acceptedChallenge && localStorage.getItem('token') ? (
+            <button
+              onClick={() => setOpenAccept(true)}
+              className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+            >
+              Accept
+            </button>
+          ) : acceptedChallenge && localStorage.getItem('token') ? (
+            <button
+              onClick={() => setOpenAbandon(true)}
+              className={`flex mr-4 items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+            >
+              Abandon
+            </button>
+          ) : null}
         </div>
 
         {/* LEADERBOARD */}
         {challenges_high_scores ? (
-          <Leaderboard challenges_high_scores={challenges_high_scores} />
+          <Leaderboard challenges_high_scores={challenges_high_scores} setOpen={setOpenProgress} acceptedChallenge={acceptChallenge} />
         ) : null}
       </div >
-
-      {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
-      {!acceptedChallenge && localStorage.getItem('token') ? (
-        <button
-          onClick={() => setOpenAccept(true)}
-          className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-        >
-          Accept
-        </button>
-      ) : acceptedChallenge && localStorage.getItem('token') ? (
-        <div className='flex'>
-          <button
-            onClick={() => setOpenAbandon(true)}
-            className={`flex mr-4 items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-          >
-            Abandon
-          </button>
-          <button
-            onClick={() => setOpenProgress(true)}
-            className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-          >
-            Update High Score
-          </button>
-        </div>
-      ) : null}
 
       {/* Modals */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
