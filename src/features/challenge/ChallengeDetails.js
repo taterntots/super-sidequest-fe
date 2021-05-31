@@ -12,7 +12,7 @@ import {
 } from '../challenge/challengeSlice';
 
 // ROUTING
-import { Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
@@ -95,7 +95,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   return (
     <>
       <div className="flex justify-between">
-        <div className="mr-3 w-1/2 p-10 bg-taterpurple rounded-lg text-white">
+        <div className="mr-3 w-2/5 p-10 bg-taterpurple rounded-lg text-white">
           <h1>
             {challenge.name}
           </h1>
@@ -116,24 +116,9 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
           <br />
         </div>
 
+        {/* LEADERBOARD */}
         {challenges_high_scores ? (
-          <div className="w-1/2 p-10 bg-taterpurple rounded-lg text-white">
-            <h1 className='mb-3'>
-              LEADERBOARD
-            </h1>
-            {challenges_high_scores.map(highscore => (
-              <Link
-                key={highscore.id}
-                to={`/${highscore.username}`}
-              // onClick={handleClearSearchBar}
-              >
-                <Leaderboard
-                  key={highscore.id}
-                  data={highscore}
-                />
-              </Link>
-            ))}
-          </div>
+          <Leaderboard challenges_high_scores={challenges_high_scores} />
         ) : null}
       </div >
 
