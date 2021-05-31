@@ -12,7 +12,7 @@ import {
 } from '../challenge/challengeSlice';
 
 // ROUTING
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
@@ -29,7 +29,6 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const { challenge, challenges_high_scores, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
-  const history = useHistory();
   const [openAccept, setOpenAccept] = useState(false)
   const [openAbandon, setOpenAbandon] = useState(false)
   const [openProgress, setOpenProgress] = useState(false)
@@ -52,7 +51,6 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         if (res.payload) {
           setRefresh(!refresh)
           setOpenAccept(false);
-          // history.push(`/${localStorage.getItem('username')}/accepted`)
         }
       })
       .catch(err => {
@@ -67,7 +65,6 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         if (res.payload) {
           setRefresh(!refresh)
           setOpenAbandon(false);
-          // history.push(`/${localStorage.getItem('username')}/accepted`)
         }
       })
       .catch(err => {
@@ -84,7 +81,6 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         if (res.payload) {
           setRefresh(!refresh)
           setOpenProgress(false);
-          // history.push(`/${localStorage.getItem('username')}/accepted`)
         }
       })
       .catch(err => {
@@ -147,7 +143,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         </div>
       ) : null}
 
-      {/* Modal for accepting challenge */}
+      {/* Modals */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
       <AbandonChallengeModal open={openAbandon} setOpen={setOpenAbandon} submitChallengeAbandoned={submitChallengeAbandoned} />
       <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} />

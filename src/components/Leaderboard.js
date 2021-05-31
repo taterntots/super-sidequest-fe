@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 
 // ROUTING
-import { Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // IMAGES
 import { ReactComponent as VideoIcon } from '../img/VideoIcon.svg'
 import { ReactComponent as ImageIcon } from '../img/ImageIcon.svg'
+
+// COMPONENTS
+import VideoModal from '../components/utils/modals/VideoModal';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- LEADERBOARD -----------------------------------
 // ----------------------------------------------------------------------------------
 
 const Leaderboard = ({ challenges_high_scores }) => {
-  // const {
-  //   id,
-  //   username,
-  //   high_score
-  // } = data;
-  // let rank = 0;
+  const [openVideo, setOpenVideo] = useState(false)
+  const [currentPlayer, setCurrentPlayer] = useState({})
 
   return (
     <>
@@ -48,11 +47,30 @@ const Leaderboard = ({ challenges_high_scores }) => {
             <p className='w-3/12'>
               {highscore.high_score === null ? '---' : highscore.high_score}
             </p>
-            <VideoIcon className='w-1/12 h-6' />
-            <ImageIcon className='w-1/12 h-6' />
+            {highscore.video_URL ? (
+              <VideoIcon className='w-1/12 h-6' onClick={() => {
+                setOpenVideo(true)
+                setCurrentPlayer(highscore)
+              }}
+              />
+            ) : (
+              <VideoIcon className='invisible w-1/12 h-6' />
+            )}
+            {highscore.video_URL ? (
+              <ImageIcon className='w-1/12 h-6' onClick={() => {
+                // setOpenImage(true)
+                setCurrentPlayer(highscore)
+              }}
+              />
+            ) : (
+              <ImageIcon className='invisible w-1/12 h-6' />
+            )}
           </div>
         ))}
       </div>
+
+      {/* Modals */}
+      <VideoModal open={openVideo} setOpen={setOpenVideo} currentPlayer={currentPlayer} />
     </>
   );
 };
