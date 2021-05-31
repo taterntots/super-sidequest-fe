@@ -7,18 +7,17 @@ import {
   fetchAllChallengeHighScores,
   acceptChallenge,
   abandonChallenge,
+  updateUserChallengeProgress,
   challengeSelector
 } from '../challenge/challengeSlice';
 
 // ROUTING
 import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 
-// IMAGES
-import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
-
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
 import AbandonChallengeModal from '../../components/utils/modals/AbandonChallengeModal';
+import SubmitChallengeProgressModal from '../../components/utils/modals/SubmitChallengeProgressModal.js';
 import Leaderboard from '../../components/Leaderboard';
 
 // ----------------------------------------------------------------------------------
@@ -33,6 +32,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   const history = useHistory();
   const [openAccept, setOpenAccept] = useState(false)
   const [openAbandon, setOpenAbandon] = useState(false)
+  const [openProgress, setOpenProgress] = useState(false)
   const isChallengeAcceptedData = {
     user_id: localStorage.getItem('id'),
     challenge_id: route.params.challengeId
@@ -45,7 +45,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
     dispatch(fetchIfChallengeAlreadyAccepted(isChallengeAcceptedData))
   }, [dispatch, refresh])
 
-  // Function to handle submitting Login form
+  // Function to handle accepting a challenged
   const submitChallengeAccepted = async () => {
     dispatch(acceptChallenge(route.params.challengeId))
       .then(res => {
@@ -60,13 +60,30 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       })
   };
 
-  // Function to handle submitting Login form
+  // Function to handle abandoning a challenge
   const submitChallengeAbandoned = async () => {
     dispatch(abandonChallenge(route.params.challengeId))
       .then(res => {
         if (res.payload) {
           setRefresh(!refresh)
           setOpenAbandon(false);
+          // history.push(`/${localStorage.getItem('username')}/accepted`)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle submitting challenge progress
+  const submitChallengeProgress = async (data) => {
+    data.challenge_id = route.params.challengeId
+
+    dispatch(updateUserChallengeProgress(data))
+      .then(res => {
+        if (res.payload) {
+          setRefresh(!refresh)
+          setOpenProgress(false);
           // history.push(`/${localStorage.getItem('username')}/accepted`)
         }
       })
@@ -126,26 +143,29 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
           onClick={() => setOpenAccept(true)}
           className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
         >
-          {challengeLoading && (
-            <LoadingSpinner />
-          )}
           Accept
         </button>
       ) : challengeIsAccepted && localStorage.getItem('token') ? (
-        <button
-          onClick={() => setOpenAbandon(true)}
-          className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-        >
-          {challengeLoading && (
-            <LoadingSpinner />
-          )}
-          Abandon
-        </button>
+        <div className='flex'>
+          <button
+            onClick={() => setOpenAbandon(true)}
+            className={`flex mr-4 items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+          >
+            Abandon
+          </button>
+          <button
+            onClick={() => setOpenProgress(true)}
+            className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+          >
+            Update High Score
+          </button>
+        </div>
       ) : null}
 
       {/* Modal for accepting challenge */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
       <AbandonChallengeModal open={openAbandon} setOpen={setOpenAbandon} submitChallengeAbandoned={submitChallengeAbandoned} />
+      <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} />
     </>
   );
 }

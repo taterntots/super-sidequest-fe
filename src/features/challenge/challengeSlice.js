@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// ROUTING
+import { useRouteMatch } from 'react-router-dom';
+
 // TOAST
 import cogoToast from 'cogo-toast';
 
@@ -190,6 +193,35 @@ export const abandonChallenge = createAsyncThunk('challenges/abandonChallenge', 
   }
 });
 
+// API call to update a user challenge progress
+export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUserChallengeProgress', async (data) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/users/${localStorage.getItem('id')}/update`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        high_score: data.high_score,
+        image_URL: data.image_URL ? data.image_URL : null,
+        video_URL: data.video_URL ? data.video_URL : null
+      }
+    })
+    cogoToast.success('Challenge updated!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // Challenge slice for state change
 export const challengeSlice = createSlice({
   name: 'challenges',
@@ -297,6 +329,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [abandonChallenge.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [updateUserChallengeProgress.pending]: (state, action) => {
+      state.loading = true
+    },
+    [updateUserChallengeProgress.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [updateUserChallengeProgress.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
