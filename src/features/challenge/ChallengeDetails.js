@@ -5,6 +5,7 @@ import {
   fetchChallengeById,
   fetchIfChallengeAlreadyAccepted,
   fetchAllChallengeHighScores,
+  fetchAllChallengeSpeedruns,
   acceptChallenge,
   abandonChallenge,
   updateUserChallengeProgress,
@@ -27,7 +28,7 @@ import Leaderboard from '../../components/Leaderboard';
 const ChallengeDetails = ({ refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
-  const { challenge, challenges_high_scores, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
+  const { challenge, challenges_high_scores, challenges_speedruns, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const [openAccept, setOpenAccept] = useState(false)
   const [openAbandon, setOpenAbandon] = useState(false)
@@ -41,6 +42,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   useEffect(() => {
     dispatch(fetchChallengeById(route.params.challengeId))
     dispatch(fetchAllChallengeHighScores(route.params.challengeId))
+    dispatch(fetchAllChallengeSpeedruns(route.params.challengeId))
     dispatch(fetchIfChallengeAlreadyAccepted(isChallengeAcceptedData))
   }, [dispatch, refresh])
 
@@ -129,15 +131,13 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         </div>
 
         {/* LEADERBOARD */}
-        {challenges_high_scores ? (
-          <Leaderboard challenges_high_scores={challenges_high_scores} setOpen={setOpenProgress} acceptedChallenge={acceptChallenge} />
-        ) : null}
+        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} />
       </div >
 
       {/* Modals */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
       <AbandonChallengeModal open={openAbandon} setOpen={setOpenAbandon} submitChallengeAbandoned={submitChallengeAbandoned} />
-      <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} />
+      <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} challenge={challenge} />
     </>
   );
 }

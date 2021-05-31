@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchGames,
@@ -39,6 +39,8 @@ const ChallengeForm = () => {
   const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
   const { loading: challengeLoading } = useSelector(challengeSelector);
   const { register, handleSubmit, control, formState: { errors } } = useForm();
+  const [speedrunDisable, setSpeedrunDisable] = useState(false);
+  const [highScoreDisable, setHighScoreDisable] = useState(false);
   const history = useHistory();
 
   // Grabs all necessary data from server
@@ -176,8 +178,9 @@ const ChallengeForm = () => {
               <input
                 name='is_speedrun'
                 type='checkbox'
-                placeholder='Provide any special is_speedrun for the challenge'
                 className='w-6 h-6'
+                onClick={() => setHighScoreDisable(!highScoreDisable)}
+                disabled={speedrunDisable}
                 {...register('is_speedrun')}
               />
             </div>
@@ -186,8 +189,9 @@ const ChallengeForm = () => {
               <input
                 name='is_high_score'
                 type='checkbox'
-                placeholder='Provide any special is_high_score for the challenge'
                 className='w-6 h-6'
+                onClick={() => setSpeedrunDisable(!speedrunDisable)}
+                disabled={highScoreDisable}
                 {...register('is_high_score')}
               />
             </div>

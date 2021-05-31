@@ -14,7 +14,7 @@ import VideoModal from '../components/utils/modals/VideoModal';
 // ---------------------------------- LEADERBOARD -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const Leaderboard = ({ challenges_high_scores, setOpen, acceptedChallenge }) => {
+const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge }) => {
   const [openVideo, setOpenVideo] = useState(false)
   const [currentPlayer, setCurrentPlayer] = useState({})
 
@@ -27,7 +27,7 @@ const Leaderboard = ({ challenges_high_scores, setOpen, acceptedChallenge }) => 
               onClick={() => setOpen(true)}
               className={`rounded-lg text-lg px-24 md:px-12 py-3 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
             >
-              Update High Score
+              {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : null}
             </button>
           </div>
         ) : null}
@@ -40,44 +40,76 @@ const Leaderboard = ({ challenges_high_scores, setOpen, acceptedChallenge }) => 
             Player
           </p>
           <p className='w-3/12'>
-            High Score
+            {challenge.is_high_score ? 'High Score' : challenge.is_speedrun ? 'Time' : null}
           </p>
         </div>
-        {challenges_high_scores.map((highscore, index) => (
-          <div key={highscore.id} className='flex w-full text-center hover:bg-purple-500'>
+
+        {/* LEADERBOARD DATA */}
+        {challenges_scores ? challenges_scores.map((score, index) => (
+          <div key={score.id} className='flex w-full text-center hover:bg-purple-500'>
             <p className='w-1/12'>{index + 1}</p>
             <div className='w-6/12'>
               <Link
-                key={highscore.id}
-                to={`/${highscore.username}`}
+                key={score.id}
+                to={`/${score.username}`}
               // onClick={handleClearSearchBar}
               >
-                {highscore.username}
+                {score.username}
               </Link>
             </div>
-            <p className='w-3/12'>
-              {highscore.high_score === null ? '---' : highscore.high_score}
-            </p>
-            {highscore.video_URL ? (
+            {challenge.is_high_score ? (
+              <p className='w-3/12'>
+                {score.high_score === null ? '---' : score.high_score}
+              </p>
+            ) : challenge.is_speedrun ? (
+              <p className='w-3/12'>
+                {score.speedrun_hours === 0 &&
+                  score.speedrun_minutes === 0 &&
+                  score.speedrun_seconds === 0 &&
+                  score.speedrun_milliseconds === 0 ?
+                  '---'
+                  :
+                  score.speedrun_hours === null &&
+                    score.speedrun_minutes === null &&
+                    score.speedrun_seconds === null &&
+                    score.speedrun_milliseconds === null ?
+                    '---'
+                    :
+                    score.speedrun_hours === 0 &&
+                      score.speedrun_minutes === 0 &&
+                      score.speedrun_seconds > 0 &&
+                      score.speedrun_milliseconds > 0 ?
+                      `${score.speedrun_seconds}s ${score.speedrun_milliseconds}ms`
+                      :
+                      score.speedrun_hours === 0 &&
+                        score.speedrun_minutes === 0 &&
+                        score.speedrun_seconds > 0 &&
+                        score.speedrun_milliseconds === 0 ?
+                        `${score.speedrun_seconds}s`
+                        :
+                        `${score.speedrun_hours ? score.speedrun_hours + 'h' : ''} ${score.speedrun_minutes}m ${score.speedrun_seconds}s ${score.speedrun_milliseconds ? score.speedrun_milliseconds + 'ms' : ''}`
+                }
+              </p>) : null}
+            {score.video_URL ? (
               <VideoIcon className='w-1/12 h-6 cursor-pointer' onClick={() => {
                 setOpenVideo(true)
-                setCurrentPlayer(highscore)
+                setCurrentPlayer(score)
               }}
               />
             ) : (
               <VideoIcon className='invisible w-1/12 h-6' />
             )}
-            {highscore.video_URL ? (
+            {score.video_URL ? (
               <ImageIcon className='w-1/12 h-6' onClick={() => {
                 // setOpenImage(true)
-                setCurrentPlayer(highscore)
+                setCurrentPlayer(score)
               }}
               />
             ) : (
               <ImageIcon className='invisible w-1/12 h-6' />
             )}
           </div>
-        ))}
+        )) : null}
       </div>
 
       {/* Modals */}

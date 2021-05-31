@@ -14,6 +14,7 @@ export const initialState = {
   created_challenges: [],
   accepted_challenges: [],
   challenges_high_scores: [],
+  challenges_speedruns: [],
   challenge: {},
   acceptedChallenge: {},
   loading: false,
@@ -90,6 +91,19 @@ export const fetchAllChallengeHighScores = createAsyncThunk('challenges/fetchAll
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `challenges/${challengeId}/highscores`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a challenge's High Score leaderboard
+export const fetchAllChallengeSpeedruns = createAsyncThunk('challenges/fetchAllChallengeSpeedruns', async (challengeId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/${challengeId}/speedruns`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -202,7 +216,11 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
         Accept: 'application/json',
         Authorization: token,
       }, data: {
-        high_score: data.high_score,
+        high_score: data.high_score ? data.high_score : null,
+        speedrun_hours: data.speedrun_hours ? data.speedrun_hours : null,
+        speedrun_minutes: data.speedrun_minutes ? data.speedrun_minutes : null,
+        speedrun_seconds: data.speedrun_seconds ? data.speedrun_seconds : null,
+        speedrun_milliseconds: data.speedrun_milliseconds ? data.speedrun_milliseconds : null,
         image_URL: data.image_URL ? data.image_URL : null,
         video_URL: data.video_URL ? data.video_URL : null,
         completed: true
@@ -294,6 +312,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchAllChallengeHighScores.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchAllChallengeSpeedruns.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchAllChallengeSpeedruns.fulfilled]: (state, { payload }) => {
+      state.challenges_speedruns = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchAllChallengeSpeedruns.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
