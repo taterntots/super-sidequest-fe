@@ -99,7 +99,7 @@ export const fetchAllChallengeHighScores = createAsyncThunk('challenges/fetchAll
   return response.data
 });
 
-// API call to grab a challenge's High Score leaderboard
+// API call to grab a challenge's Speedrun leaderboard
 export const fetchAllChallengeSpeedruns = createAsyncThunk('challenges/fetchAllChallengeSpeedruns', async (challengeId) => {
   const response = await axios({
     method: 'get',
@@ -221,6 +221,7 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
         speedrun_minutes: data.speedrun_minutes ? data.speedrun_minutes : null,
         speedrun_seconds: data.speedrun_seconds ? data.speedrun_seconds : null,
         speedrun_milliseconds: data.speedrun_milliseconds ? data.speedrun_milliseconds : null,
+        total_milliseconds: data.total_milliseconds ? data.total_milliseconds : null,
         image_URL: data.image_URL ? data.image_URL : null,
         video_URL: data.video_URL ? data.video_URL : null,
         completed: true

@@ -76,6 +76,13 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
 
   // Function to handle submitting challenge progress
   const submitChallengeProgress = async (data) => {
+    if (data.speedrun_hours && data.speedrun_minutes && data.speedrun_seconds && data.speedrun_milliseconds) {
+      let hour_millis = data.speedrun_hours * 3.6e6
+      let minute_millis = data.speedrun_minutes * 60000
+      let second_millis = data.speedrun_seconds * 1000
+      let milliseconds = data.speedrun_milliseconds * 1
+      data.total_milliseconds = hour_millis + minute_millis + second_millis + milliseconds
+    }
     data.challenge_id = route.params.challengeId
 
     dispatch(updateUserChallengeProgress(data))

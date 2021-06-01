@@ -100,6 +100,8 @@ const Dashboard = () => {
         </Switch>
       </div>
 
+      {/* REPLACE WITH PROPER FOOTER */}
+      <NavBar handleClearSearchBar={handleClearSearchBar} handleInputChange={handleInputChange} />
     </>
   );
 }
