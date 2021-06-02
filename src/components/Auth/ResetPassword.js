@@ -6,7 +6,7 @@ import {
 } from '../../features/user/userSlice';
 
 // ROUTING
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // FORMS
 import { useForm } from "react-hook-form";
@@ -62,14 +62,14 @@ const ResetPassword = ({ setAuthPage }) => {
             <p>
               Remember?
             </p>
-            <button
+            <p
               onClick={() => {
                 setAuthPage('login')
               }}
               className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
             >
               Back to Login
-					  </button>
+					  </p>
           </div>
           <button
             type="submit"

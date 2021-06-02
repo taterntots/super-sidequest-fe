@@ -13,8 +13,7 @@ export const initialState = {
   users: [],
   user: {},
   loading: false,
-  error: false,
-  isLoggedIn: false
+  error: false
 };
 
 // API call to grab all users
@@ -58,7 +57,7 @@ export const fetchUserByUsername = createAsyncThunk('users/fetchUserByUsername',
 
 // API call to sign in user
 export const signInUser = createAsyncThunk('users/signInUser', async (credentials) => {
-  await axios({
+  const response = await axios({
     method: 'post',
     url: process.env.REACT_APP_API + `auth/login`,
     headers: {
@@ -76,17 +75,20 @@ export const signInUser = createAsyncThunk('users/signInUser', async (credential
       cogoToast.success('Successfully logged in', {
         hideAfter: 3,
       });
+      return res.data
     })
     .catch(err => {
       cogoToast.error(err.response.data.message, {
         hideAfter: 3,
       });
+      return err.response.data.message
     })
+  return response
 });
 
 // API call to sign up user
 export const signUpUser = createAsyncThunk('users/signUpUser', async (credentials) => {
-  await axios({
+  const response = await axios({
     method: 'post',
     url: process.env.REACT_APP_API + `auth/signup`,
     headers: {
@@ -105,12 +107,15 @@ export const signUpUser = createAsyncThunk('users/signUpUser', async (credential
       cogoToast.success('Successfully created account', {
         hideAfter: 3,
       });
+      return res.data
     })
     .catch(err => {
       cogoToast.error(err.response.data.errorMessage, {
         hideAfter: 3,
       });
+      return err.response.data.errorMessage
     })
+  return response
 });
 
 // API call to request password reset

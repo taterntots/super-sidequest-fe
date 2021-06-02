@@ -6,7 +6,7 @@ import {
 } from '../../features/user/userSlice';
 
 // ROUTING
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // FORMS
 import { useForm } from "react-hook-form";
@@ -18,7 +18,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ LOGIN ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const ForgotPassword = ({ setAuthPage }) => {
+const ForgotPassword = ({ setAuthPage, setOpenAuth }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -29,8 +29,8 @@ const ForgotPassword = ({ setAuthPage }) => {
   const onSubmit = async (data) => {
     dispatch(forgotPassword(data))
       .then(res => {
-        if (res.payload) {
-          history.push('/')
+        if (res.payload.message === 'Request sent! Please check your email') {
+          setOpenAuth(false)
         }
       })
       .catch(err => {
@@ -67,14 +67,14 @@ const ForgotPassword = ({ setAuthPage }) => {
             <p>
               Remember?
             </p>
-            <button
+            <p
               onClick={() => {
                 setAuthPage('login')
               }}
               className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
             >
               Back to Login
-					  </button>
+					  </p>
           </div>
           <button
             type="submit"

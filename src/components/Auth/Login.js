@@ -15,7 +15,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ LOGIN ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Login = ({ setAuthPage }) => {
+const Login = ({ setAuthPage, setOpenAuth }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -24,10 +24,18 @@ const Login = ({ setAuthPage }) => {
   // Function to handle submitting Login form
   const onSubmit = async (data) => {
     dispatch(signInUser(data))
+      .then(res => {
+        if (res.payload.token) {
+          setOpenAuth(false)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   return (
-    <div className="inline-block flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
         <h4 className='text-2xl mb-4'>Sign in to your account</h4>
         <div className="form-group">
@@ -83,14 +91,14 @@ const Login = ({ setAuthPage }) => {
             <p>
               No account?
             </p>
-            <button
+            <p
               onClick={() => {
                 setAuthPage('signup')
               }}
               className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
             >
               Create account
-					  </button>
+					  </p>
           </div>
           <button
             type="submit"

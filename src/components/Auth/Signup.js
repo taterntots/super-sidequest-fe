@@ -15,7 +15,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ SIGNUP --------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Signup = ({ setAuthPage }) => {
+const Signup = ({ setAuthPage, setOpenAuth }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -24,6 +24,14 @@ const Signup = ({ setAuthPage }) => {
   // Function to handle submitting Login form
   const onSubmit = async (data) => {
     dispatch(signUpUser(data))
+      .then(res => {
+        if (res.payload.token) {
+          setOpenAuth(false)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   return (
@@ -86,14 +94,14 @@ const Signup = ({ setAuthPage }) => {
               <p>
                 Have an account?
               </p>
-              <button
+              <p
                 onClick={() => {
                   setAuthPage('login')
                 }}
                 className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
               >
-                Sign In
-					    </button>
+                Login
+					    </p>
             </div>
             <button
               type="submit"

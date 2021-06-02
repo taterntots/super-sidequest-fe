@@ -57,13 +57,12 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
           </button>)}
         {localStorage.getItem('token') ? (
           <button
-            to='/' className='px-3 font-medium hover:text-navbarbuttonhighlight'
+            to='/' className='px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
             onClick={() => { handleClearSearchBar(); logout() }}
           >
             <span className='mr-2'>{localStorage.getItem('username')}</span> [Logout]
           </button>
         ) : (
-          // <Link to='/login' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Login</Link>
           <button
             className='px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
             onClick={() => {
