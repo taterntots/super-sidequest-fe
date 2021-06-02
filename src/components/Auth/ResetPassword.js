@@ -18,7 +18,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ LOGIN ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const ResetPassword = () => {
+const ResetPassword = ({ setAuthPage }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -58,16 +58,18 @@ const ResetPassword = () => {
         </div>
 
         <div className='mx-10 md:mx-0 md:flex md:items-center'>
-          <div className='mb-7 md:mr-20 md:mb-0 flex text-xl'>
+          <div className='invisible mb-7 md:mr-20 md:mb-0 flex text-xl'>
             <p>
               Remember?
             </p>
-            <Link
-              to='/login'
+            <button
+              onClick={() => {
+                setAuthPage('login')
+              }}
               className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
             >
-              Back to Sign In
-					  </Link>
+              Back to Login
+					  </button>
           </div>
           <button
             type="submit"

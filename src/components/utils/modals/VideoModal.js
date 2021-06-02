@@ -2,6 +2,10 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
+// ----------------------------------------------------------------------------------
+// ---------------------------------- VIDEO MODAL -----------------------------------
+// ----------------------------------------------------------------------------------
+
 const VideoModal = ({ open, setOpen, currentPlayer }) => {
   const cancelButtonRef = useRef(null)
 

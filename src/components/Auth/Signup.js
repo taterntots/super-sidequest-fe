@@ -5,9 +5,6 @@ import {
   userSelector
 } from '../../features/user/userSlice';
 
-// ROUTING
-import { Link } from 'react-router-dom';
-
 // FORMS
 import { useForm } from "react-hook-form";
 
@@ -18,7 +15,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ SIGNUP --------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Signup = () => {
+const Signup = ({ setAuthPage }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -89,12 +86,14 @@ const Signup = () => {
               <p>
                 Have an account?
               </p>
-              <Link
-                to='/login'
+              <button
+                onClick={() => {
+                  setAuthPage('login')
+                }}
                 className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
               >
                 Sign In
-					    </Link>
+					    </button>
             </div>
             <button
               type="submit"

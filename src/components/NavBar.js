@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // ROUTING
 import { Link, useHistory } from 'react-router-dom';
@@ -6,11 +6,16 @@ import { Link, useHistory } from 'react-router-dom';
 // TOAST
 import cogoToast from 'cogo-toast';
 
+// COMPONENTS
+import AuthModal from '../components/utils/modals/AuthModal';
+
 // ----------------------------------------------------------------------------------
 // ------------------------------------ NAVBAR --------------------------------------
 // ----------------------------------------------------------------------------------
 
 const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
+  const [openAuth, setOpenAuth] = useState(false);
+  const [authPage, setAuthPage] = useState('');
   const history = useHistory();
 
   // Function for logging out
@@ -40,8 +45,16 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
           type='search'
         />
         {localStorage.getItem('token') ? null : (
-          <Link to='/signup' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Sign Up</Link>
-        )}
+          <button
+            className='px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
+            onClick={() => {
+              setAuthPage('signup')
+              setOpenAuth(true)
+              handleClearSearchBar()
+            }}
+          >
+            Sign Up
+          </button>)}
         {localStorage.getItem('token') ? (
           <button
             to='/' className='px-3 font-medium hover:text-navbarbuttonhighlight'
@@ -50,9 +63,22 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
             <span className='mr-2'>{localStorage.getItem('username')}</span> [Logout]
           </button>
         ) : (
-          <Link to='/login' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Login</Link>
+          // <Link to='/login' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Login</Link>
+          <button
+            className='px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
+            onClick={() => {
+              setAuthPage('login')
+              setOpenAuth(true)
+              handleClearSearchBar()
+            }}
+          >
+            Login
+          </button>
         )}
       </div>
+
+      {/* Modals */}
+      <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} />
     </>
   );
 }

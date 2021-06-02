@@ -8,6 +8,10 @@ import { useForm } from "react-hook-form";
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../../img/LoadingSpinner.svg';
 
+// ----------------------------------------------------------------------------------
+// ------------------------- SUBMIT CHALLENGE PROGRESS MODAL ------------------------
+// ----------------------------------------------------------------------------------
+
 const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, loading, acceptedChallenge, challenge }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)

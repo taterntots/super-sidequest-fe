@@ -2,6 +2,10 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
+// ----------------------------------------------------------------------------------
+// ------------------------------- ACCEPT CHALLENGE MODAL ---------------------------
+// ----------------------------------------------------------------------------------
+
 const AcceptChallengeModal = ({ open, setOpen, submitChallengeAccepted }) => {
   const cancelButtonRef = useRef(null)
 

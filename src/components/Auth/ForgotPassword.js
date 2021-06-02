@@ -18,7 +18,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ LOGIN ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ setAuthPage }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -67,12 +67,14 @@ const ForgotPassword = () => {
             <p>
               Remember?
             </p>
-            <Link
-              to='/login'
+            <button
+              onClick={() => {
+                setAuthPage('login')
+              }}
               className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
             >
-              Back to Sign In
-					  </Link>
+              Back to Login
+					  </button>
           </div>
           <button
             type="submit"

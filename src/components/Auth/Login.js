@@ -5,9 +5,6 @@ import {
   userSelector
 } from '../../features/user/userSlice';
 
-// ROUTING
-import { Link } from 'react-router-dom';
-
 // FORMS
 import { useForm } from "react-hook-form";
 
@@ -18,7 +15,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ LOGIN ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Login = () => {
+const Login = ({ setAuthPage }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -30,7 +27,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="inline-block flex items-center justify-center">
       <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
         <h4 className='text-2xl mb-4'>Sign in to your account</h4>
         <div className="form-group">
@@ -67,16 +64,18 @@ const Login = () => {
             })} />
         </div>
 
-        <div className='md:mb-7 md:mr-20 md:mb-0 flex justify-center md:justify-start'>
+        <div className='md:mr-20 md:mb-0 flex justify-center md:justify-start'>
           <p className='mb-7'>
             Forgot your password?
           </p>
-          <Link
-            to='/forgot-password'
+          <p
+            onClick={() => {
+              setAuthPage('forgot_password')
+            }}
             className='ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
           >
             Reset password
-          </Link>
+          </p>
         </div>
 
         <div className='mx-10 md:mx-0 md:flex md:items-center'>
@@ -84,12 +83,14 @@ const Login = () => {
             <p>
               No account?
             </p>
-            <Link
-              to='/signup'
+            <button
+              onClick={() => {
+                setAuthPage('signup')
+              }}
               className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
             >
               Create account
-					  </Link>
+					  </button>
           </div>
           <button
             type="submit"
