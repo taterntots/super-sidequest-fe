@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 // COMPONENTS
 import { User } from '../features/user/User';
 import NavBar from './NavBar';
+import Footer from './Footer';
 import ResetPassword from './Auth/ResetPassword';
 import HomePage from '../components/HomePage';
 import UsersPage from '../components/UsersPage';
@@ -34,7 +35,10 @@ const Dashboard = () => {
 
   return (
     <>
+      {/* NAVBAR */}
       <NavBar handleClearSearchBar={handleClearSearchBar} handleInputChange={handleInputChange} />
+
+      {/* BODY */}
       <div className='mx-10 my-3'>
         <Switch>
           <Route
@@ -81,6 +85,42 @@ const Dashboard = () => {
             )}
           />
           <Route
+            exact
+            path={`/about`}
+            render={(props) => (
+              <User
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/faq`}
+            render={(props) => (
+              <User
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/terms`}
+            render={(props) => (
+              <User
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/contact`}
+            render={(props) => (
+              <User
+                {...props}
+              />
+            )}
+          />
+          <Route
             path={`/:username`}
             render={(props) => (
               <UsersPage
@@ -93,8 +133,8 @@ const Dashboard = () => {
         </Switch>
       </div>
 
-      {/* REPLACE WITH PROPER FOOTER */}
-      <NavBar handleClearSearchBar={handleClearSearchBar} handleInputChange={handleInputChange} />
+      {/* FOOTER */}
+      <Footer handleClearSearchBar={handleClearSearchBar} />
     </>
   );
 }
