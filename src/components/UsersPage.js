@@ -18,6 +18,7 @@ import {
 import { Route, Link, useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
+import ProfilePage from './ProfilePage';
 import ChallengeList from '../features/challenge/ChallengeList';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import ChallengeForm from '../features/challenge/ChallengeForm';
@@ -104,7 +105,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
                     <img
                       className='rounded-lg ml-0.5 h-14 w-14 hidden sm:block'
                       src={game.banner_pic_URL}
-                      alt='profile for a single ensemble'
+                      alt='profile for a single game'
                     />
                   ) : ( */}
                   <BlankPublisher className='inline-block object-fill w-12 h-12 rounded-md' />
@@ -161,6 +162,19 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
       )}
 
       {/* PAGE ELEMENTS BASED ON TAB */}
+      <Route
+        exact
+        path={`/:username`}
+        render={(props) => (
+          <ProfilePage
+            acceptedChallenges={filteredAcceptedChallenges}
+            loading={challengeLoading}
+            // searchTerm={searchTerm}
+            // handleClearSearchBar={handleClearSearchBar}
+            {...props}
+          />
+        )}
+      />
       <Route
         exact
         path={`/:username/my-challenges`}
