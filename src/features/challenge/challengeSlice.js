@@ -238,7 +238,35 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
         total_milliseconds: data.total_milliseconds ? data.total_milliseconds : null,
         image_URL: data.image_URL ? data.image_URL : null,
         video_URL: data.video_URL ? data.video_URL : null,
-        completed: true
+        completed: data.completed ? data.completed : false,
+      }
+    })
+    cogoToast.success('Challenge updated!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
+// API call to update a user challenge completion
+export const updateUserChallengeCompletion = createAsyncThunk('challenges/updateUserChallengeCompletion', async (data) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/users/${localStorage.getItem('id')}/update`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        completed: data.completed ? data.completed : false,
+        is_active: data.completed ? false : true
       }
     })
     cogoToast.success('Challenge updated!', {
@@ -395,6 +423,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [updateUserChallengeProgress.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [updateUserChallengeCompletion.pending]: (state, action) => {
+      state.loading = true
+    },
+    [updateUserChallengeCompletion.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.error = false
+    },
+    [updateUserChallengeCompletion.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }

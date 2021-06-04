@@ -9,6 +9,7 @@ import {
   acceptChallenge,
   abandonChallenge,
   updateUserChallengeProgress,
+  updateUserChallengeCompletion,
   challengeSelector
 } from '../challenge/challengeSlice';
 
@@ -97,6 +98,21 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       })
   };
 
+  // Function to handle completing a challenge
+  const submitChallengeCompleted = async (data) => {
+    data.challenge_id = route.params.challengeId
+
+    dispatch(updateUserChallengeCompletion(data))
+      .then(res => {
+        if (res.payload) {
+          setRefresh(!refresh)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
   return (
     <>
       <div className="flex justify-between">
@@ -138,7 +154,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         </div>
 
         {/* LEADERBOARD */}
-        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} />
+        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} />
       </div >
 
       {/* Modals */}
