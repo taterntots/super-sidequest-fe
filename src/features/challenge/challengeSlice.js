@@ -15,6 +15,7 @@ export const initialState = {
   accepted_challenges: [],
   challenges_high_scores: [],
   challenges_speedruns: [],
+  challenge_game_stats: [],
   challenge: {},
   acceptedChallenge: {},
   loading: false,
@@ -104,6 +105,19 @@ export const fetchAllChallengeSpeedruns = createAsyncThunk('challenges/fetchAllC
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `challenges/${challengeId}/speedruns`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a user's total challenge completion stats for all games
+export const fetchUserCompletedChallengeTotal = createAsyncThunk('challenges/fetchUserCompletedChallengeTotal', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/games/stats`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -325,6 +339,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchAllChallengeSpeedruns.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserCompletedChallengeTotal.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserCompletedChallengeTotal.fulfilled]: (state, { payload }) => {
+      state.challenge_game_stats = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserCompletedChallengeTotal.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

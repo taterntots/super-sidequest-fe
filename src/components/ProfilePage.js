@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // ROUTING
 import { Link } from 'react-router-dom';
@@ -7,30 +7,7 @@ import { Link } from 'react-router-dom';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ProfilePage = ({ acceptedChallenges, loading, refresh, setRefresh }) => {
-  console.log(acceptedChallenges)
-
-  const mockStatData = [
-    {
-      game: 'Splatoon 2',
-      game_banner_URL: '',
-      total_challenges_completed: 12,
-      total_points_earned: 1400
-    },
-    {
-      game: 'Hollow Knight',
-      game_banner_URL: '',
-      total_challenges_completed: 20,
-      total_points_earned: 2700
-    },
-    {
-      game: 'Shovel Knight',
-      game_banner_URL: '',
-      total_challenges_completed: 31,
-      total_points_earned: 4500
-    }
-  ]
-
+const ProfilePage = ({ acceptedChallenges, challenge_game_stats }) => {
   return (
     <>
       <div className="lg:flex justify-between">
@@ -40,11 +17,10 @@ const ProfilePage = ({ acceptedChallenges, loading, refresh, setRefresh }) => {
           <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
             Stats
           </h1>
-          {mockStatData.map(mockData => (
+          {challenge_game_stats.map(gameStats => (
             <div className='flex justify-between'>
-              <p>{mockData.game}</p>
-              {/* <p>{mockData.total_points_earned}</p> */}
-              <p>{mockData.total_challenges_completed}</p>
+              <p>{gameStats.game}</p>
+              <p>{gameStats.total_challenges_completed}</p>
             </div>
           ))}
 
@@ -67,8 +43,6 @@ const ProfilePage = ({ acceptedChallenges, loading, refresh, setRefresh }) => {
             <p>
               {acceptedChallenges[0]?.description}
             </p>
-            {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
-            {/* <div className='invisible pt-1' /> */}
           </div>
 
           {/* ACTIVE CHALLENGES */}

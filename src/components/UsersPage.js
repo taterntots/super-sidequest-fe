@@ -7,6 +7,7 @@ import {
 import {
   fetchUserCreatedChallenges,
   fetchUserAcceptedChallenges,
+  fetchUserCompletedChallengeTotal,
   challengeSelector
 } from '../features/challenge/challengeSlice';
 import {
@@ -36,7 +37,7 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { user, loading: userLoading, error } = useSelector(userSelector);
-  const { created_challenges, accepted_challenges, loading: challengeLoading } = useSelector(challengeSelector);
+  const { created_challenges, accepted_challenges, challenge_game_stats, loading: challengeLoading } = useSelector(challengeSelector);
   const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -54,6 +55,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
     if (Object.keys(user).length > 1) {
       dispatch(fetchUserCreatedChallenges(user.id))
       dispatch(fetchUserAcceptedChallenges(user.id))
+      dispatch(fetchUserCompletedChallengeTotal(user.id))
     }
   }, [dispatch, user, refresh])
 
@@ -168,9 +170,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
         render={(props) => (
           <ProfilePage
             acceptedChallenges={filteredAcceptedChallenges}
-            loading={challengeLoading}
-            // searchTerm={searchTerm}
-            // handleClearSearchBar={handleClearSearchBar}
+            challenge_game_stats={challenge_game_stats}
             {...props}
           />
         )}
