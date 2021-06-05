@@ -17,6 +17,7 @@ export const initialState = {
   challenges_speedruns: [],
   challenge_game_stats: [],
   challenge: {},
+  featured_challenge: {},
   acceptedChallenge: {},
   loading: false,
   error: false,
@@ -118,6 +119,19 @@ export const fetchUserCompletedChallengeTotal = createAsyncThunk('challenges/fet
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/games/stats`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a user's total challenge completion stats for all games
+export const fetchUserFeaturedChallenge = createAsyncThunk('challenges/fetchUserFeaturedChallenge', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/challenges/featured`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -238,7 +252,7 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
         total_milliseconds: data.total_milliseconds ? data.total_milliseconds : null,
         image_URL: data.image_URL ? data.image_URL : null,
         video_URL: data.video_URL ? data.video_URL : null,
-        completed: data.completed ? data.completed : false,
+        completed: data.completed ? data.completed : false
       }
     })
     cogoToast.success('Challenge updated!', {
@@ -379,6 +393,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchUserCompletedChallengeTotal.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserFeaturedChallenge.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserFeaturedChallenge.fulfilled]: (state, { payload }) => {
+      state.featured_challenge = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserFeaturedChallenge.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

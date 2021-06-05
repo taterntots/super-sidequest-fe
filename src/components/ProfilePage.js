@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ProfilePage = ({ acceptedChallenges, challenge_game_stats }) => {
+const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challenge }) => {
   return (
     <>
       <div className="lg:flex justify-between">
@@ -18,7 +18,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats }) => {
             Stats
           </h1>
           {challenge_game_stats.map(gameStats => (
-            <div className='flex justify-between'>
+            <div key={gameStats.game} className='flex justify-between'>
               <p>{gameStats.game}</p>
               <p>{gameStats.total_challenges_completed}</p>
             </div>
@@ -34,14 +34,14 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats }) => {
             </h1>
             <img
               className='h-full w-full rounded-md'
-              src={acceptedChallenges[1]?.banner_pic_URL}
+              src={featured_challenge.banner_pic_URL}
               alt='banner for a single game'
             />
             <p>
-              {acceptedChallenges[0]?.name}
+              {featured_challenge.name}
             </p>
             <p>
-              {acceptedChallenges[0]?.description}
+              {featured_challenge.description}
             </p>
           </div>
 
@@ -52,6 +52,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats }) => {
             </h1>
             {acceptedChallenges.map(acceptedChallenge => (
               <Link
+                key={acceptedChallenge.challenge_id}
                 to={`/${acceptedChallenge.username}/challenges/${acceptedChallenge.challenge_id}`}
                 className='flex p-2 mb-3 rounded-lg hover:bg-purple-500'
               >
