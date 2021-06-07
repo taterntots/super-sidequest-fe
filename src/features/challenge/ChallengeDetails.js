@@ -132,7 +132,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   // Function to handle marking a challenge as featured
   const submitChallengeFeatured = async (data) => {
     data.challenge_id = route.params.challengeId
-console.log(data)
+
     dispatch(updateUserChallengeFeatured(data))
       .then(res => {
         if (res.payload) {
@@ -166,6 +166,7 @@ console.log(data)
             {challenge.rules}
           </p>
           <br />
+
           {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
           {!acceptedChallenge && localStorage.getItem('token') ? (
             <button
@@ -182,52 +183,56 @@ console.log(data)
               Abandon
             </button>
           ) : null}
-          <span
-            onClick={() => {
-              setFeaturedOn(!featuredOn);
-              if (featuredOn) {
-                submitChallengeFeatured({ featured: false })
-              }
-              if (!featuredOn) {
-                submitChallengeFeatured({ featured: true })
-              }
-            }}
-            role='checkbox'
-            tabIndex='0'
-            aria-checked='false'
-            className={`${featuredOn ? 'bg-purplebutton' : 'bg-gray-300'
-              } relative mx-3 inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
-          >
-            {/* <!-- On: "translate-x-5", Off: "translate-x-0" --> */}
+
+          {/* FEATURED TOGGLE */}
+          {challenge.user_id === localStorage.getItem('id') ? (
             <span
-              aria-hidden='true'
-              className={`${featuredOn ? 'translate-x-5' : 'translate-x-0'
-                } translate-x-0 relative inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200`}
+              onClick={() => {
+                setFeaturedOn(!featuredOn);
+                if (featuredOn) {
+                  submitChallengeFeatured({ featured: false })
+                }
+                if (!featuredOn) {
+                  submitChallengeFeatured({ featured: true })
+                }
+              }}
+              role='checkbox'
+              tabIndex='0'
+              aria-checked='false'
+              className={`${featuredOn ? 'bg-purplebutton' : 'bg-gray-300'
+                } relative mx-3 inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
             >
-              {/* <!-- On: "opacity-0 ease-out duration-100", Off: "opacity-100 ease-in duration-200" --> */}
+              {/* <!-- On: "translate-x-5", Off: "translate-x-0" --> */}
               <span
-                className={`${featuredOn
-                  ? 'opacity-0 ease-out duration-100'
-                  : 'opacity-100 ease-in duration-200'
-                  } opacity-100 ease-in duration-200 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
-              ></span>
-              {/* <!-- On: "opacity-100 ease-in duration-200", Off: "opacity-0 ease-out duration-100" --> */}
-              <span
-                className={`${featuredOn
-                  ? 'opacity-100 ease-in duration-200'
-                  : 'opacity-0 ease-out duration-100'
-                  } opacity-0 ease-out duration-100 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
+                aria-hidden='true'
+                className={`${featuredOn ? 'translate-x-5' : 'translate-x-0'
+                  } translate-x-0 relative inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200`}
               >
-                <svg
-                  className='w-3 h-3 text-indigo-600'
-                  fill='currentColor'
-                  viewBox='0 0 12 12'
+                {/* <!-- On: "opacity-0 ease-out duration-100", Off: "opacity-100 ease-in duration-200" --> */}
+                <span
+                  className={`${featuredOn
+                    ? 'opacity-0 ease-out duration-100'
+                    : 'opacity-100 ease-in duration-200'
+                    } opacity-100 ease-in duration-200 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
+                ></span>
+                {/* <!-- On: "opacity-100 ease-in duration-200", Off: "opacity-0 ease-out duration-100" --> */}
+                <span
+                  className={`${featuredOn
+                    ? 'opacity-100 ease-in duration-200'
+                    : 'opacity-0 ease-out duration-100'
+                    } opacity-0 ease-out duration-100 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
                 >
-                  <path d='M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z' />
-                </svg>
+                  <svg
+                    className='w-3 h-3 text-indigo-600'
+                    fill='currentColor'
+                    viewBox='0 0 12 12'
+                  >
+                    <path d='M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z' />
+                  </svg>
+                </span>
               </span>
             </span>
-          </span>
+          ) : null}
         </div>
 
         {/* LEADERBOARD */}
