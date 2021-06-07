@@ -6,10 +6,12 @@ import {
   fetchIfChallengeAlreadyAccepted,
   fetchAllChallengeHighScores,
   fetchAllChallengeSpeedruns,
+  fetchUserFeaturedChallenge,
   acceptChallenge,
   abandonChallenge,
   updateUserChallengeProgress,
   updateUserChallengeCompletion,
+  updateUserChallengeFeatured,
   challengeSelector
 } from '../challenge/challengeSlice';
 
@@ -29,11 +31,12 @@ import Leaderboard from '../../components/Leaderboard';
 const ChallengeDetails = ({ refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
-  const { challenge, challenges_high_scores, challenges_speedruns, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
+  const { challenge, challenges_high_scores, challenges_speedruns, acceptedChallenge, featured_challenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const [openAccept, setOpenAccept] = useState(false)
   const [openAbandon, setOpenAbandon] = useState(false)
   const [openProgress, setOpenProgress] = useState(false)
+  const [featuredOn, setFeaturedOn] = useState()
   const isChallengeAcceptedData = {
     user_id: localStorage.getItem('id'),
     challenge_id: route.params.challengeId
@@ -45,7 +48,20 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
     dispatch(fetchAllChallengeHighScores(route.params.challengeId))
     dispatch(fetchAllChallengeSpeedruns(route.params.challengeId))
     dispatch(fetchIfChallengeAlreadyAccepted(isChallengeAcceptedData))
+    dispatch(fetchUserFeaturedChallenge(localStorage.getItem('id')))
   }, [dispatch, refresh])
+
+  console.log('CHALLENGE', challenge)
+  console.log('FEATURED', featured_challenge)
+
+  // UseEffect that sets the toggle correctly on refresh based on whether a challenge is featured or not
+  useEffect(() => {
+    if (challenge.challenge_id === featured_challenge.challenge_id) {
+      setFeaturedOn(true)
+    } else {
+      setFeaturedOn(false)
+    }
+  }, [challenge.featured, featured_challenge.featured])
 
   // Function to handle accepting a challenged
   const submitChallengeAccepted = async () => {
@@ -113,6 +129,21 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       })
   };
 
+  // Function to handle marking a challenge as featured
+  const submitChallengeFeatured = async (data) => {
+    data.challenge_id = route.params.challengeId
+console.log(data)
+    dispatch(updateUserChallengeFeatured(data))
+      .then(res => {
+        if (res.payload) {
+          setRefresh(!refresh)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
   return (
     <>
       <div className="flex justify-between">
@@ -151,6 +182,52 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
               Abandon
             </button>
           ) : null}
+          <span
+            onClick={() => {
+              setFeaturedOn(!featuredOn);
+              if (featuredOn) {
+                submitChallengeFeatured({ featured: false })
+              }
+              if (!featuredOn) {
+                submitChallengeFeatured({ featured: true })
+              }
+            }}
+            role='checkbox'
+            tabIndex='0'
+            aria-checked='false'
+            className={`${featuredOn ? 'bg-purplebutton' : 'bg-gray-300'
+              } relative mx-3 inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
+          >
+            {/* <!-- On: "translate-x-5", Off: "translate-x-0" --> */}
+            <span
+              aria-hidden='true'
+              className={`${featuredOn ? 'translate-x-5' : 'translate-x-0'
+                } translate-x-0 relative inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200`}
+            >
+              {/* <!-- On: "opacity-0 ease-out duration-100", Off: "opacity-100 ease-in duration-200" --> */}
+              <span
+                className={`${featuredOn
+                  ? 'opacity-0 ease-out duration-100'
+                  : 'opacity-100 ease-in duration-200'
+                  } opacity-100 ease-in duration-200 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
+              ></span>
+              {/* <!-- On: "opacity-100 ease-in duration-200", Off: "opacity-0 ease-out duration-100" --> */}
+              <span
+                className={`${featuredOn
+                  ? 'opacity-100 ease-in duration-200'
+                  : 'opacity-0 ease-out duration-100'
+                  } opacity-0 ease-out duration-100 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
+              >
+                <svg
+                  className='w-3 h-3 text-indigo-600'
+                  fill='currentColor'
+                  viewBox='0 0 12 12'
+                >
+                  <path d='M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z' />
+                </svg>
+              </span>
+            </span>
+          </span>
         </div>
 
         {/* LEADERBOARD */}

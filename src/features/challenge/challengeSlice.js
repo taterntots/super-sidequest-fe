@@ -267,7 +267,7 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
   }
 });
 
-// API call to update a user challenge completion
+// API call to update a user challenge being completed
 export const updateUserChallengeCompletion = createAsyncThunk('challenges/updateUserChallengeCompletion', async (data) => {
   const token = localStorage.getItem('token');
 
@@ -284,6 +284,33 @@ export const updateUserChallengeCompletion = createAsyncThunk('challenges/update
       }
     })
     cogoToast.success('Challenge updated!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
+// API call to update a user challenge being featured
+export const updateUserChallengeFeatured = createAsyncThunk('challenges/updateUserChallengeFeatured', async (data) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/featured`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        featured: data.featured
+      }
+    })
+    cogoToast.success('Challenge featured status updated!', {
       hideAfter: 3,
     });
     return response.data
@@ -460,6 +487,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [updateUserChallengeCompletion.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [updateUserChallengeFeatured.pending]: (state, action) => {
+      state.loading = true
+    },
+    [updateUserChallengeFeatured.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.error = false
+    },
+    [updateUserChallengeFeatured.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
