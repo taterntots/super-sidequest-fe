@@ -23,7 +23,6 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
               <p>{gameStats.total_challenges_completed}</p>
             </div>
           ))}
-
         </div>
 
         <div className='w-full lg:w-3/5'>

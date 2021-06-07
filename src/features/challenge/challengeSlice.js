@@ -279,7 +279,7 @@ export const updateUserChallengeCompletion = createAsyncThunk('challenges/update
         Accept: 'application/json',
         Authorization: token,
       }, data: {
-        completed: data.completed ? data.completed : false,
+        completed: data.completed,
         is_active: data.completed ? false : true
       }
     })
