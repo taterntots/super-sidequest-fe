@@ -29,12 +29,12 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
 
   return (
     <>
-      <div className="w-3/5 h-full p-10 bg-taterpurple rounded-lg text-white">
+      <div className="w-3/5 h-full p-10 bg-profileone rounded-lg text-white">
         {acceptedChallenge && localStorage.getItem('token') ? (
           <div className='flex justify-end'>
             <button
               onClick={() => setOpen(true)}
-              className={`rounded-lg text-lg px-24 md:px-12 py-3 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+              className={`rounded-lg text-lg px-24 md:px-12 py-3 font-medium bg-profiletwo hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
             >
               {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : null}
             </button>

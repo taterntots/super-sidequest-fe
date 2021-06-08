@@ -5,6 +5,8 @@ module.exports = {
     extend: {
       colors: {
         taterpurple: '#483D8B',
+        profileone: '#3E828C',
+        profiletwo: '#483D8B',
         purplebutton: '#9370DB',
         logintext: '#BA55D3',
         sitewidebackground: '#414141',

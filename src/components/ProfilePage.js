@@ -13,7 +13,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
       <div className="lg:flex justify-between">
 
         {/* STATS */}
-        <div className="mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-taterpurple rounded-lg text-white">
+        <div className="mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-profileone rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
             Stats
           </h1>
@@ -27,7 +27,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
 
         <div className='w-full lg:w-3/5'>
           {/* FEATURED CHALLENGE */}
-          <div className="px-10 mb-3 pb-4 bg-taterpurple rounded-lg text-white">
+          <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Featured Quest
             </h1>
@@ -45,7 +45,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
           </div>
 
           {/* ACTIVE CHALLENGES */}
-          <div className="px-10 bg-taterpurple rounded-lg text-white">
+          <div className="px-10 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Active Quests
             </h1>

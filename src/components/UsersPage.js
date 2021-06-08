@@ -43,6 +43,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [refresh, setRefresh] = useState(false)
+  const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
 
   // Grabs user data from the server
@@ -100,7 +101,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
             </div>
 
             {/* Info Bar */}
-            <div className='px-0 sm:px-10 pt-4 pb-1 bg-purplebutton rounded-b-lg'>
+            <div className='px-0 sm:px-10 pt-4 pb-1 bg-profiletwo rounded-b-lg'>
               {/* Game Info */}
               <div className='sm:flex justify-between'>
                 {/* Left Side */}
@@ -119,7 +120,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
               </div>
 
               {/* FILTERS */}
-              <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
+              {/* <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
                 <Link
                   to={`/${user.username}`}
                   className='mr-0 md:mr-10 hover:text-red-600'
@@ -143,91 +144,134 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
                   className='mr-0 md:mr-10 hover:text-red-600'
                 >
                   Completed
-                </Link>
-                {/* <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
+                </Link> */}
+              {/* <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
                 <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='mr-0 md:mr-10 text-black hover:text-mcgreen'>
                   <option value='Select' disabled selected>Difficulty</option>
                   {difficulties.map(difficulty => (
                     <option value={difficulty.name}>{difficulty.name}</option>
                   ))}
                 </select> */}
-                {user.id === localStorage.getItem('id') ? (
+              {/* {user.id === localStorage.getItem('id') ? (
                   <Link
                     to={`/${localStorage.getItem('username')}/add-challenge`}
                     className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
                   >
                     Add Challenge
                   </Link>
-                ) : null}
-              </div>
+                ) : null} */}
+              {/* </div> */}
             </div>
           </div>
         </div>
       )}
 
-      {/* PAGE ELEMENTS BASED ON TAB */}
-      <Route
-        exact
-        path={`/:username`}
-        render={(props) => (
-          <ProfilePage
-            acceptedChallenges={filteredAcceptedChallenges}
-            challenge_game_stats={challenge_game_stats}
-            featured_challenge={featured_challenge}
-            {...props}
-          />
-        )}
-      />
-      <Route
-        exact
-        path={`/:username/my-challenges`}
-        render={(props) => (
-          <ChallengeList
-            challenges={filteredCreatedChallenges}
-            loading={challengeLoading}
-            searchTerm={searchTerm}
-            handleClearSearchBar={handleClearSearchBar}
-            {...props}
-          />
-        )}
-      />
-      <Route
-        exact
-        path={`/:username/accepted`}
-        render={(props) => (
-          <ChallengeList
-            challenges={filteredAcceptedChallenges}
-            loading={challengeLoading}
-            searchTerm={searchTerm}
-            handleClearSearchBar={handleClearSearchBar}
-            {...props}
-          />
-        )}
-      />
-      <Route
-        exact
-        path={`/:username/challenges/:challengeId`}
-        render={(props) => (
-          <ChallengeDetails
-            searchTerm={searchTerm}
-            handleClearSearchBar={handleClearSearchBar}
-            refresh={refresh}
-            setRefresh={setRefresh}
-            {...props}
-          />
-        )}
-      />
-      <Route
-        exact
-        path={`/:username/add-challenge`}
-        render={(props) => (
-          <ChallengeForm
-            searchTerm={searchTerm}
-            handleClearSearchBar={handleClearSearchBar}
-            {...props}
-          />
-        )}
-      />
+      <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start text-xl text-white'>
+        <Link
+          to={`/${user.username}`}
+          className={!url.includes('challenges') && !url.includes('add-challenge') ?
+            "md:px-5 hover:text-red-600 bg-profiletwo rounded-t-md" :
+            "md:px-5 hover:text-red-600 bg-gray-700 rounded-t-md"}
+        >
+          Profile
+          </Link>
+        <Link
+          to={`/${user.username}/challenges`}
+          className={url.includes('challenges') ?
+            "md:px-5 hover:text-red-600 bg-profiletwo rounded-t-md" :
+            "md:px-5 hover:text-red-600 bg-gray-700 rounded-t-md"}
+        >
+          Challenges
+          </Link>
+        {user.id === localStorage.getItem('id') ? (
+          <Link
+            to={`/${localStorage.getItem('username')}/add-challenge`}
+            className={url.includes('add-challenge') ?
+              "md:px-5 hover:text-red-600 bg-profiletwo rounded-t-md" :
+              "md:px-5 hover:text-red-600 bg-profileone rounded-t-md"}
+          >
+            +
+          </Link>
+        ) : null}
+        {/* <Link
+            to={`/${user.username}/accepted`}
+            className='md:px-5 pb-1 hover:text-red-600'
+          >
+            Accepted
+                </Link>
+          <Link
+            to={`/${user.username}/completed`}
+            className='md:px-5 pb-1 hover:text-red-600'
+          >
+            Completed
+          </Link> */}
+      </div>
+
+      <div className='p-4 bg-profiletwo rounded-tr-md rounded-b-md'>
+        {/* PAGE ELEMENTS BASED ON TAB */}
+        <Route
+          exact
+          path={`/:username`}
+          render={(props) => (
+            <ProfilePage
+              acceptedChallenges={filteredAcceptedChallenges}
+              challenge_game_stats={challenge_game_stats}
+              featured_challenge={featured_challenge}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={`/:username/challenges`}
+          render={(props) => (
+            <ChallengeList
+              challenges={filteredCreatedChallenges}
+              loading={challengeLoading}
+              searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={`/:username/accepted`}
+          render={(props) => (
+            <ChallengeList
+              challenges={filteredAcceptedChallenges}
+              loading={challengeLoading}
+              searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={`/:username/challenges/:challengeId`}
+          render={(props) => (
+            <ChallengeDetails
+              searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
+              refresh={refresh}
+              setRefresh={setRefresh}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={`/:username/add-challenge`}
+          render={(props) => (
+            <ChallengeForm
+              searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
+              {...props}
+            />
+          )}
+        />
+      </div>
     </>
   );
 }
