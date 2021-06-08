@@ -85,54 +85,27 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
 
   return (
     <>
-      {userLoading ? (
-        <LoadSpinner loading={userLoading} />
-      ) : error ? (
-        <ServerFailure />
-      ) : (
+      {/* USER INFO */}
+      <div className='mb-4'>
         <div>
-          <div className='mb-4'>
-            <div>
-              <img
-                className='object-cover h-72 w-full rounded-t-md'
-                src={UserBannerPlaceholder}
-                alt='banner for a user'
-              />
+          <img
+            className='object-cover h-72 w-full rounded-t-md'
+            src={UserBannerPlaceholder}
+            alt='banner for a user'
+          />
+        </div>
+
+        {/* Info Bar */}
+        <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
+          <div className='sm:flex justify-between'>
+            <div className='flex justify-center items-center py-3'>
+              <BlankPublisher className='inline-block object-fill w-12 h-12 rounded-md' />
+              <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
+          </div>
 
-            {/* Info Bar */}
-            <div className='px-0 sm:px-10 pt-4 pb-1 bg-profiletwo rounded-b-lg'>
-              {/* Game Info */}
-              <div className='sm:flex justify-between'>
-                {/* Left Side */}
-                <div className='flex justify-center items-start'>
-                  {/* {game.banner_pic_URL ? (
-                    <img
-                      className='rounded-lg ml-0.5 h-14 w-14 hidden sm:block'
-                      src={game.banner_pic_URL}
-                      alt='profile for a single game'
-                    />
-                  ) : ( */}
-                  <BlankPublisher className='inline-block object-fill w-12 h-12 rounded-md' />
-                  {/* )} */}
-                  <h1 className='sm:pl-5 text-3xl text-white'>{user.username}</h1>
-                </div>
-              </div>
-
-              {/* FILTERS */}
-              {/* <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
-                <Link
-                  to={`/${user.username}`}
-                  className='mr-0 md:mr-10 hover:text-red-600'
-                >
-                  Profile
-                </Link>
-                <Link
-                  to={`/${user.username}/my-challenges`}
-                  className='mr-0 md:mr-10 hover:text-red-600'
-                >
-                  My Challenges
-                </Link>
+          {/* FILTERS */}
+          {/* <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
                 <Link
                   to={`/${user.username}/accepted`}
                   className='mr-0 md:mr-10 hover:text-red-600'
@@ -145,27 +118,18 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
                 >
                   Completed
                 </Link> */}
-              {/* <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
+          {/* <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
                 <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='mr-0 md:mr-10 text-black hover:text-mcgreen'>
                   <option value='Select' disabled selected>Difficulty</option>
                   {difficulties.map(difficulty => (
                     <option value={difficulty.name}>{difficulty.name}</option>
                   ))}
                 </select> */}
-              {/* {user.id === localStorage.getItem('id') ? (
-                  <Link
-                    to={`/${localStorage.getItem('username')}/add-challenge`}
-                    className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
-                  >
-                    Add Challenge
-                  </Link>
-                ) : null} */}
-              {/* </div> */}
-            </div>
-          </div>
+          {/* </div> */}
         </div>
-      )}
+      </div>
 
+      {/* TAB CONTENT */}
       <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start text-xl text-white'>
         <Link
           to={`/${user.username}`}
@@ -207,8 +171,8 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
           </Link> */}
       </div>
 
+      {/* PAGE ELEMENTS BASED ON TAB */}
       <div className='p-4 bg-profiletwo rounded-tr-md rounded-b-md'>
-        {/* PAGE ELEMENTS BASED ON TAB */}
         <Route
           exact
           path={`/:username`}
