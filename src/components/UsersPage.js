@@ -21,6 +21,7 @@ import { Route, Link, useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
 import ProfilePage from './ProfilePage';
+import ChallengesPage from './ChallengesPage';
 import ChallengeList from '../features/challenge/ChallengeList';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import ChallengeForm from '../features/challenge/ChallengeForm';
@@ -157,18 +158,6 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
             +
           </Link>
         ) : null}
-        {/* <Link
-            to={`/${user.username}/accepted`}
-            className='md:px-5 pb-1 hover:text-red-600'
-          >
-            Accepted
-                </Link>
-          <Link
-            to={`/${user.username}/completed`}
-            className='md:px-5 pb-1 hover:text-red-600'
-          >
-            Completed
-          </Link> */}
       </div>
 
       {/* PAGE ELEMENTS BASED ON TAB */}
@@ -189,21 +178,10 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
           exact
           path={`/:username/challenges`}
           render={(props) => (
-            <ChallengeList
+            <ChallengesPage
               challenges={filteredCreatedChallenges}
-              loading={challengeLoading}
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`/:username/accepted`}
-          render={(props) => (
-            <ChallengeList
-              challenges={filteredAcceptedChallenges}
+              created_challenges={filteredCreatedChallenges}
+              accepted_challenges={filteredAcceptedChallenges}
               loading={challengeLoading}
               searchTerm={searchTerm}
               handleClearSearchBar={handleClearSearchBar}
