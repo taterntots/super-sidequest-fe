@@ -6,6 +6,10 @@ import {
   fetchDifficulties,
   difficultySelector
 } from '../features/difficulty/difficultySlice';
+import {
+  fetchSystems,
+  systemSelector
+} from '../features/system/systemSlice';
 
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
@@ -17,45 +21,67 @@ import ChallengeList from '../features/challenge/ChallengeList';
 const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
+  const { systems } = useSelector(systemSelector)
   const [currentChallengeFilter, setCurrentChallengeFilter] = useState('Created')
 
   // Grabs filterable data from the server
   useEffect(() => {
     dispatch(fetchDifficulties())
+    dispatch(fetchSystems())
   }, [dispatch])
 
   // Filter all challenges
-  const filterByAll = () => {
+  const filterReset = () => {
     setFilteredCreatedChallenges(created_challenges)
     setFilteredAcceptedChallenges(accepted_challenges)
     setFilteredCompletedChallenges(completed_challenges)
     var selectBox = document.getElementById("difficultyBox");
     selectBox.selectedIndex = 0;
+    var selectBox = document.getElementById("systemBox");
+    selectBox.selectedIndex = 0;
   }
 
-  // Filter by difficulty
-  const filterByDifficulty = () => {
-    var selectBox = document.getElementById("difficultyBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+  // Filter master
+  const filterMaster = () => {
+    var systemBox = document.getElementById("systemBox");
+    var difficultyBox = document.getElementById("difficultyBox");
+    var selectedSystemValue = systemBox.options[systemBox.selectedIndex].value;
+    var selectedDifficultyValue = difficultyBox.options[difficultyBox.selectedIndex].value;
+
     if (currentChallengeFilter === 'Created') {
-      var filtered = created_challenges.filter(fc => fc.difficulty === selectedValue)
+      var filtered = created_challenges.filter(fc => {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
+          return fc.system === selectedSystemValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
+        }
+      })
       setFilteredCreatedChallenges(filtered)
     } else if (currentChallengeFilter === 'Active') {
-      var filtered = accepted_challenges.filter(fc => fc.difficulty === selectedValue)
+      var filtered = accepted_challenges.filter(fc => {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
+          return fc.system === selectedSystemValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
+        }
+      })
       setFilteredAcceptedChallenges(filtered)
     } else if (currentChallengeFilter === 'Completed') {
-      var filtered = completed_challenges.filter(fc => fc.difficulty === selectedValue)
+      var filtered = completed_challenges.filter(fc => {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
+          return fc.system === selectedSystemValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
+        }
+      })
       setFilteredCompletedChallenges(filtered)
     }
-  }
-
-  // Reset all filters
-  const resetAllFilters = () => {
-    setFilteredCreatedChallenges(created_challenges)
-    setFilteredAcceptedChallenges(accepted_challenges)
-    setFilteredCompletedChallenges(completed_challenges)
-    var selectBox = document.getElementById("difficultyBox");
-    selectBox.selectedIndex = 0;
   }
 
   return (
@@ -79,17 +105,17 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
           />
         </div>
 
-        {/* FILTER */}
+        {/* CHALLENGE STATUS */}
         <div className='w-full lg:w-1/5'>
           <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
-              Filter By
+              Status
             </h1>
             <div className='flex flex-col'>
               <button
                 onClick={() => {
                   setCurrentChallengeFilter('Created')
-                  resetAllFilters()
+                  filterReset()
                   handleClearSearchBar()
                 }}
               >
@@ -98,7 +124,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               <button
                 onClick={() => {
                   setCurrentChallengeFilter('Active')
-                  resetAllFilters()
+                  filterReset()
                   handleClearSearchBar()
                 }}
               >
@@ -107,7 +133,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               <button
                 onClick={() => {
                   setCurrentChallengeFilter('Completed')
-                  resetAllFilters()
+                  filterReset()
                   handleClearSearchBar()
                 }}
               >
@@ -116,18 +142,30 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
             </div>
           </div>
 
-          {/* ACTIVE CHALLENGES */}
-          <div className="px-10 bg-profileone rounded-lg text-white">
+          {/* FILTERS */}
+          <div className="px-10 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
-              Search
+              Filter By
             </h1>
-            <button onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</button>
-            <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='mr-0 md:mr-10 text-black hover:text-mcgreen'>
-              <option value='Select' disabled selected>Difficulty</option>
-              {difficulties.map(difficulty => (
-                <option value={difficulty.name}>{difficulty.name}</option>
-              ))}
-            </select>
+            <div className='flex flex-col'>
+              <button
+                onClick={filterReset}
+              >
+                ALL
+              </button>
+              <select name='difficulty' id='difficultyBox' onChange={filterMaster} className='text-black'>
+                <option value='Select' disabled selected>Difficulty</option>
+                {difficulties.map(difficulty => (
+                  <option key={difficulty.id} value={difficulty.name}>{difficulty.name}</option>
+                ))}
+              </select>
+              <select name='system' id='systemBox' onChange={filterMaster} className='text-black'>
+                <option value='Select' disabled selected>System</option>
+                {systems.map(system => (
+                  <option key={system.id} value={system.name}>{system.name}</option>
+                ))}
+              </select>
+            </div>
             {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
             <div className='invisible pt-1' />
           </div>
