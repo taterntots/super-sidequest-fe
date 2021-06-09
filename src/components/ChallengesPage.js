@@ -90,7 +90,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
 
         {/* CHALLENGE LIST */}
         <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profileone rounded-lg text-white">
-          <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
+          <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             Challenges
           </h1>
           <ChallengeList

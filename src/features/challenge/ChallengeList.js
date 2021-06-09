@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import ChallengeCard from './ChallengeCard';
+import ChallengeCard2 from './ChallengeCard2';
 import SearchError from '../../components/SearchError';
 
 // ----------------------------------------------------------------------------------
@@ -28,14 +28,14 @@ const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar }) => {
       {searchResults.length === 0 && searchTerm !== '' ? (
         <SearchError searchTerm={searchTerm} />
       ) : (
-        <div className='grid justify-center gap-10 mt-2 grig-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-6 2xl:px-15'>
+        <div className='grid gap-6 grig-cols-1 2xl:grid-cols-2'>
           {searchResults.map((i) => (
             <Link
               key={i.challenge_id}
               to={`/${i.username}/challenges/${i.challenge_id}`}
               onClick={handleClearSearchBar}
             >
-              <ChallengeCard
+              <ChallengeCard2
                 key={i.challenge_id}
                 data={i}
               />
