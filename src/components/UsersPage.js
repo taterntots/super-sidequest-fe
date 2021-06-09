@@ -7,6 +7,7 @@ import {
 import {
   fetchUserCreatedChallenges,
   fetchUserAcceptedChallenges,
+  fetchUserCompletedChallenges,
   fetchUserCompletedChallengeTotal,
   fetchUserFeaturedChallenge,
   challengeSelector
@@ -32,9 +33,10 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(userSelector);
-  const { created_challenges, accepted_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
+  const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
+  const [filteredCompletedChallenges, setFilteredCompletedChallenges] = useState(completed_challenges);
   const [refresh, setRefresh] = useState(false)
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
@@ -49,6 +51,7 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
     if (Object.keys(user).length > 1) {
       dispatch(fetchUserCreatedChallenges(user.id))
       dispatch(fetchUserAcceptedChallenges(user.id))
+      dispatch(fetchUserCompletedChallenges(user.id))
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
     }
@@ -58,7 +61,8 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   useEffect(() => {
     setFilteredCreatedChallenges(created_challenges)
     setFilteredAcceptedChallenges(accepted_challenges)
-  }, [created_challenges, accepted_challenges])
+    setFilteredCompletedChallenges(completed_challenges)
+  }, [created_challenges, accepted_challenges, completed_challenges])
 
   return (
     <>
@@ -87,17 +91,19 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
       <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start text-xl text-white'>
         <Link
           to={`/${user.username}`}
+          onClick={() => handleClearSearchBar()}
           className={!url.includes('challenges') && !url.includes('add-challenge') ?
-            "md:px-5 hover:text-red-600 bg-profiletwo rounded-t-md" :
-            "md:px-5 hover:text-red-600 bg-gray-700 rounded-t-md"}
+            "md:px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+            "md:px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Profile
           </Link>
         <Link
           to={`/${user.username}/challenges`}
+          onClick={() => handleClearSearchBar()}
           className={url.includes('challenges') ?
-            "md:px-5 hover:text-red-600 bg-profiletwo rounded-t-md" :
-            "md:px-5 hover:text-red-600 bg-gray-700 rounded-t-md"}
+            "md:px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+            "md:px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Challenges
           </Link>
@@ -105,8 +111,8 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
           <Link
             to={`/${localStorage.getItem('username')}/add-challenge`}
             className={url.includes('add-challenge') ?
-              "md:px-5 hover:text-red-600 bg-profiletwo rounded-t-md" :
-              "md:px-5 hover:text-red-600 bg-profileone rounded-t-md"}
+              "md:px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+              "md:px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md"}
           >
             +
           </Link>
@@ -134,10 +140,13 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
             <ChallengesPage
               created_challenges={created_challenges}
               accepted_challenges={accepted_challenges}
+              completed_challenges={completed_challenges}
               filteredCreatedChallenges={filteredCreatedChallenges}
               filteredAcceptedChallenges={filteredAcceptedChallenges}
+              filteredCompletedChallenges={filteredCompletedChallenges}
               setFilteredCreatedChallenges={setFilteredCreatedChallenges}
               setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
+              setFilteredCompletedChallenges={setFilteredCompletedChallenges}
               searchTerm={searchTerm}
               handleClearSearchBar={handleClearSearchBar}
               {...props}

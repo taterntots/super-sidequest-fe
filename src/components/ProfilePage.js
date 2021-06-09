@@ -53,7 +53,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
               <Link
                 key={acceptedChallenge.challenge_id}
                 to={`/${acceptedChallenge.username}/challenges/${acceptedChallenge.challenge_id}`}
-                className='flex p-2 mb-3 rounded-lg hover:bg-purple-500'
+                className='flex p-2 mb-3 rounded-lg hover:bg-purple-500 transform transition duration-500 hover:scale-105'
               >
                 <img
                   className='h-24 w-44 rounded-md'

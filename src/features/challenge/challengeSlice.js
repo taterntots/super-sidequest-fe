@@ -13,6 +13,7 @@ export const initialState = {
   challenges: [],
   created_challenges: [],
   accepted_challenges: [],
+  completed_challenges: [],
   challenges_high_scores: [],
   challenges_speedruns: [],
   challenge_game_stats: [],
@@ -67,6 +68,19 @@ export const fetchUserAcceptedChallenges = createAsyncThunk('challenges/fetchUse
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/accepted-challenges`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all of a user's completed challenges
+export const fetchUserCompletedChallenges = createAsyncThunk('challenges/fetchUserCompletedChallenges', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/completed-challenges`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -372,6 +386,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchUserAcceptedChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserCompletedChallenges.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserCompletedChallenges.fulfilled]: (state, { payload }) => {
+      state.completed_challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserCompletedChallenges.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

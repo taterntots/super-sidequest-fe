@@ -14,7 +14,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, searchTerm, handleClearSearchBar }) => {
+const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const [currentChallengeFilter, setCurrentChallengeFilter] = useState('Created')
@@ -28,6 +28,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreat
   const filterByAll = () => {
     setFilteredCreatedChallenges(created_challenges)
     setFilteredAcceptedChallenges(accepted_challenges)
+    setFilteredCompletedChallenges(completed_challenges)
     var selectBox = document.getElementById("difficultyBox");
     selectBox.selectedIndex = 0;
   }
@@ -42,6 +43,9 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreat
     } else if (currentChallengeFilter === 'Active') {
       var filtered = accepted_challenges.filter(fc => fc.difficulty === selectedValue)
       setFilteredAcceptedChallenges(filtered)
+    } else if (currentChallengeFilter === 'Completed') {
+      var filtered = completed_challenges.filter(fc => fc.difficulty === selectedValue)
+      setFilteredCompletedChallenges(filtered)
     }
   }
 
@@ -49,6 +53,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreat
   const resetAllFilters = () => {
     setFilteredCreatedChallenges(created_challenges)
     setFilteredAcceptedChallenges(accepted_challenges)
+    setFilteredCompletedChallenges(completed_challenges)
     var selectBox = document.getElementById("difficultyBox");
     selectBox.selectedIndex = 0;
   }
@@ -66,7 +71,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreat
             challenges={
               currentChallengeFilter === 'Created' ? filteredCreatedChallenges :
                 currentChallengeFilter === 'Active' ? filteredAcceptedChallenges :
-                  currentChallengeFilter === 'Completed' ? accepted_challenges :
+                  currentChallengeFilter === 'Completed' ? filteredCompletedChallenges :
                     null
             }
             searchTerm={searchTerm}
@@ -85,6 +90,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreat
                 onClick={() => {
                   setCurrentChallengeFilter('Created')
                   resetAllFilters()
+                  handleClearSearchBar()
                 }}
               >
                 Created
@@ -93,14 +99,16 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreat
                 onClick={() => {
                   setCurrentChallengeFilter('Active')
                   resetAllFilters()
+                  handleClearSearchBar()
                 }}
               >
                 Active
               </button>
               <button
                 onClick={() => {
-                  setCurrentChallengeFilter('Complete')
+                  setCurrentChallengeFilter('Completed')
                   resetAllFilters()
+                  handleClearSearchBar()
                 }}
               >
                 Completed
