@@ -11,10 +11,6 @@ import {
   fetchUserFeaturedChallenge,
   challengeSelector
 } from '../features/challenge/challengeSlice';
-import {
-  fetchDifficulties,
-  difficultySelector
-} from '../features/difficulty/difficultySlice';
 
 // ROUTING
 import { Route, Link, useRouteMatch } from 'react-router-dom';
@@ -22,11 +18,8 @@ import { Route, Link, useRouteMatch } from 'react-router-dom';
 // COMPONENTS
 import ProfilePage from './ProfilePage';
 import ChallengesPage from './ChallengesPage';
-import ChallengeList from '../features/challenge/ChallengeList';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import ChallengeForm from '../features/challenge/ChallengeForm';
-import LoadSpinner from './LoadSpinner';
-import ServerFailure from './ServerFailure';
 
 // IMAGES
 import { ReactComponent as BlankPublisher } from '../img/BlankPublisher.svg';
@@ -38,9 +31,8 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 
 const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, loading: userLoading, error } = useSelector(userSelector);
-  const { created_challenges, accepted_challenges, challenge_game_stats, featured_challenge, loading: challengeLoading } = useSelector(challengeSelector);
-  const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
+  const { user } = useSelector(userSelector);
+  const { created_challenges, accepted_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [refresh, setRefresh] = useState(false)
@@ -50,7 +42,6 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   // Grabs user data from the server
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
-    // dispatch(fetchDifficulties())
   }, [dispatch, refresh, route.params.username])
 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
@@ -68,21 +59,6 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
     setFilteredCreatedChallenges(created_challenges)
     setFilteredAcceptedChallenges(accepted_challenges)
   }, [created_challenges, accepted_challenges])
-
-  // Filter all challenges
-  const filterByAll = () => {
-    // setFilteredChallenges(challenges)
-    // var selectBox = document.getElementById("difficultyBox");
-    // selectBox.selectedIndex = 0;
-  }
-
-  // Filter by difficulty
-  const filterByDifficulty = () => {
-    // var selectBox = document.getElementById("difficultyBox");
-    // var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    // var filtered = challenges.filter(fc => fc.difficulty === selectedValue)
-    // setFilteredChallenges(filtered)
-  }
 
   return (
     <>
@@ -104,29 +80,6 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
           </div>
-
-          {/* FILTERS */}
-          {/* <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
-                <Link
-                  to={`/${user.username}/accepted`}
-                  className='mr-0 md:mr-10 hover:text-red-600'
-                >
-                  Accepted
-                </Link>
-                <Link
-                  to={`/${user.username}/completed`}
-                  className='mr-0 md:mr-10 hover:text-red-600'
-                >
-                  Completed
-                </Link> */}
-          {/* <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
-                <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='mr-0 md:mr-10 text-black hover:text-mcgreen'>
-                  <option value='Select' disabled selected>Difficulty</option>
-                  {difficulties.map(difficulty => (
-                    <option value={difficulty.name}>{difficulty.name}</option>
-                  ))}
-                </select> */}
-          {/* </div> */}
         </div>
       </div>
 
@@ -179,10 +132,12 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
           path={`/:username/challenges`}
           render={(props) => (
             <ChallengesPage
-              challenges={filteredCreatedChallenges}
-              created_challenges={filteredCreatedChallenges}
-              accepted_challenges={filteredAcceptedChallenges}
-              loading={challengeLoading}
+              created_challenges={created_challenges}
+              accepted_challenges={accepted_challenges}
+              filteredCreatedChallenges={filteredCreatedChallenges}
+              filteredAcceptedChallenges={filteredAcceptedChallenges}
+              setFilteredCreatedChallenges={setFilteredCreatedChallenges}
+              setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
               searchTerm={searchTerm}
               handleClearSearchBar={handleClearSearchBar}
               {...props}

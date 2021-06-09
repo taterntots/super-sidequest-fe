@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// ROUTING
-import { Link } from 'react-router-dom';
+// STATE
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  fetchDifficulties,
+  difficultySelector
+} from '../features/difficulty/difficultySlice';
 
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
@@ -10,8 +14,44 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesPage = ({ accepted_challenges, created_challenges, loading, searchTerm, handleClearSearchBar }) => {
+const ChallengesPage = ({ accepted_challenges, created_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, searchTerm, handleClearSearchBar }) => {
+  const dispatch = useDispatch();
+  const { difficulties } = useSelector(difficultySelector);
   const [currentChallengeFilter, setCurrentChallengeFilter] = useState('Created')
+
+  // Grabs filterable data from the server
+  useEffect(() => {
+    dispatch(fetchDifficulties())
+  }, [dispatch])
+
+  // Filter all challenges
+  const filterByAll = () => {
+    setFilteredCreatedChallenges(created_challenges)
+    setFilteredAcceptedChallenges(accepted_challenges)
+    var selectBox = document.getElementById("difficultyBox");
+    selectBox.selectedIndex = 0;
+  }
+
+  // Filter by difficulty
+  const filterByDifficulty = () => {
+    var selectBox = document.getElementById("difficultyBox");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    if (currentChallengeFilter === 'Created') {
+      var filtered = created_challenges.filter(fc => fc.difficulty === selectedValue)
+      setFilteredCreatedChallenges(filtered)
+    } else if (currentChallengeFilter === 'Active') {
+      var filtered = accepted_challenges.filter(fc => fc.difficulty === selectedValue)
+      setFilteredAcceptedChallenges(filtered)
+    }
+  }
+
+  // Reset all filters
+  const resetAllFilters = () => {
+    setFilteredCreatedChallenges(created_challenges)
+    setFilteredAcceptedChallenges(accepted_challenges)
+    var selectBox = document.getElementById("difficultyBox");
+    selectBox.selectedIndex = 0;
+  }
 
   return (
     <>
@@ -24,36 +64,44 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, loading, sear
           </h1>
           <ChallengeList
             challenges={
-              currentChallengeFilter === 'Created' ? created_challenges :
-                currentChallengeFilter === 'Active' ? accepted_challenges :
+              currentChallengeFilter === 'Created' ? filteredCreatedChallenges :
+                currentChallengeFilter === 'Active' ? filteredAcceptedChallenges :
                   currentChallengeFilter === 'Completed' ? accepted_challenges :
                     null
             }
-            loading={loading}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
           />
         </div>
 
+        {/* FILTER */}
         <div className='w-full lg:w-1/5'>
-          {/* FILTER */}
           <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Filter By
             </h1>
             <div className='flex flex-col'>
               <button
-                onClick={() => setCurrentChallengeFilter('Created')}
+                onClick={() => {
+                  setCurrentChallengeFilter('Created')
+                  resetAllFilters()
+                }}
               >
                 Created
               </button>
               <button
-                onClick={() => setCurrentChallengeFilter('Active')}
+                onClick={() => {
+                  setCurrentChallengeFilter('Active')
+                  resetAllFilters()
+                }}
               >
                 Active
               </button>
               <button
-                onClick={() => setCurrentChallengeFilter('Completed')}
+                onClick={() => {
+                  setCurrentChallengeFilter('Complete')
+                  resetAllFilters()
+                }}
               >
                 Completed
               </button>
@@ -65,31 +113,13 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, loading, sear
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Search
             </h1>
-            {/* {acceptedChallenges.map(acceptedChallenge => (
-              <Link
-                key={acceptedChallenge.challenge_id}
-                to={`/${acceptedChallenge.username}/challenges/${acceptedChallenge.challenge_id}`}
-                className='flex p-2 mb-3 rounded-lg hover:bg-purple-500'
-              >
-                <img
-                  className='h-24 w-44 rounded-md'
-                  src={acceptedChallenge.banner_pic_URL}
-                  alt='banner for a single game'
-                />
-                <div className='flex justify-between w-full'>
-                  <div className='ml-4 self-center'>
-                    <div className='flex justify-between'>
-                      <p>{acceptedChallenge.name}</p>
-                    </div>
-                    <p>by {acceptedChallenge.username}</p>
-                    <p>{acceptedChallenge.description}</p>
-                  </div>
-                  <div className='ml-4'>
-                    <p className='px-2 border-2 rounded-md'>{acceptedChallenge.system}</p>
-                  </div>
-                </div>
-              </Link>
-            ))} */}
+            <button onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</button>
+            <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='mr-0 md:mr-10 text-black hover:text-mcgreen'>
+              <option value='Select' disabled selected>Difficulty</option>
+              {difficulties.map(difficulty => (
+                <option value={difficulty.name}>{difficulty.name}</option>
+              ))}
+            </select>
             {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
             <div className='invisible pt-1' />
           </div>
