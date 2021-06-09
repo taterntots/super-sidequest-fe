@@ -87,11 +87,14 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
   return (
     <>
       <div className="lg:flex justify-between">
-
         {/* CHALLENGE LIST */}
         <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profileone rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
-            Challenges
+            {currentChallengeFilter === 'Created' ? 'Created Quests' :
+              currentChallengeFilter === 'Active' ? 'Active Quests' :
+                currentChallengeFilter === 'Completed' ? 'Completed Quests' :
+                  null
+            }
           </h1>
           <ChallengeList
             challenges={
@@ -109,10 +112,13 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
         <div className='w-full lg:w-1/5'>
           <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
-              Status
+              Quest Status
             </h1>
             <div className='flex flex-col'>
               <button
+                className={currentChallengeFilter === 'Created' ?
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Created')
                   filterReset()
@@ -122,20 +128,24 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                 Created
               </button>
               <button
-                onClick={() => {
-                  setCurrentChallengeFilter('Active')
-                  filterReset()
-                  handleClearSearchBar()
-                }}
+                className={currentChallengeFilter === 'Active' ?
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"} onClick={() => {
+                    setCurrentChallengeFilter('Active')
+                    filterReset()
+                    handleClearSearchBar()
+                  }}
               >
                 Active
               </button>
               <button
-                onClick={() => {
-                  setCurrentChallengeFilter('Completed')
-                  filterReset()
-                  handleClearSearchBar()
-                }}
+                className={currentChallengeFilter === 'Completed' ?
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"} onClick={() => {
+                    setCurrentChallengeFilter('Completed')
+                    filterReset()
+                    handleClearSearchBar()
+                  }}
               >
                 Completed
               </button>
@@ -150,24 +160,23 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
             <div className='flex flex-col'>
               <button
                 onClick={filterReset}
+                className={`items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out`}
               >
-                ALL
+                Reset
               </button>
-              <select name='difficulty' id='difficultyBox' onChange={filterMaster} className='text-black'>
+              <select name='difficulty' id='difficultyBox' onChange={filterMaster} className='mb-4 text-black px-1 rounded-md'>
                 <option value='Select' disabled selected>Difficulty</option>
                 {difficulties.map(difficulty => (
                   <option key={difficulty.id} value={difficulty.name}>{difficulty.name}</option>
                 ))}
               </select>
-              <select name='system' id='systemBox' onChange={filterMaster} className='text-black'>
+              <select name='system' id='systemBox' onChange={filterMaster} className='text-black px-1 rounded-md'>
                 <option value='Select' disabled selected>System</option>
                 {systems.map(system => (
                   <option key={system.id} value={system.name}>{system.name}</option>
                 ))}
               </select>
             </div>
-            {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
-            <div className='invisible pt-1' />
           </div>
         </div>
       </div >

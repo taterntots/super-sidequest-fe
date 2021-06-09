@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import ChallengeCard2 from './ChallengeCard2';
+import ChallengeCard from './ChallengeCard';
 import SearchError from '../../components/SearchError';
 
 // ----------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar }) => {
               to={`/${i.username}/challenges/${i.challenge_id}`}
               onClick={handleClearSearchBar}
             >
-              <ChallengeCard2
+              <ChallengeCard
                 key={i.challenge_id}
                 data={i}
               />

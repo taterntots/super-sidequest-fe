@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import ChallengeCard2 from '../features/challenge/ChallengeCard2';
+import ChallengeCard from '../features/challenge/ChallengeCard';
 
 // ----------------------------------------------------------------------------------
 // --------------------------------- PROFILE PAGE -----------------------------------
@@ -48,7 +48,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
           </div>
 
           {/* ACTIVE CHALLENGES */}
-          <div className="px-10 bg-profileone rounded-lg text-white">
+          <div className="px-10 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Active Quests
             </h1>
@@ -58,7 +58,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
                   key={acceptedChallenge.challenge_id}
                   to={`/${acceptedChallenge.username}/challenges/${acceptedChallenge.challenge_id}`}
                 >
-                  <ChallengeCard2
+                  <ChallengeCard
                     key={acceptedChallenge.challenge_id}
                     data={acceptedChallenge}
                   />
@@ -66,7 +66,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
               ))}
             </div>
             {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
-            <div className='invisible pt-1' />
+            {/* <div className='invisible pt-1' /> */}
           </div>
         </div>
       </div >

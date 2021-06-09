@@ -4,10 +4,10 @@ import React from 'react';
 // import { ReactComponent as BlankPublisher } from '../../img/icon/BlankPublisher.svg';
 
 // ----------------------------------------------------------------------------------
-// --------------------------------- CHALLENGE CARD ---------------------------------
+// --------------------------------- CHALLENGE CARD 2 -------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeCard = ({ data }) => {
+const ChallengeCard2 = ({ data }) => {
   const {
     challenge_id,
     name,
@@ -21,66 +21,35 @@ const ChallengeCard = ({ data }) => {
   } = data;
 
   return (
-    <div
-      key={challenge_id}
-      className={`hover:bg-cardhover max-w-359 hover:bg-opacity-25 p-2 rounded-md text-white`}
-    >
-      <div className={`overflow-hidden`}>
-        {/* TOP IMG */}
+    <div className='p-2 rounded-lg hover:bg-purple-500 transform transition duration-500 hover:scale-105'>
+      <div
+        key={challenge_id}
+        className='flex'
+      >
         <img
+          className='h-24 w-44 rounded-md'
           src={banner_pic_URL}
-          alt='img for a challenge'
-          className='object-fill w-full h-full min-h-full max-h-40 rounded-t-md'
+          alt='banner for a single game'
         />
+        <div className='flex justify-between w-full'>
+          <div className='ml-4 self-center'>
+            <p>{name}</p>
+            <p>{game_title}</p>
+            <p>by {username}</p>
 
-        {/* color bar */}
-        <div className={`relative  w-full`}>
-
-          {/* TYPE */}
-          <div className={`flex items-center justify-between px-4 py-2 text-sm text-white rounded-b-lg
-          ${difficulty === 'Easy' && 'bg-easy'}
-          ${difficulty === 'Medium' && 'bg-medium'}
-          ${difficulty === 'Hard' && 'bg-hard'}
-          `}
-          >
-            <span>{game_title}</span>
-            <span>{difficulty}</span>
+          </div>
+          <div className='text-full '>
+            <p className='truncate px-2 border-2 rounded-md'>{system}</p>
           </div>
         </div>
-
-        <div className='flex items-start pt-2'>
-          <div className='flex-shrink-0 pt-1'>
-            {banner_pic_URL ? (
-              <img
-                src={banner_pic_URL}
-                alt='img for a publisher profile'
-                className='inline-block object-fill w-12 h-12 rounded-md'
-              />
-            ) : (
-              <p>NO IMAGE</p>
-              // <BlankPublisher className='inline-block object-fill w-12 h-12 rounded-md' />
-            )}
-          </div>
-
-          <div className='flex-1 w-0 ml-5'>
-            <dl>
-              <dt className='text-sm font-medium leading-5 truncate-2-lines'>
-                {name}
-              </dt>
-              <dd>
-                <div className='text-xs font-medium leading-4 truncate'>
-                  {username}
-                </div>
-                <div className='text-xs font-medium text-instruments truncate-2-lines'>
-                  {system}
-                </div>
-              </dd>
-            </dl>
-          </div>
-        </div>
+      </div>
+      <div className='text-center'>
+        <p className='mt-2 border-2 px-10 rounded-md bg-profiletwo'>
+          {description}
+        </p>
       </div>
     </div>
   );
 };
 
-export default ChallengeCard;
+export default ChallengeCard2;
