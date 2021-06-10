@@ -144,8 +144,8 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
 
   return (
     <>
-      <div className="flex justify-between">
-        <div className="mr-3 w-2/5 h-full px-10 pb-4 bg-profileone rounded-lg text-white">
+      <div className="lg:flex justify-between">
+        <div className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profileone rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             {challenge.name}
           </h1>
@@ -166,18 +166,18 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
           <br />
 
           {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
-          <div className='flex justify-evenly'>
+          <div className='flex flex-col md:flex-row justify-evenly'>
             {!acceptedChallenge && localStorage.getItem('token') ? (
               <button
                 onClick={() => setOpenAccept(true)}
-                className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
               >
                 Accept
               </button>
             ) : acceptedChallenge && localStorage.getItem('token') ? (
               <button
                 onClick={() => setOpenAbandon(true)}
-                className={`flex mr-4 items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
               >
                 Abandon
               </button>

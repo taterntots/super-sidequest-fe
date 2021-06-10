@@ -30,7 +30,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
   return (
     <>
       <div className="w-full lg:w-3/5 h-full pb-4 px-10 bg-profileone rounded-lg text-white">
-        <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
+        <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
           Leaderboard
         </h1>
         <div className='rounded-lg bg-gray-700'>
@@ -118,10 +118,10 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
         {/* UPDATE PERSONAL BEST BUTTONS */}
         <div className='mt-4'>
           {acceptedChallenge && localStorage.getItem('token') ? (
-            <div className='flex justify-evenly'>
+            <div className='flex flex-col md:flex-row justify-evenly'>
               <button
                 onClick={() => setOpen(true)}
-                className={`rounded-lg text-lg px-24 md:px-12 py-3 font-medium bg-profiletwo hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
               >
                 {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : null}
               </button>
