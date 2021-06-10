@@ -38,7 +38,7 @@ const ChallengeCard2 = ({ data }) => {
             <p>by {username}</p>
 
           </div>
-          <div className='text-full '>
+          <div className='text-full'>
             <p className='truncate px-2 border-2 rounded-md'>{system}</p>
           </div>
         </div>

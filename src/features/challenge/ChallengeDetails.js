@@ -146,24 +146,49 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
     <>
       <div className="lg:flex justify-between">
         <div className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profileone rounded-lg text-white">
-          <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
+          <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
             {challenge.name}
           </h1>
-          <br />
-
-          {challenge.is_high_score ? (
-            <p>Highscore</p>
-          ) : challenge.is_speedrun ? (
-            <p>Speedrun</p>
-          ) : (
-            <p>For Glory</p>
-          )}
-          <br />
-
-          <p className='whitespace-pre-wrap border-2'>
+          <h2 className='text-center text-lg font-medium pb-4 lg:my-0'>
+            by {challenge.username}
+          </h2>
+          <div>
+            <img
+              className='rounded-t-md w-full'
+              src={challenge.banner_pic_URL}
+              alt='banner for a single game'
+            />
+            <p className='mb-4 text-center text-lg rounded-b-md bg-gray-700'>
+              {challenge.game_title}
+            </p>
+          </div>
+          <p className='mb-4 border-2 text-center rounded-md bg-profiletwo'>
+            {challenge.description}
+          </p>
+          <div className='flex justify-evenly mb-4'>
+            <p className='px-2 border-2 rounded-md'>
+              {challenge.is_high_score ? 'High Score' :
+                challenge.is_speedrun ? 'Speedrun' :
+                  'For Glory'}
+            </p>
+            <p className='px-2 border-2 rounded-md'>
+              {challenge.system}
+            </p>
+            <p className='px-2 border-2 rounded-md'>
+              {challenge.difficulty}
+            </p>
+          </div>
+          <p className='whitespace-pre-wrap mb-4'>
             {challenge.rules}
           </p>
-          <br />
+          {challenge.prize ? (
+            <div className='text-center border-2 mx-10 mb-4 rounded-md bg-yellow-500'>
+              <p className='text-xl'>Reward</p>
+              <p>
+                {challenge.prize}
+              </p>
+            </div>
+          ) : null}
 
           {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
           <div className='flex flex-col md:flex-row justify-evenly'>
