@@ -20,16 +20,29 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             Stats
           </h1>
-          {challenge_game_stats.map(gameStats => (
-            <Link
-              key={gameStats.game}
-              to={`/games/${gameStats.game_id}`}
-              className='flex justify-between hover:bg-white hover:text-purplebutton'
-            >
-              <p>{gameStats.game}</p>
-              <p>{gameStats.total_challenges_completed}</p>
-            </Link>
-          ))}
+          <div className='rounded-lg bg-gray-700'>
+            <div className='flex justify-between px-4 py-1 font-bold'>
+              <p>
+                Game
+              </p>
+              <p>
+                Quests Completed
+              </p>
+            </div>
+            {challenge_game_stats.map((gameStat, index) => (
+              <Link
+                key={gameStat.game}
+                to={`/games/${gameStat.game_id}`}
+                className={`flex justify-between ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:bg-white hover:text-profiletwo`}
+              >
+                <p>{gameStat.game}</p>
+                <p className='pl-4'>{gameStat.total_challenges_completed}</p>
+              </Link>
+            ))}
+            <p className='invisible'>
+              INVISIBLE TEXT TO SHOW ROUNDED BORDER
+            </p>
+          </div>
         </div>
 
         <div className='w-full lg:w-3/5'>
