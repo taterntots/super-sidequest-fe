@@ -88,13 +88,13 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
       </div>
 
       {/* TAB CONTENT */}
-      <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start text-xl text-white'>
+      <div className='flex flex-row items-center justify-start text-xl text-white'>
         <Link
           to={`/${user.username}`}
           onClick={() => handleClearSearchBar()}
           className={!url.includes('challenges') && !url.includes('add-challenge') ?
-            "md:px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
-            "md:px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
+            "px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+            "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Profile
           </Link>
@@ -102,8 +102,8 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
           to={`/${user.username}/challenges`}
           onClick={() => handleClearSearchBar()}
           className={url.includes('challenges') ?
-            "md:px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
-            "md:px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
+            "px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+            "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Challenges
           </Link>
@@ -111,8 +111,8 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
           <Link
             to={`/${localStorage.getItem('username')}/add-challenge`}
             className={url.includes('add-challenge') ?
-              "md:px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
-              "md:px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md"}
+              "px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+              "px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md"}
           >
             +
           </Link>

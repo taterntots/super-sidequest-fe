@@ -17,14 +17,18 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
 
         {/* STATS */}
         <div className="mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-profileone rounded-lg text-white">
-          <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
+          <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             Stats
           </h1>
           {challenge_game_stats.map(gameStats => (
-            <div key={gameStats.game} className='flex justify-between'>
+            <Link
+              key={gameStats.game}
+              to={`/games/${gameStats.game_id}`}
+              className='flex justify-between hover:bg-white hover:text-purplebutton'
+            >
               <p>{gameStats.game}</p>
               <p>{gameStats.total_challenges_completed}</p>
-            </div>
+            </Link>
           ))}
         </div>
 
