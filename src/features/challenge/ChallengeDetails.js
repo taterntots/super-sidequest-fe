@@ -145,8 +145,8 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   return (
     <>
       <div className="flex justify-between">
-        <div className="mr-3 w-2/5 h-full p-10 bg-profileone rounded-lg text-white">
-          <h1>
+        <div className="mr-3 w-2/5 h-full px-10 pb-4 bg-profileone rounded-lg text-white">
+          <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             {challenge.name}
           </h1>
           <br />
@@ -166,26 +166,31 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
           <br />
 
           {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
-          {!acceptedChallenge && localStorage.getItem('token') ? (
-            <button
-              onClick={() => setOpenAccept(true)}
-              className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
-            >
-              Accept
-            </button>
-          ) : acceptedChallenge && localStorage.getItem('token') ? (
-            <button
-              onClick={() => setOpenAbandon(true)}
-              className={`flex mr-4 items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
-            >
-              Abandon
-            </button>
-          ) : null}
+          <div className='flex justify-evenly'>
+            {!acceptedChallenge && localStorage.getItem('token') ? (
+              <button
+                onClick={() => setOpenAccept(true)}
+                className={`flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+              >
+                Accept
+              </button>
+            ) : acceptedChallenge && localStorage.getItem('token') ? (
+              <button
+                onClick={() => setOpenAbandon(true)}
+                className={`flex mr-4 items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+              >
+                Abandon
+              </button>
+            ) : null}
 
-          {/* FEATURED TOGGLE */}
-          {challenge.user_id === localStorage.getItem('id') ? (
-            <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} />
-          ) : null}
+            {/* FEATURED TOGGLE */}
+            {challenge.user_id === localStorage.getItem('id') ? (
+              <div className='flex self-center'>
+                <p className='font-bold'>Featured:</p>
+                <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} />
+              </div>
+            ) : null}
+          </div>
         </div>
 
         {/* LEADERBOARD */}
