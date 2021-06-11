@@ -16,21 +16,19 @@ const GameCard = ({ data }) => {
   } = data;
 
   return (
-    <div key={id} className={`hover:bg-cardhover max-w-359 hover:bg-opacity-25 p-2 rounded-lg text-white`}>
-      <div className={`overflow-hidden`}>
-        {/* TOP IMG */}
+    <div key={id} className={`p-2 rounded-lg transform transition duration-500 hover:scale-105`}>
+      {/* TOP IMG */}
+      <div className=''>
         <img
+          className='w-full h-48 object-cover rounded-t-lg'
           src={banner_pic_URL}
-          alt='img for a challenge'
-          className='rounded-t-lg h-44 w-full'
+          alt='img for a single game'
         />
-        {/* color bar */}
-        <div className={`relative w-full`}>
-          <div className={`flex items-center justify-between px-4 py-2 text-sm text-white rounded-b-lg bg-easy`}>
-            <span>{name}</span>
-            <span>{moment(release_date).format("YYYY")}</span>
-          </div>
-        </div>
+      </div>
+      {/* color bar */}
+      <div className={`flex items-center justify-between px-4 py-2 text-sm text-white rounded-b-lg bg-gray-600`}>
+        <span>{name}</span>
+        <span>{moment(release_date).format("YYYY")}</span>
       </div>
     </div>
   );

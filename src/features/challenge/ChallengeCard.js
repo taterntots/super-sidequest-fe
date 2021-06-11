@@ -29,7 +29,7 @@ const ChallengeCard2 = ({ data }) => {
         <img
           className='h-24 w-44 rounded-md'
           src={banner_pic_URL}
-          alt='banner for a single game'
+          alt='banner for a single challenge'
         />
         <div className='flex justify-between w-full'>
           <div className='ml-4 self-center'>
