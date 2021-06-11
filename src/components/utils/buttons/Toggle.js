@@ -20,7 +20,7 @@ const Toggle = ({ on, setOn, submitFunction }) => {
       tabIndex='0'
       aria-checked='false'
       className={`${on ? 'bg-profiletwo' : 'bg-gray-300'
-        } relative mx-3 inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
+        } relative ml-3 inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
     >
       {/* <!-- On: "translate-x-5", Off: "translate-x-0" --> */}
       <span

@@ -37,7 +37,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
           Leaderboard
         </h1>
         <div className='rounded-lg bg-gray-700'>
-          <div className='flex w-full text-center py-1 font-bold'>
+          <div className='flex w-full text-center px-2 py-1 font-bold'>
             <p className='w-1/12'>Rank</p>
             <p className='w-6/12'>
               Player
@@ -49,7 +49,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
 
           {/* LEADERBOARD DATA */}
           {challenges_scores ? challenges_scores.map((score, index) => (
-            <div key={score.id} className={`flex text-center ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} py-1 hover:bg-white hover:text-profiletwo`}>
+            <div key={score.id} className={`flex text-center ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:bg-white hover:text-profiletwo`}>
               <p className='w-1/12'>{index + 1}</p>
               <Link
                 key={score.id}
