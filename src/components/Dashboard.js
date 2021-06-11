@@ -9,7 +9,7 @@ import NavBar from './NavBar';
 import Footer from './Footer';
 import ResetPassword from './Auth/ResetPassword';
 import HomePage from '../components/HomePage';
-import UsersPage from '../components/UsersPage';
+import UserPage from '../components/UserPage';
 import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
 
@@ -123,7 +123,7 @@ const Dashboard = () => {
           <Route
             path={`/:username`}
             render={(props) => (
-              <UsersPage
+              <UserPage
                 searchTerm={searchTerm}
                 handleClearSearchBar={handleClearSearchBar}
                 {...props}

@@ -3,23 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchGameById,
   fetchGameChallenges,
+  fetchGameChallengesByPopularity,
   gameSelector
 } from '../features/game/gameSlice';
-import {
-  fetchDifficulties,
-  difficultySelector
-} from '../features/difficulty/difficultySlice';
 
 // ROUTING
-import { Link, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
 // COMPONENTS
-import ChallengeList from '../features/challenge/ChallengeList';
-import LoadSpinner from './LoadSpinner';
-import ServerFailure from './ServerFailure';
+import GameChallengesPage from './GameChallengesPage';
 
 // IMAGES
-import { ReactComponent as BlankPublisher } from '../img/BlankPublisher.svg';
+import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ GAME PAGE -----------------------------------
@@ -28,92 +23,48 @@ import { ReactComponent as BlankPublisher } from '../img/BlankPublisher.svg';
 const GamePage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
-  const { game, challenges, loading, error } = useSelector(gameSelector);
-  const { difficulties } = useSelector(difficultySelector);
+  const { game, challenges, popular_challenges } = useSelector(gameSelector);
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
+  const [filteredPopularChallenges, setFilteredPopularChallenges] = useState(challenges);
 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges(route.params.gameId))
-    dispatch(fetchDifficulties())
+    dispatch(fetchGameChallengesByPopularity(route.params.gameId))
   }, [dispatch])
 
   // Resets filter when clicking away from page
   useEffect(() => {
     setFilteredChallenges(challenges)
-  }, [challenges])
-
-  // Filter all challenges
-  const filterByAll = () => {
-    setFilteredChallenges(challenges)
-    var selectBox = document.getElementById("difficultyBox");
-    selectBox.selectedIndex = 0;
-  }
-
-  // Filter by difficulty
-  const filterByDifficulty = () => {
-    var selectBox = document.getElementById("difficultyBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    var filtered = challenges.filter(fc => fc.difficulty === selectedValue)
-    setFilteredChallenges(filtered)
-  }
+    setFilteredPopularChallenges(popular_challenges)
+  }, [challenges, popular_challenges])
 
   return (
     <>
-      {loading ? (
-        <LoadSpinner loading={loading} />
-      ) : error ? (
-        <ServerFailure />
-      ) : (
+      {/* GAME INFO */}
+      <div className='mb-4'>
         <div>
-          <div className='mb-4'>
-            <div>
-              <img
-                className='object-cover h-72 w-full rounded-t-md'
-                src={game.banner_pic_URL}
-                alt='banner for a single game'
-              />
+          <img
+            className='object-cover h-72 w-full rounded-t-md'
+            src={game.banner_pic_URL}
+            alt='banner for a single game'
+          />
+        </div>
+        <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
+          <div className='sm:flex justify-between'>
+            <div className='flex justify-center items-center py-3'>
+              <BlankUser className='inline-block object-fill w-12 h-12 rounded-md' />
+              <h1 className='pl-5 text-3xl text-white'>{game.name}</h1>
             </div>
-
-            {/* Info Bar */}
-            <div className='px-0 sm:px-10 pt-4 pb-1 bg-green-600 rounded-b-lg'>
-              {/* Game Info */}
-              <div className='sm:flex justify-between'>
-                {/* Left Side */}
-                <div className='flex justify-center items-start'>
-                  {/* {game.banner_pic_URL ? (
-                    <img
-                      className='rounded-lg ml-0.5 h-14 w-14 hidden sm:block'
-                      src={game.banner_pic_URL}
-                      alt='profile for a single game'
-                    />
-                  ) : ( */}
-                  <BlankPublisher className='inline-block object-fill w-12 h-12 rounded-md' />
-                  {/* )} */}
-                  <h1 className='sm:pl-5 text-3xl text-white'>{game.name}</h1>
-                </div>
-              </div>
-
-              {/* FILTERS */}
-              <div className='flex flex-col sm:flex-row items-center sm:justify-between md:justify-start pt-2 text-xl text-white'>
-                <Link onClick={filterByAll} className='mr-0 md:mr-10 hover:text-mcgreen'>ALL</Link>
-                <select name='difficulty' id='difficultyBox' onChange={filterByDifficulty} className='hover:text-mcgreen text-black'>
-                  <option value='Select' disabled selected>Difficulty</option>
-                  {difficulties.map(difficulty => (
-                    <option value={difficulty.name}>{difficulty.name}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* LIST OF GAME CHALLENGES */}
-          <div>
-            <ChallengeList challenges={filteredChallenges} loading={loading} error={error} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
           </div>
         </div>
-      )}
+      </div>
+
+      {/* RENDERS GAME CHALLENGES SEARCH PAGE */}
+      <div>
+        <GameChallengesPage challenges={challenges} popular_challenges={popular_challenges} filteredChallenges={filteredChallenges} filteredPopularChallenges={filteredPopularChallenges} setFilteredChallenges={setFilteredChallenges} setFilteredPopularChallenges={setFilteredPopularChallenges} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+      </div>
     </>
   );
 }

@@ -10,6 +10,7 @@ export const initialState = {
   games: [],
   game: {},
   challenges: [],
+  popular_challenges: [],
   loading: false,
   error: false,
 };
@@ -45,6 +46,19 @@ export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges',
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `games/${gameId}/challenges`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all challenges sorted by popularity associated with a game
+export const fetchGameChallengesByPopularity = createAsyncThunk('games/fetchGameChallengesByPopularity', async (gameId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `games/${gameId}/challenges/popular`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -91,6 +105,18 @@ export const gameSlice = createSlice({
       state.error = false
     },
     [fetchGameChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchGameChallengesByPopularity.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchGameChallengesByPopularity.fulfilled]: (state, { payload }) => {
+      state.popular_challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchGameChallengesByPopularity.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }

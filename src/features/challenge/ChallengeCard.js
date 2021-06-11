@@ -1,7 +1,7 @@
 import React from 'react';
 
 // IMAGES
-// import { ReactComponent as BlankPublisher } from '../../img/icon/BlankPublisher.svg';
+// import { ReactComponent as BlankUser } from '../../img/icon/BlankUser.svg';
 
 // ----------------------------------------------------------------------------------
 // --------------------------------- CHALLENGE CARD 2 -------------------------------

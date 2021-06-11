@@ -23,14 +23,14 @@ import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 
 // IMAGES
-import { ReactComponent as BlankPublisher } from '../img/BlankPublisher.svg';
+import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 
 // ----------------------------------------------------------------------------------
-// ----------------------------------- USERS PAGE------------------------------------
+// ----------------------------------- USER PAGE-------------------------------------
 // ----------------------------------------------------------------------------------
 
-const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
+const UserPage = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
@@ -75,12 +75,10 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
             alt='banner for a user'
           />
         </div>
-
-        {/* Info Bar */}
         <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
           <div className='sm:flex justify-between'>
             <div className='flex justify-center items-center py-3'>
-              <BlankPublisher className='inline-block object-fill w-12 h-12 rounded-md' />
+              <BlankUser className='inline-block object-fill w-12 h-12 rounded-md' />
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
           </div>
@@ -182,4 +180,4 @@ const UsersPage = ({ searchTerm, handleClearSearchBar }) => {
   );
 }
 
-export default UsersPage;
+export default UserPage;
