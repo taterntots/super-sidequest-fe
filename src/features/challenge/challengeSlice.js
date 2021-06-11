@@ -16,6 +16,7 @@ export const initialState = {
   completed_challenges: [],
   challenges_high_scores: [],
   challenges_speedruns: [],
+  challenges_for_glorys: [],
   challenge_game_stats: [],
   challenge: {},
   featured_challenge: {},
@@ -120,6 +121,19 @@ export const fetchAllChallengeSpeedruns = createAsyncThunk('challenges/fetchAllC
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `challenges/${challengeId}/speedruns`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a challenge's For Glory leaderboard
+export const fetchAllChallengeForGlorys = createAsyncThunk('challenges/fetchAllChallengeForGlorys', async (challengeId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/${challengeId}/glory`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -434,6 +448,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchAllChallengeSpeedruns.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchAllChallengeForGlorys.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchAllChallengeForGlorys.fulfilled]: (state, { payload }) => {
+      state.challenges_for_glorys = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchAllChallengeForGlorys.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

@@ -6,6 +6,7 @@ import {
   fetchIfChallengeAlreadyAccepted,
   fetchAllChallengeHighScores,
   fetchAllChallengeSpeedruns,
+  fetchAllChallengeForGlorys,
   fetchUserFeaturedChallenge,
   acceptChallenge,
   abandonChallenge,
@@ -32,7 +33,7 @@ import Toggle from '../../components/utils/buttons/Toggle';
 const ChallengeDetails = ({ refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
-  const { challenge, challenges_high_scores, challenges_speedruns, acceptedChallenge, featured_challenge, loading: challengeLoading } = useSelector(challengeSelector)
+  const { challenge, challenges_high_scores, challenges_speedruns, challenges_for_glorys, acceptedChallenge, featured_challenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const [openAccept, setOpenAccept] = useState(false)
   const [openAbandon, setOpenAbandon] = useState(false)
@@ -48,6 +49,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
     dispatch(fetchChallengeById(route.params.challengeId))
     dispatch(fetchAllChallengeHighScores(route.params.challengeId))
     dispatch(fetchAllChallengeSpeedruns(route.params.challengeId))
+    dispatch(fetchAllChallengeForGlorys(route.params.challengeId))
     dispatch(fetchIfChallengeAlreadyAccepted(isChallengeAcceptedData))
     dispatch(fetchUserFeaturedChallenge(localStorage.getItem('id')))
   }, [dispatch, refresh])
@@ -219,7 +221,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
         </div>
 
         {/* LEADERBOARD */}
-        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} />
+        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} />
       </div >
 
       {/* Modals */}

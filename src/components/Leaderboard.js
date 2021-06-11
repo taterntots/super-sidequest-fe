@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 // ROUTING
 import { Link } from 'react-router-dom';
 
+// DATE
+import moment from 'moment';
+
 // IMAGES
 import { ReactComponent as VideoIcon } from '../img/VideoIcon.svg'
 import { ReactComponent as ImageIcon } from '../img/ImageIcon.svg'
@@ -40,7 +43,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
               Player
             </p>
             <p className='w-3/12'>
-              {challenge.is_high_score ? 'High Score' : challenge.is_speedrun ? 'Time' : null}
+              {challenge.is_high_score ? 'High Score' : challenge.is_speedrun ? 'Time' : 'Date'}
             </p>
           </div>
 
@@ -88,7 +91,12 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
                           :
                           `${score.speedrun_hours ? score.speedrun_hours + 'h' : ''} ${score.speedrun_minutes}m ${score.speedrun_seconds}s ${score.speedrun_milliseconds ? score.speedrun_milliseconds + 'ms' : ''}`
                   }
-                </p>) : null}
+                </p>
+              ) : (
+                <p className='w-3/12'>
+                  {score.completed ? moment(score.updated_at).format("MM/DD/YYYY hh:mm:ss") : '---'}
+                </p>
+              )}
 
               {score.video_URL ? (
                 <VideoIcon className='w-1/12 h-6 cursor-pointer' onClick={() => {
@@ -123,7 +131,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
                 onClick={() => setOpen(true)}
                 className={`rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
               >
-                {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : null}
+                {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : 'Update Status'}
               </button>
               <div className='flex self-center'>
                 <p className='font-bold'>Completed:</p>
