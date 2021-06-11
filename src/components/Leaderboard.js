@@ -129,7 +129,8 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
             <div className='flex flex-col md:flex-row justify-evenly'>
               <button
                 onClick={() => setOpen(true)}
-                className={`rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`${acceptedChallenge.completed && `pointer-events-none opacity-50`
+                  } rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
               >
                 {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : 'Update Status'}
               </button>

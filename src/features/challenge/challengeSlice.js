@@ -279,8 +279,7 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
         speedrun_milliseconds: data.speedrun_milliseconds ? data.speedrun_milliseconds : null,
         total_milliseconds: data.total_milliseconds ? data.total_milliseconds : null,
         image_URL: data.image_URL ? data.image_URL : null,
-        video_URL: data.video_URL ? data.video_URL : null,
-        completed: data.completed ? data.completed : false
+        video_URL: data.video_URL ? data.video_URL : null
       }
     })
     cogoToast.success('Challenge updated!', {
