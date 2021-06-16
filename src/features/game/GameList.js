@@ -51,7 +51,7 @@ const GameList = ({ searchTerm, handleClearSearchBar }) => {
               {searchResults.map((i) => (
                 <Link
                   key={i.id}
-                  to={`/games/${i.id}`}
+                  to={`/games/${i.id}/challenges`}
                   onClick={handleClearSearchBar}
                 >
                   <GameCard

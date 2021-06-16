@@ -63,7 +63,16 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
 
       {/* RENDERS GAME CHALLENGES SEARCH PAGE */}
       <div>
-        <GameChallengesPage challenges={challenges} popular_challenges={popular_challenges} filteredChallenges={filteredChallenges} filteredPopularChallenges={filteredPopularChallenges} setFilteredChallenges={setFilteredChallenges} setFilteredPopularChallenges={setFilteredPopularChallenges} searchTerm={searchTerm} handleClearSearchBar={handleClearSearchBar} />
+        <GameChallengesPage
+          challenges={challenges}
+          popular_challenges={popular_challenges}
+          filteredChallenges={filteredChallenges}
+          filteredPopularChallenges={filteredPopularChallenges}
+          setFilteredChallenges={setFilteredChallenges}
+          setFilteredPopularChallenges={setFilteredPopularChallenges}
+          searchTerm={searchTerm}
+          handleClearSearchBar={handleClearSearchBar}
+        />
       </div>
     </>
   );

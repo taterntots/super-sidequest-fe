@@ -117,11 +117,12 @@ const GameChallengesPage = ({ challenges, popular_challenges, filteredChallenges
               <button
                 className={currentChallengeFilter === 'Popular' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"} onClick={() => {
-                    setCurrentChallengeFilter('Popular')
-                    filterReset()
-                    handleClearSearchBar()
-                  }}
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
+                onClick={() => {
+                  setCurrentChallengeFilter('Popular')
+                  filterReset()
+                  handleClearSearchBar()
+                }}
               >
                 Popular
               </button>
@@ -135,7 +136,10 @@ const GameChallengesPage = ({ challenges, popular_challenges, filteredChallenges
             </h1>
             <div className='flex flex-col'>
               <button
-                onClick={filterReset}
+                onClick={() => {
+                  filterReset()
+                  handleClearSearchBar()
+                }}
                 className={`items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out`}
               >
                 Reset

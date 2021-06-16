@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // ROUTING
 import { Route, Switch } from 'react-router-dom';
@@ -66,7 +66,7 @@ const Dashboard = () => {
           />
           <Route
             exact
-            path={`/games/:gameId`}
+            path={`/games/:gameId/challenges`}
             render={(props) => (
               <GamePage
                 searchTerm={searchTerm}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // ROUTING
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 // TOAST
 import cogoToast from 'cogo-toast';
@@ -17,6 +17,7 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('');
   const history = useHistory();
+  const location = useLocation();
 
   // Function for logging out
   const logout = () => {
@@ -39,8 +40,14 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
         <Link to='/support' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Support Us</Link>
         <input
           id='searchBar'
-          className='px-3 py-1 w-1/4 rounded hidden lg:block text-black'
-          placeholder='Search for games'
+          className={
+            location.pathname.includes('/challenges') && !location.pathname.includes('challenges/') ||
+              location.pathname === ('/games')
+              ? 'px-3 py-1 w-1/4 rounded hidden lg:block text-black'
+              : 'invisible px-3 py-1 w-1/4 rounded hidden lg:block text-black'}
+          placeholder={location.pathname.includes('/challenges') ? 'Search by keyword'
+            : location.pathname === ('/games') ? 'Search by game'
+              : ''}
           onChange={handleInputChange}
           type='search'
         />

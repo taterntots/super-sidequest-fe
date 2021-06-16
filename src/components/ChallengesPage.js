@@ -141,11 +141,12 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               <button
                 className={currentChallengeFilter === 'Completed' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"} onClick={() => {
-                    setCurrentChallengeFilter('Completed')
-                    filterReset()
-                    handleClearSearchBar()
-                  }}
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
+                onClick={() => {
+                  setCurrentChallengeFilter('Completed')
+                  filterReset()
+                  handleClearSearchBar()
+                }}
               >
                 Completed
               </button>
@@ -159,7 +160,10 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
             </h1>
             <div className='flex flex-col'>
               <button
-                onClick={filterReset}
+                onClick={() => {
+                  filterReset()
+                  handleClearSearchBar()
+                }}
                 className={`items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out`}
               >
                 Reset
