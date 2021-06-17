@@ -1,5 +1,8 @@
 import React from 'react';
 
+// IMAGES
+import { ReactComponent as UsersIcon } from '../../img/UsersIcon.svg'
+
 // ----------------------------------------------------------------------------------
 // --------------------------------- CHALLENGE CARD ---------------------------------
 // ----------------------------------------------------------------------------------
@@ -13,7 +16,8 @@ const ChallengeCard = ({ data }) => {
     game_title,
     banner_pic_URL,
     system,
-    difficulty
+    difficulty,
+    active_users
   } = data;
 
   return (
@@ -42,6 +46,12 @@ const ChallengeCard = ({ data }) => {
       <div className='text-center'>
         <p className='mt-4 border-2 px-10 rounded-md bg-profiletwo'>
           {description}
+        </p>
+      </div>
+      <div className='flex justify-end mt-2'>
+        <UsersIcon className='self-center w-10 h-5' />
+        <p className='font-bold'>
+          {active_users}
         </p>
       </div>
     </div>

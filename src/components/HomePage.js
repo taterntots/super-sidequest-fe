@@ -56,15 +56,15 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="lg:flex justify-between">
-        <div className='w-full lg:w-3/5 mr-3'>
+      <div className="xl:flex justify-between">
+        <div className='w-full xl:w-7/12 mr-3'>
           {/* TATER'S QUEST */}
           {featured_challenge.challenge_id ? (
             <FeaturedChallengeCard data={featured_challenge} />
           ) : null}
 
           {/* TATER'S STREAM */}
-          <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
+          <div className="px-10 mb-3 pb-4 bg-profileone rounded-xl text-white">
             <h1 className='text-center text-2xl font-medium py-4'>
               Tater & Tots
             </h1>
@@ -78,8 +78,8 @@ const HomePage = () => {
         </div>
 
         {/* RECENT QUESTS */}
-        <div className='w-full lg:w-2/5'>
-          <div className="px-10 pb-4 bg-profileone rounded-lg text-white">
+        <div className='w-full xl:w-5/12'>
+          <div className="px-10 pb-4 bg-profileone rounded-xl text-white">
             <h1 className='text-center text-2xl font-medium py-4'>
               Recent Quests
             </h1>
