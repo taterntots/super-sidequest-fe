@@ -11,7 +11,7 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   challenges: [],
-  recentChallenges: [],
+  recent_challenges: [],
   created_challenges: [],
   accepted_challenges: [],
   completed_challenges: [],
@@ -384,7 +384,7 @@ export const challengeSlice = createSlice({
       state.loading = true
     },
     [fetchRecentChallenges.fulfilled]: (state, { payload }) => {
-      state.recentChallenges = payload
+      state.recent_challenges = payload
       state.loading = false
       state.error = false
     },

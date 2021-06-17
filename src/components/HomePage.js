@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchRecentChallenges,
+  fetchUserFeaturedChallenge,
   challengeSelector
 } from '../features/challenge/challengeSlice';
 
@@ -13,6 +14,7 @@ import ReactPlayer from 'react-player/twitch';
 
 // COMPONENTS
 import ChallengeCard from '../features/challenge/ChallengeCard.js';
+import FeaturedChallengeCard from '../features/challenge/FeaturedChallengeCard.js';
 import AuthModal from '../components/utils/modals/AuthModal';
 
 // ----------------------------------------------------------------------------------
@@ -21,13 +23,14 @@ import AuthModal from '../components/utils/modals/AuthModal';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { recentChallenges } = useSelector(challengeSelector)
+  const { recent_challenges, featured_challenge } = useSelector(challengeSelector)
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('signup');
   const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchRecentChallenges())
+    dispatch(fetchUserFeaturedChallenge(process.env.REACT_APP_TATER_ID))
   }, [dispatch])
 
   return (
@@ -56,12 +59,10 @@ const HomePage = () => {
       <div className="lg:flex justify-between">
         <div className='w-full lg:w-3/5 mr-3'>
           {/* TATER'S QUEST */}
-          <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
-            <h1 className='text-center text-2xl font-medium py-4'>
-              Tater's Quest
-            </h1>
+          {featured_challenge.challenge_id ? (
+            <FeaturedChallengeCard data={featured_challenge} />
+          ) : null}
 
-          </div>
           {/* TATER'S STREAM */}
           <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4'>
@@ -83,7 +84,7 @@ const HomePage = () => {
               Recent Quests
             </h1>
             <div className='grid gap-6 grig-cols-1'>
-              {recentChallenges.map(challenge => (
+              {recent_challenges.map(challenge => (
                 <Link
                   key={challenge.challenge_id}
                   to={`/${challenge.username}/challenges/${challenge.challenge_id}`}

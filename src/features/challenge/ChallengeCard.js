@@ -1,13 +1,10 @@
 import React from 'react';
 
-// IMAGES
-// import { ReactComponent as BlankUser } from '../../img/icon/BlankUser.svg';
-
 // ----------------------------------------------------------------------------------
-// --------------------------------- CHALLENGE CARD 2 -------------------------------
+// --------------------------------- CHALLENGE CARD ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeCard2 = ({ data }) => {
+const ChallengeCard = ({ data }) => {
   const {
     challenge_id,
     name,
@@ -15,9 +12,7 @@ const ChallengeCard2 = ({ data }) => {
     username,
     game_title,
     banner_pic_URL,
-    system,
-    difficulty,
-    points
+    system
   } = data;
 
   return (
@@ -52,4 +47,4 @@ const ChallengeCard2 = ({ data }) => {
   );
 };
 
-export default ChallengeCard2;
+export default ChallengeCard;
