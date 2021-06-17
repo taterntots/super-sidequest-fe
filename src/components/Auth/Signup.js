@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
+import cogoToast from 'cogo-toast';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ SIGNUP --------------------------------------
@@ -23,15 +24,21 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
 
   // Function to handle submitting Login form
   const onSubmit = async (data) => {
-    dispatch(signUpUser(data))
-      .then(res => {
-        if (res.payload.token) {
-          setOpenAuth(false)
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    if (data.password === data.password2) {
+      dispatch(signUpUser(data))
+        .then(res => {
+          if (res.payload.token) {
+            setOpenAuth(false)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } else {
+      cogoToast.error('Password does not match', {
+        hideAfter: 3,
+      });
+    }
   };
 
   return (
@@ -69,7 +76,38 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
               placeholder='Enter your password'
               className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
               {...register('password', {
-                required: 'Required field'
+                required: 'Required field',
+                minLength: {
+                  value: 8,
+                  message: 'Must be at least 8 characters long'
+                },
+                maxLength: {
+                  value: 16,
+                  message: 'Cannot be more than 16 characters'
+                }
+              })}
+            />
+          </div>
+          <div className="form-group">
+            <label className='mr-3'>Confirm Password</label>
+            {errors.password2 && (
+              <span className='text-red-500'>{errors.password2.message}</span>
+            )}
+            <input
+              name='password2'
+              type='password'
+              placeholder='Enter your password again'
+              className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+              {...register('password2', {
+                required: 'Required field',
+                minLength: {
+                  value: 8,
+                  message: 'Must be at least 8 characters long'
+                },
+                maxLength: {
+                  value: 16,
+                  message: 'Cannot be more than 16 characters'
+                }
               })}
             />
           </div>
@@ -84,7 +122,15 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
               placeholder='Enter your username'
               className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
               {...register('username', {
-                required: 'Required field'
+                required: 'Required field',
+                minLength: {
+                  value: 6,
+                  message: 'Must be at least 6 characters long'
+                },
+                maxLength: {
+                  value: 16,
+                  message: 'Cannot be more than 16 characters'
+                }
               })}
             />
           </div>
@@ -98,10 +144,10 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
                 onClick={() => {
                   setAuthPage('login')
                 }}
-                className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
+                className='ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
               >
                 Login
-					    </p>
+              </p>
             </div>
             <button
               type="submit"

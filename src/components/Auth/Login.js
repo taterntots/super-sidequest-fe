@@ -80,7 +80,7 @@ const Login = ({ setAuthPage, setOpenAuth }) => {
             onClick={() => {
               setAuthPage('forgot_password')
             }}
-            className='ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
+            className='ml-2 mb-7 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
           >
             Reset password
           </p>
@@ -95,7 +95,7 @@ const Login = ({ setAuthPage, setOpenAuth }) => {
               onClick={() => {
                 setAuthPage('signup')
               }}
-              className='ml-2 text-logintext hover:text-purplebutton focus:outline-none'
+              className='ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
             >
               Create account
 					  </p>
