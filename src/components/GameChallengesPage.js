@@ -95,11 +95,11 @@ const GameChallengesPage = ({ challenges, popular_challenges, filteredChallenges
           />
         </div>
 
-        {/* CHALLENGE STATUS */}
+        {/* CHALLENGE TYPE */}
         <div className='w-full lg:w-1/5'>
           <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
-              Quest Status
+              Quest Type
             </h1>
             <div className='flex flex-col'>
               <button
