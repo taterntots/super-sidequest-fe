@@ -11,6 +11,7 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   challenges: [],
+  recentChallenges: [],
   created_challenges: [],
   accepted_challenges: [],
   completed_challenges: [],
@@ -30,6 +31,19 @@ export const fetchChallenges = createAsyncThunk('challenges/fetchChallenges', as
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `challenges`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all recent challenges (limited for homepage)
+export const fetchRecentChallenges = createAsyncThunk('challenges/fetchRecentChallenges', async () => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/recent`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -363,6 +377,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchRecentChallenges.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchRecentChallenges.fulfilled]: (state, { payload }) => {
+      state.recentChallenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchRecentChallenges.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
