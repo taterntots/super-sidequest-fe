@@ -8,13 +8,11 @@ import {
 // ROUTING
 import { Link, useHistory } from 'react-router-dom';
 
-// IMAGES
-import HomeSplash from '../img/HomeSplash.jpg';
+// REACT PLAYER
+import ReactPlayer from 'react-player/twitch';
 
 // COMPONENTS
 import ChallengeCard from '../features/challenge/ChallengeCard.js';
-import LoadSpinner from './LoadSpinner';
-import ServerFailure from './ServerFailure';
 import AuthModal from '../components/utils/modals/AuthModal';
 
 // ----------------------------------------------------------------------------------
@@ -23,7 +21,7 @@ import AuthModal from '../components/utils/modals/AuthModal';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { recentChallenges, loading, error } = useSelector(challengeSelector)
+  const { recentChallenges } = useSelector(challengeSelector)
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('signup');
   const history = useHistory();
@@ -55,14 +53,27 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* TATER'S QUEST */}
       <div className="lg:flex justify-between">
-        <div className="mr-3 w-full lg:w-3/5 h-full pb-4 px-10 mb-0 sm:mb-3 bg-profileone rounded-lg text-white">
-          <h1 className='text-center text-2xl font-medium py-4'>
-            Tater's Quest
-          </h1>
+        <div className='w-full lg:w-3/5 mr-3'>
+          {/* TATER'S QUEST */}
+          <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
+            <h1 className='text-center text-2xl font-medium py-4'>
+              Tater's Quest
+            </h1>
 
-
+          </div>
+          {/* TATER'S STREAM */}
+          <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
+            <h1 className='text-center text-2xl font-medium py-4'>
+              Tater & Tots
+            </h1>
+            <ReactPlayer
+              url='https://www.twitch.tv/tater_n_tots'
+              width='100%'
+              muted={true}
+              controls
+            />
+          </div>
         </div>
 
         {/* RECENT QUESTS */}
