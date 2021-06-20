@@ -2,6 +2,7 @@ import React from 'react';
 
 // IMAGES
 import { ReactComponent as UsersIcon } from '../../img/UsersIcon.svg'
+import { ReactComponent as CompleteBadge } from '../../img/CompleteBadge.svg'
 
 // ----------------------------------------------------------------------------------
 // --------------------------------- CHALLENGE CARD ---------------------------------
@@ -17,7 +18,8 @@ const ChallengeCard = ({ data }) => {
     banner_pic_URL,
     system,
     difficulty,
-    active_users
+    active_users,
+    completed
   } = data;
 
   return (
@@ -26,6 +28,9 @@ const ChallengeCard = ({ data }) => {
         key={challenge_id}
         className='md:flex'
       >
+        {completed ? (
+          <CompleteBadge className='absolute p-1 bg-yellow-500 rounded-tl-md rounded-br-md w-8 h-8 opacity-80' />
+        ) : null}
         <img
           className='md:h-24 md:w-44 rounded-md'
           src={banner_pic_URL}
