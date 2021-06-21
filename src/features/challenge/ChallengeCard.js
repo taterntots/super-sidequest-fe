@@ -43,8 +43,8 @@ const ChallengeCard = ({ data }) => {
             <p>by {username}</p>
           </div>
           <div className='flex justify-evenly md:flex-col text-full mt-4 md:mt-0'>
-            <p className='truncate px-2 border-2 rounded-md'>{system}</p>
-            <p className='truncate px-2 border-2 rounded-md'>{difficulty}</p>
+            <p className='text-center truncate px-2 border-2 rounded-md'>{system}</p>
+            <p className='text-center truncate px-2 border-2 rounded-md'>{difficulty}</p>
           </div>
         </div>
       </div>
