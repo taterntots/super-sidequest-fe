@@ -56,6 +56,8 @@ const ChallengeForm = () => {
       .then(res => {
         if (res.payload) {
           history.push(`/${localStorage.getItem('username')}/challenges/${res.payload.challenge_id}`)
+        } else {
+          history.push(`/`)
         }
       })
       .catch(err => {

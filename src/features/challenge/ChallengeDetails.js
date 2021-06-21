@@ -50,8 +50,11 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
     dispatch(fetchAllChallengeHighScores(route.params.challengeId))
     dispatch(fetchAllChallengeSpeedruns(route.params.challengeId))
     dispatch(fetchAllChallengeForGlorys(route.params.challengeId))
-    dispatch(fetchIfChallengeAlreadyAccepted(isChallengeAcceptedData))
-    dispatch(fetchUserFeaturedChallenge(localStorage.getItem('id')))
+
+    if (localStorage.getItem('token')) {
+      dispatch(fetchIfChallengeAlreadyAccepted(isChallengeAcceptedData))
+      dispatch(fetchUserFeaturedChallenge(localStorage.getItem('id')))
+    }
   }, [dispatch, refresh])
 
   // UseEffect that sets the toggle correctly on refresh based on whether a challenge is featured or not
@@ -67,10 +70,8 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   const submitChallengeAccepted = async () => {
     dispatch(acceptChallenge(route.params.challengeId))
       .then(res => {
-        if (res.payload) {
-          setRefresh(!refresh)
-          setOpenAccept(false);
-        }
+        setRefresh(!refresh)
+        setOpenAccept(false);
       })
       .catch(err => {
         console.log(err)
@@ -81,10 +82,8 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   const submitChallengeAbandoned = async () => {
     dispatch(abandonChallenge(route.params.challengeId))
       .then(res => {
-        if (res.payload) {
-          setRefresh(!refresh)
-          setOpenAbandon(false);
-        }
+        setRefresh(!refresh)
+        setOpenAbandon(false);
       })
       .catch(err => {
         console.log(err)
@@ -104,10 +103,8 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
 
     dispatch(updateUserChallengeProgress(data))
       .then(res => {
-        if (res.payload) {
-          setRefresh(!refresh)
-          setOpenProgress(false);
-        }
+        setRefresh(!refresh)
+        setOpenProgress(false);
       })
       .catch(err => {
         console.log(err)
@@ -120,9 +117,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
 
     dispatch(updateUserChallengeCompletion(data))
       .then(res => {
-        if (res.payload) {
-          setRefresh(!refresh)
-        }
+        setRefresh(!refresh)
       })
       .catch(err => {
         console.log(err)
@@ -135,9 +130,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
 
     dispatch(updateUserChallengeFeatured(data))
       .then(res => {
-        if (res.payload) {
-          setRefresh(!refresh)
-        }
+        setRefresh(!refresh)
       })
       .catch(err => {
         console.log(err)

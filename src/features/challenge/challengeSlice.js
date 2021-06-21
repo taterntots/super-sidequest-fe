@@ -216,6 +216,9 @@ export const addChallenge = createAsyncThunk('challenges/addChallenge', async (f
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
     return isRejectedWithValue(err.response.data.errorMessage)
   }
 });
@@ -243,6 +246,9 @@ export const acceptChallenge = createAsyncThunk('challenges/acceptChallenge', as
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
     return isRejectedWithValue(err.response.data.errorMessage)
   }
 });
@@ -270,6 +276,9 @@ export const abandonChallenge = createAsyncThunk('challenges/abandonChallenge', 
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
     return isRejectedWithValue(err.response.data.errorMessage)
   }
 });
@@ -304,6 +313,9 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
     return isRejectedWithValue(err.response.data.errorMessage)
   }
 });
@@ -332,6 +344,9 @@ export const updateUserChallengeCompletion = createAsyncThunk('challenges/update
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
     return isRejectedWithValue(err.response.data.errorMessage)
   }
 });
@@ -359,6 +374,9 @@ export const updateUserChallengeFeatured = createAsyncThunk('challenges/updateUs
     cogoToast.error(err.response.data.errorMessage, {
       hideAfter: 5,
     });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
     return isRejectedWithValue(err.response.data.errorMessage)
   }
 });

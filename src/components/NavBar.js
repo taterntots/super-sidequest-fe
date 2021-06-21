@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // ROUTING
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // TOAST
 import cogoToast from 'cogo-toast';
@@ -16,20 +16,17 @@ import AuthModal from '../components/utils/modals/AuthModal';
 const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }) => {
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('');
-  const history = useHistory();
   const location = useLocation();
 
   // Function for logging out
   const logout = () => {
-    localStorage.clear('token');
-    localStorage.clear('username');
-    localStorage.clear('email');
+    localStorage.clear();
     cogoToast.success('Successfully logged out', {
       hideAfter: 3,
     });
     setRefresh(!refresh)
-    history.push('/');
   }
+
   return (
     <>
       <div className='flex justify-between items-center text-md md:text-xl py-2 px-10 bg-black text-white font-medium sticky top-0 z-50'>

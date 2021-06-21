@@ -71,7 +71,6 @@ export const signInUser = createAsyncThunk('users/signInUser', async (credential
       localStorage.setItem('id', res.data.id);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username);
-      localStorage.setItem('email', res.data.email);
       cogoToast.success('Successfully logged in', {
         hideAfter: 3,
       });
