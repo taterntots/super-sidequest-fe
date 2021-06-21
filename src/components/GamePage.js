@@ -30,8 +30,8 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchGameById(route.params.gameId))
-    dispatch(fetchGameChallenges(route.params.gameId))
-    dispatch(fetchGameChallengesByPopularity(route.params.gameId))
+    dispatch(fetchGameChallenges({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
+    dispatch(fetchGameChallengesByPopularity({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
   }, [dispatch])
 
   // Resets filter when clicking away from page

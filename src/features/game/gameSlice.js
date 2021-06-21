@@ -42,27 +42,29 @@ export const fetchGameById = createAsyncThunk('games/fetchGameById', async (game
 });
 
 // API call to grab all challenges associated with a game
-export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges', async (gameId) => {
+export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges', async (data) => {
   const response = await axios({
     method: 'get',
-    url: process.env.REACT_APP_API + `games/${gameId}/challenges`,
+    url: data.userId ? process.env.REACT_APP_API + `games/${data.gameId}/users/${data.userId}/challenges` :
+      process.env.REACT_APP_API + `games/${data.gameId}/challenges`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
-    },
+    }
   })
   return response.data
 });
 
 // API call to grab all challenges sorted by popularity associated with a game
-export const fetchGameChallengesByPopularity = createAsyncThunk('games/fetchGameChallengesByPopularity', async (gameId) => {
+export const fetchGameChallengesByPopularity = createAsyncThunk('games/fetchGameChallengesByPopularity', async (data) => {
   const response = await axios({
     method: 'get',
-    url: process.env.REACT_APP_API + `games/${gameId}/challenges/popular`,
+    url: data.userId ? process.env.REACT_APP_API + `games/${data.gameId}/users/${data.userId}/challenges/popular` :
+      process.env.REACT_APP_API + `games/${data.gameId}/challenges/popular`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
-    },
+    }
   })
   return response.data
 });
