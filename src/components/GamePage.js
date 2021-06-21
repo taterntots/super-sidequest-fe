@@ -20,7 +20,7 @@ import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 // ------------------------------------ GAME PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GamePage = ({ searchTerm, handleClearSearchBar }) => {
+const GamePage = ({ searchTerm, refresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const route = useRouteMatch();
   const { game, challenges, popular_challenges } = useSelector(gameSelector);
@@ -32,7 +32,7 @@ const GamePage = ({ searchTerm, handleClearSearchBar }) => {
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
     dispatch(fetchGameChallengesByPopularity({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
-  }, [dispatch])
+  }, [dispatch, refresh])
 
   // Resets filter when clicking away from page
   useEffect(() => {

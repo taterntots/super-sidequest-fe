@@ -15,7 +15,7 @@ import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
 // ------------------------------------ LOGIN ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Login = ({ setAuthPage, setOpenAuth }) => {
+const Login = ({ setAuthPage, setOpenAuth, refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -27,6 +27,7 @@ const Login = ({ setAuthPage, setOpenAuth }) => {
       .then(res => {
         if (res.payload.token) {
           setOpenAuth(false)
+          setRefresh(!refresh)
         }
       })
       .catch(err => {

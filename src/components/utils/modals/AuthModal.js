@@ -12,7 +12,7 @@ import ResetPassword from '../../Auth/ResetPassword';
 // ----------------------------------- AUTH MODAL -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const AuthModal = ({ open, setOpen, authPage, setAuthPage }) => {
+const AuthModal = ({ open, setOpen, authPage, setAuthPage, refresh, setRefresh }) => {
   const cancelButtonRef = useRef(null)
 
   return (
@@ -52,7 +52,7 @@ const AuthModal = ({ open, setOpen, authPage, setAuthPage }) => {
           >
             <div className="inline-block w-full align-middle rounded-lg text-left overflow-hidden transform transition-all max-w-2xl sm:w-full">
               {authPage === 'login' ? (
-                <Login setAuthPage={setAuthPage} setOpenAuth={setOpen} />
+                <Login setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} />
               ) : authPage === 'signup' ? (
                 <Signup setAuthPage={setAuthPage} setOpenAuth={setOpen} />
               ) : authPage === 'forgot_password' ? (

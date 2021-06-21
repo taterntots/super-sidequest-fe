@@ -20,6 +20,7 @@ import GamePage from '../components/GamePage';
 const Dashboard = () => {
   // State
   const [searchTerm, setSearchTerm] = useState('');
+  const [refresh, setRefresh] = useState(false)
 
   // Function for handling search input
   const handleInputChange = (event) => {
@@ -36,7 +37,12 @@ const Dashboard = () => {
   return (
     <>
       {/* NAVBAR */}
-      <NavBar handleClearSearchBar={handleClearSearchBar} handleInputChange={handleInputChange} />
+      <NavBar
+        refresh={refresh}
+        setRefresh={setRefresh}
+        handleClearSearchBar={handleClearSearchBar}
+        handleInputChange={handleInputChange}
+      />
 
       {/* BODY */}
       <div className='mx-10 my-3'>
@@ -70,6 +76,7 @@ const Dashboard = () => {
             render={(props) => (
               <GamePage
                 searchTerm={searchTerm}
+                refresh={refresh}
                 handleClearSearchBar={handleClearSearchBar}
                 {...props}
               />
@@ -125,6 +132,8 @@ const Dashboard = () => {
             render={(props) => (
               <UserPage
                 searchTerm={searchTerm}
+                refresh={refresh}
+                setRefresh={setRefresh}
                 handleClearSearchBar={handleClearSearchBar}
                 {...props}
               />

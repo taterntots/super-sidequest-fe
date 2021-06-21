@@ -30,14 +30,13 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 // ----------------------------------- USER PAGE-------------------------------------
 // ----------------------------------------------------------------------------------
 
-const UserPage = ({ searchTerm, handleClearSearchBar }) => {
+const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [filteredCompletedChallenges, setFilteredCompletedChallenges] = useState(completed_challenges);
-  const [refresh, setRefresh] = useState(false)
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
 
@@ -95,7 +94,7 @@ const UserPage = ({ searchTerm, handleClearSearchBar }) => {
             "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Profile
-          </Link>
+        </Link>
         <Link
           to={`/${user.username}/challenges`}
           onClick={() => handleClearSearchBar()}
@@ -104,7 +103,7 @@ const UserPage = ({ searchTerm, handleClearSearchBar }) => {
             "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Challenges
-          </Link>
+        </Link>
         {user.id === localStorage.getItem('id') ? (
           <Link
             to={`/${localStorage.getItem('username')}/add-challenge`}

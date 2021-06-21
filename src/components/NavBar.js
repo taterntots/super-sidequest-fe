@@ -13,7 +13,7 @@ import AuthModal from '../components/utils/modals/AuthModal';
 // ------------------------------------ NAVBAR --------------------------------------
 // ----------------------------------------------------------------------------------
 
-const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
+const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }) => {
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('');
   const history = useHistory();
@@ -27,6 +27,7 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
     cogoToast.success('Successfully logged out', {
       hideAfter: 3,
     });
+    setRefresh(!refresh)
     history.push('/');
   }
   return (
@@ -84,7 +85,7 @@ const NavBar = ({ handleClearSearchBar, handleInputChange }) => {
       </div>
 
       {/* Modals */}
-      <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} />
+      <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
     </>
   );
 }
