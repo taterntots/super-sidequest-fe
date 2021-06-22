@@ -21,11 +21,11 @@ import {
 import { useHistory } from 'react-router-dom';
 
 // FORMS
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 
 // IMAGES
-import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
+import LoadSpinner from '../../components/LoadSpinner';
 
 // ----------------------------------------------------------------------------------
 // -------------------------------- CHALLENGE FORM ----------------------------------
@@ -249,12 +249,15 @@ const ChallengeForm = () => {
         <div className='flex justify-center md:mx-0 md:flex md:justify-end md:items-center'>
           <button
             type="submit"
-            className={`${challengeLoading && 'opacity-50 pointer-events-none'
-              } w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}>
-            {challengeLoading && (
-              <LoadingSpinner />
-            )}
-            SUBMIT
+            className={challengeLoading ? 'opacity-80 pointer-events-none w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out' :
+              'w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
+            }
+          >
+            {challengeLoading ? (
+              <div className='h-7 mr-6'>
+                <LoadSpinner />
+              </div>
+            ) : 'Submit'}
           </button>
         </div>
       </form>
