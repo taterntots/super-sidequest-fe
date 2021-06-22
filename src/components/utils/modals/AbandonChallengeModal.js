@@ -63,7 +63,7 @@ const AbandonChallengeModal = ({ open, setOpen, submitChallengeAbandoned }) => {
                   </button>
                   <button
                     type="button"
-                    className='flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-red-400 hover:bg-white hover:text-red-400 focus:ring transition duration-150 ease-in-out'
+                    className='flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out'
                     onClick={submitChallengeAbandoned}
                   >
                     Abandon

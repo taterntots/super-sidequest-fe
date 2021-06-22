@@ -52,7 +52,7 @@ const EditChallengeModal = ({ open, setOpen, submitChallengeEdit, loading, chall
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div className="inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(submitChallengeEdit)}>
+              <form className="p-10 bg-taterpurple text-white" onSubmit={handleSubmit(submitChallengeEdit)}>
                 <h4 className='text-2xl mb-4'>
                   Edit Challenge
                 </h4>
@@ -105,6 +105,11 @@ const EditChallengeModal = ({ open, setOpen, submitChallengeEdit, loading, chall
                   </button>
                 </div>
               </form>
+
+              {/* DELETE BUTTON */}
+              <button className='w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'>
+                Delete
+              </button>
             </div>
           </Transition.Child>
         </div>
