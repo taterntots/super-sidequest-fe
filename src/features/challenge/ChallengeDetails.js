@@ -13,6 +13,7 @@ import {
   updateUserChallengeProgress,
   updateUserChallengeCompletion,
   updateUserChallengeFeatured,
+  editChallenge,
   challengeSelector
 } from '../challenge/challengeSlice';
 
@@ -22,7 +23,8 @@ import { useRouteMatch } from 'react-router-dom';
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
 import AbandonChallengeModal from '../../components/utils/modals/AbandonChallengeModal';
-import SubmitChallengeProgressModal from '../../components/utils/modals/SubmitChallengeProgressModal.js';
+import SubmitChallengeProgressModal from '../../components/utils/modals/SubmitChallengeProgressModal';
+import EditChallengeModal from '../../components/utils/modals/EditChallengeModal';
 import Leaderboard from '../../components/Leaderboard';
 import Toggle from '../../components/utils/buttons/Toggle';
 
@@ -37,6 +39,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   const route = useRouteMatch();
   const [openAccept, setOpenAccept] = useState(false)
   const [openAbandon, setOpenAbandon] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const [openProgress, setOpenProgress] = useState(false)
   const [featuredOn, setFeaturedOn] = useState()
   const isChallengeAcceptedData = {
@@ -84,6 +87,20 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       .then(res => {
         setRefresh(!refresh)
         setOpenAbandon(false);
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle submitting edited challenge data
+  const submitChallengeEdit = async (data) => {
+    data.challenge_id = route.params.challengeId
+
+    dispatch(editChallenge(data))
+      .then(res => {
+        setRefresh(!refresh)
+        setOpenEdit(false);
       })
       .catch(err => {
         console.log(err)
@@ -153,11 +170,11 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
               src={challenge.banner_pic_URL}
               alt='banner for a single game'
             />
-            <p className='mb-4 text-center text-lg rounded-b-md bg-gray-700'>
+            <p className='mb-4 p-1 text-center text-lg rounded-b-md bg-gray-700'>
               {challenge.game_title}
             </p>
           </div>
-          <p className='mb-4 border-2 text-center rounded-md bg-profiletwo'>
+          <p className='mb-4 p-1 border-2 text-center rounded-md bg-profiletwo'>
             {challenge.description}
           </p>
           <div className='flex justify-evenly mb-4'>
@@ -185,30 +202,40 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
             </div>
           ) : null}
 
-          {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
+          {/* FEATURED TOGGLE */}
+          {challenge.user_id === localStorage.getItem('id') ? (
+            <div className='flex justify-center mb-4'>
+              <p className='font-bold'>Featured:</p>
+              <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} />
+            </div>
+          ) : null}
+
           <div className='flex flex-col md:flex-row justify-evenly'>
+            {/* EDIT BUTTON */}
+            {challenge.user_id === localStorage.getItem('id') ? (
+              <button
+                onClick={() => setOpenEdit(true)}
+                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+              >
+                Edit
+              </button>
+            ) : null}
+
+            {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
             {!acceptedChallenge && localStorage.getItem('token') ? (
               <button
                 onClick={() => setOpenAccept(true)}
-                className={`rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
               >
                 Accept
               </button>
             ) : acceptedChallenge && localStorage.getItem('token') ? (
               <button
                 onClick={() => setOpenAbandon(true)}
-                className={`rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
               >
                 Abandon
               </button>
-            ) : null}
-
-            {/* FEATURED TOGGLE */}
-            {challenge.user_id === localStorage.getItem('id') ? (
-              <div className='flex self-center'>
-                <p className='font-bold'>Featured:</p>
-                <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} />
-              </div>
             ) : null}
           </div>
         </div>
@@ -220,6 +247,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       {/* Modals */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
       <AbandonChallengeModal open={openAbandon} setOpen={setOpenAbandon} submitChallengeAbandoned={submitChallengeAbandoned} />
+      <EditChallengeModal open={openEdit} setOpen={setOpenEdit} submitChallengeEdit={submitChallengeEdit} loading={challengeLoading} challenge={challenge} />
       <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} challenge={challenge} />
     </>
   );

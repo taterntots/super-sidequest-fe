@@ -381,6 +381,36 @@ export const updateUserChallengeFeatured = createAsyncThunk('challenges/updateUs
   }
 });
 
+// API call to edit a challenge
+export const editChallenge = createAsyncThunk('challenges/editChallenge', async (data) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        name: data.name
+      }
+    })
+    cogoToast.success('Challenge successfully edited!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // Challenge slice for state change
 export const challengeSlice = createSlice({
   name: 'challenges',
@@ -593,6 +623,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [updateUserChallengeFeatured.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [editChallenge.pending]: (state, action) => {
+      state.loading = true
+    },
+    [editChallenge.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.error = false
+    },
+    [editChallenge.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }

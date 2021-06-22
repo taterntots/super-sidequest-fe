@@ -37,12 +37,12 @@ const FeaturedChallengeCard = ({ data }) => {
             src={banner_pic_URL}
             alt='banner for a single game'
           />
-          <p className='mb-4 text-center text-lg rounded-b-md bg-gray-700'>
+          <p className='mb-4 p-1 text-center text-lg rounded-b-md bg-gray-700'>
             {game_title}
           </p>
         </div>
       </Link>
-      <p className='mb-4 border-2 text-center rounded-md bg-profiletwo'>
+      <p className='mb-4 p-1 border-2 text-center rounded-md bg-profiletwo'>
         {description}
       </p>
       <div className='flex justify-evenly mb-4'>
