@@ -327,7 +327,7 @@ export const updateUserChallengeCompletion = createAsyncThunk('challenges/update
   try {
     const response = await axios({
       method: 'put',
-      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/users/${localStorage.getItem('id')}/update`,
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/users/${localStorage.getItem('id')}/complete`,
       headers: {
         Accept: 'application/json',
         Authorization: token,

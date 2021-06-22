@@ -6,7 +6,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useForm } from "react-hook-form";
 
 // IMAGES
-import { ReactComponent as LoadingSpinner } from '../../../img/LoadingSpinner.svg';
+import LoadSpinner from '../../LoadSpinner';
 
 // ----------------------------------------------------------------------------------
 // ------------------------- SUBMIT CHALLENGE PROGRESS MODAL ------------------------
@@ -224,13 +224,15 @@ const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, 
                   </button>
                   <button
                     type="submit"
-                    className={`${loading && 'opacity-50 pointer-events-none'
-                      } flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+                    className={loading ? 'opacity-80 pointer-events-none flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out' :
+                      'flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
+                    }
                   >
-                    {loading && (
-                      <LoadingSpinner />
-                    )}
-                    Submit
+                    {loading ? (
+                      <div className='h-7 mr-6'>
+                        <LoadSpinner />
+                      </div>
+                    ) : 'Submit'}
                   </button>
                 </div>
               </form>
