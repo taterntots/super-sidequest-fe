@@ -8,15 +8,21 @@ import { css } from '@emotion/react';
 
 const LoadSpinner = ({ loading }) => {
   const color = '#FFFF00';
+  //   const override = css`
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 44%;
+  // `;
   const override = css`
-  position: absolute;
-  top: 50%;
-  left: 44%;
-`;
+    display: flex;
+    justify: center;
+    margin-left: auto;
+    margin-right: auto;
+  `;
 
   return (
     <>
-      <PacmanLoader color={color} loading={loading} css={override} size={50} />
+      <PacmanLoader color={color} loading={loading} css={override} size={14} />
     </>
   );
 }

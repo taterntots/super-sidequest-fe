@@ -14,11 +14,12 @@ import {
   updateUserChallengeCompletion,
   updateUserChallengeFeatured,
   editChallenge,
+  deleteChallenge,
   challengeSelector
 } from '../challenge/challengeSlice';
 
 // ROUTING
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
@@ -37,6 +38,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const { challenge, challenges_high_scores, challenges_speedruns, challenges_for_glorys, acceptedChallenge, featured_challenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
+  const history = useHistory();
   const [openAccept, setOpenAccept] = useState(false)
   const [openAbandon, setOpenAbandon] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
@@ -101,6 +103,19 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       .then(res => {
         setRefresh(!refresh)
         setOpenEdit(false);
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle deleting a challenge
+  const submitChallengeDelete = async () => {
+    dispatch(deleteChallenge(route.params.challengeId))
+      .then(res => {
+        setRefresh(!refresh)
+        setOpenEdit(false);
+        history.push(`/${route.params.username}/challenges`)
       })
       .catch(err => {
         console.log(err)
@@ -247,7 +262,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       {/* Modals */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
       <AbandonChallengeModal open={openAbandon} setOpen={setOpenAbandon} submitChallengeAbandoned={submitChallengeAbandoned} />
-      <EditChallengeModal open={openEdit} setOpen={setOpenEdit} submitChallengeEdit={submitChallengeEdit} loading={challengeLoading} challenge={challenge} />
+      <EditChallengeModal open={openEdit} setOpen={setOpenEdit} submitChallengeEdit={submitChallengeEdit} submitChallengeDelete={submitChallengeDelete} loading={challengeLoading} challenge={challenge} />
       <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} challenge={challenge} />
     </>
   );

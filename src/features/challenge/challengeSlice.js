@@ -411,6 +411,34 @@ export const editChallenge = createAsyncThunk('challenges/editChallenge', async 
   }
 });
 
+// API call to delete a challenge
+export const deleteChallenge = createAsyncThunk('challenges/deleteChallenge', async (challengeId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: process.env.REACT_APP_API + `challenges/${challengeId}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }
+    })
+    cogoToast.success('Challenge successfully deleted!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // Challenge slice for state change
 export const challengeSlice = createSlice({
   name: 'challenges',
@@ -634,6 +662,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [editChallenge.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [deleteChallenge.pending]: (state, action) => {
+      state.loading = true
+    },
+    [deleteChallenge.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.error = false
+    },
+    [deleteChallenge.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }

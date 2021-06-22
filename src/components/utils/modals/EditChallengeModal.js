@@ -7,12 +7,14 @@ import { useForm } from "react-hook-form";
 
 // IMAGES
 import { ReactComponent as LoadingSpinner } from '../../../img/LoadingSpinner.svg';
+import PacmanLoader from 'react-spinners/PacmanLoader';
+import LoadSpinner from '../../LoadSpinner';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------ EDIT CHALLENGE MODAL ------------------------------
 // ----------------------------------------------------------------------------------
 
-const EditChallengeModal = ({ open, setOpen, submitChallengeEdit, loading, challenge }) => {
+const EditChallengeModal = ({ open, setOpen, submitChallengeEdit, submitChallengeDelete, loading, challenge }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
 
@@ -107,8 +109,17 @@ const EditChallengeModal = ({ open, setOpen, submitChallengeEdit, loading, chall
               </form>
 
               {/* DELETE BUTTON */}
-              <button className='w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'>
-                Delete
+              <button
+                onClick={submitChallengeDelete}
+                className={loading ? 'opacity-50 pointer-events-none w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered' :
+                  'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'
+                }
+              >
+                {loading ? (
+                  <div className='h-7'>
+                    <LoadSpinner />
+                  </div>
+                ) : 'Delete'}
               </button>
             </div>
           </Transition.Child>
