@@ -2,11 +2,14 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
+// IMAGES
+import LoadSpinner from '../../LoadSpinner';
+
 // ----------------------------------------------------------------------------------
-// ------------------------------- ACCEPT CHALLENGE MODAL ---------------------------
+// ------------------------------ DELETE CHALLENGE MODAL ------------------------------
 // ----------------------------------------------------------------------------------
 
-const AcceptChallengeModal = ({ open, setOpen, submitChallengeAccepted }) => {
+const DeleteChallengeModal = ({ open, setOpen, submitChallengeDelete, loading }) => {
   const cancelButtonRef = useRef(null)
 
   return (
@@ -47,10 +50,10 @@ const AcceptChallengeModal = ({ open, setOpen, submitChallengeAccepted }) => {
             <div className="inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="p-10 bg-taterpurple rounded-lg text-white">
                 <h4 className='text-2xl text-center mb-4'>
-                  Accept Quest
+                  Delete Quest
                 </h4>
                 <p className='text-center mb-4'>
-                  Are you sure you want to accept this quest?
+                  Are you sure you want to delete this quest? This action cannot be undone.
                 </p>
                 <div className='flex justify-evenly'>
                   <button
@@ -62,11 +65,16 @@ const AcceptChallengeModal = ({ open, setOpen, submitChallengeAccepted }) => {
                     Cancel
                   </button>
                   <button
-                    type="button"
-                    className='flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-addgreen hover:bg-white hover:text-addgreen focus:ring transition duration-150 ease-in-out'
-                    onClick={submitChallengeAccepted}
+                    onClick={submitChallengeDelete}
+                    className={loading ? 'opacity-80 pointer-events-none flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out' :
+                      'flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out'
+                    }
                   >
-                    Accept
+                    {loading ? (
+                      <div className='h-7 mr-6'>
+                        <LoadSpinner />
+                      </div>
+                    ) : 'Delete'}
                   </button>
                 </div>
               </div>
@@ -78,4 +86,4 @@ const AcceptChallengeModal = ({ open, setOpen, submitChallengeAccepted }) => {
   )
 }
 
-export default AcceptChallengeModal;
+export default DeleteChallengeModal;

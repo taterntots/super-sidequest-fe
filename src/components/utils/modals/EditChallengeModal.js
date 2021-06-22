@@ -6,15 +6,13 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useForm } from "react-hook-form";
 
 // IMAGES
-import { ReactComponent as LoadingSpinner } from '../../../img/LoadingSpinner.svg';
-import PacmanLoader from 'react-spinners/PacmanLoader';
 import LoadSpinner from '../../LoadSpinner';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------ EDIT CHALLENGE MODAL ------------------------------
 // ----------------------------------------------------------------------------------
 
-const EditChallengeModal = ({ open, setOpen, submitChallengeEdit, submitChallengeDelete, loading, challenge }) => {
+const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit, loading, challenge }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
 
@@ -97,29 +95,28 @@ const EditChallengeModal = ({ open, setOpen, submitChallengeEdit, submitChalleng
                   </button>
                   <button
                     type="submit"
-                    className={`${loading && 'opacity-50 pointer-events-none'
-                      } flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+                    className={loading ? 'opacity-80 pointer-events-none flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out' :
+                      'flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
+                    }
                   >
-                    {loading && (
-                      <LoadingSpinner />
-                    )}
-                    Submit
+                    {loading ? (
+                      <div className='h-7 mr-6'>
+                        <LoadSpinner />
+                      </div>
+                    ) : 'Submit'}
                   </button>
                 </div>
               </form>
 
               {/* DELETE BUTTON */}
               <button
-                onClick={submitChallengeDelete}
-                className={loading ? 'opacity-50 pointer-events-none w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered' :
-                  'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'
-                }
+                onClick={() => {
+                  setOpen(false)
+                  setOpenDelete(true)
+                }}
+                className={'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'}
               >
-                {loading ? (
-                  <div className='h-7'>
-                    <LoadSpinner />
-                  </div>
-                ) : 'Delete'}
+                Delete
               </button>
             </div>
           </Transition.Child>

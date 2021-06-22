@@ -8,11 +8,6 @@ import { css } from '@emotion/react';
 
 const LoadSpinner = ({ loading }) => {
   const color = '#FFFF00';
-  //   const override = css`
-  //   position: absolute;
-  //   top: 50%;
-  //   left: 44%;
-  // `;
   const override = css`
     display: flex;
     justify: center;

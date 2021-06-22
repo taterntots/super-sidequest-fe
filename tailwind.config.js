@@ -12,6 +12,7 @@ module.exports = {
         sitewidebackground: '#414141',
         navbarbuttonhighlight: '#F5F5F5',
         removered: '#F87171',
+        addgreen: '#34D399',
         cardhover: '#08f78f',
         easy: '#00BFFF',
         medium: '#FF8C00',
