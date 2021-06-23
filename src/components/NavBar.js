@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { Transition } from '@headlessui/react'
 
 // ROUTING
 import { Link, useLocation } from 'react-router-dom';
 
 // TOAST
 import cogoToast from 'cogo-toast';
+
+// IMAGES
+import { ReactComponent as MenuDropdown } from '../img/MenuDropdown.svg';
 
 // COMPONENTS
 import AuthModal from '../components/utils/modals/AuthModal';
@@ -16,6 +20,7 @@ import AuthModal from '../components/utils/modals/AuthModal';
 const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }) => {
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('');
+  const [dropdown, setDropdown] = useState(false);
   const location = useLocation();
 
   // Function for logging out
@@ -29,20 +34,151 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
 
   return (
     <>
-      <div className='flex justify-between items-center text-md md:text-xl py-2 px-10 bg-black text-white font-medium sticky top-0 z-50'>
-        <Link to='/' className='px-3 hover:text-navbarbuttonhighlight text-center' onClick={handleClearSearchBar} >Home</Link>
+      <div className='flex justify-between items-center text-xl py-0 lg:py-2 px-10 bg-black text-white font-medium sticky top-0 z-50'>
+        {/* NAVBAR DROPDOWN */}
+        <div className='relative block lg:hidden'>
+          <button
+            onClick={() => {
+              setDropdown(!dropdown);
+            }}
+            className='focus:outline-none p-4 hover:bg-gray-700'
+          >
+            <MenuDropdown />
+          </button>
+          <Transition
+            show={dropdown}
+            enter='transition ease-out duration-100'
+            enterFrom='transform opacity-0 scale-95'
+            enterTo='transform opacity-100 scale-100'
+            leave='transition ease-in duration-75'
+            leaveFrom='transform opacity-100 scale-100'
+            leaveTo='transform opacity-0 scale-95'
+          >
+            <div className='absolute w-48 origin-top-right shadow-lg'>
+              <div
+                className='bg-black divide-y rounded-b-md shadow-xs divide-gray-500'
+                role='menu'
+                aria-orientation='vertical'
+                aria-labelledby='user-menu'
+              >
+                <Link
+                  to={`/`}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                >
+                  Home
+                </Link>
+                {localStorage.getItem('token') && localStorage.getItem('username') ? (
+                  <Link
+                    to={`/${localStorage.getItem('username')}`}
+                    onClick={() => {
+                      setDropdown(!dropdown);
+                    }}
+                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  >
+                    My Quests
+                  </Link>
+                ) : null}
+                <Link
+                  to={`/games`}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                >
+                  Games
+                </Link>
+                <Link
+                  to={`/support`}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                >
+                  Support Us
+                </Link>
+                <Link
+                  to={`/faq`}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                >
+                  FAQ
+                </Link>
+                <Link
+                  to={`/about`}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                >
+                  About Us
+                </Link>
+                <Link
+                  to={`/terms`}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                >
+                  Rules & Terms
+                </Link>
+                <Link
+                  to={`/contact`}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                >
+                  Contact
+                </Link>
+                {localStorage.getItem('token') ? (
+                  <button
+                    type='button'
+                    onClick={() => {
+                      logout()
+                      setDropdown(!dropdown);
+                    }}
+                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setAuthPage('login')
+                      setOpenAuth(true)
+                      handleClearSearchBar()
+                      setDropdown(!dropdown);
+                    }}
+                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  >
+                    Login
+                  </button>
+                )}
+              </div>
+            </div>
+          </Transition>
+        </div>
+
+        {/* NAVBAR PROPER */}
+        <Link to='/' className='hidden lg:block px-3 hover:text-navbarbuttonhighlight text-center' onClick={handleClearSearchBar} >Home</Link>
         {localStorage.getItem('token') && localStorage.getItem('username') ? (
-          <Link to={`/${localStorage.getItem('username')}`} className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >My Challenges</Link>
+          <Link to={`/${localStorage.getItem('username')}`} className='hidden lg:block px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >My Quests</Link>
         ) : null}
-        <Link to='/games' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Games</Link>
-        <Link to='/support' className='px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Support Us</Link>
+        <Link to='/games' className='hidden lg:block px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Games</Link>
+        <Link to='/support' className='hidden lg:block px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Support Us</Link>
         <input
           id='searchBar'
           className={
             location.pathname.includes('/challenges') && !location.pathname.includes('challenges/') ||
               location.pathname === ('/games')
-              ? 'px-3 py-1 w-1/4 rounded hidden lg:block text-black'
-              : 'invisible px-3 py-1 w-1/4 rounded hidden lg:block text-black'}
+              ? 'px-3 py-1 w-full lg:w-1/4 ml-4 lg:ml-0 rounded text-black'
+              : 'invisible px-3 py-1 w-1/4 rounded text-black'}
           placeholder={location.pathname.includes('/challenges') ? 'Search by keyword'
             : location.pathname === ('/games') ? 'Search by game'
               : ''}
@@ -51,7 +187,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
         />
         {localStorage.getItem('token') ? null : (
           <button
-            className='px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
+            className='hidden lg:block px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
             onClick={() => {
               setAuthPage('signup')
               setOpenAuth(true)
@@ -62,14 +198,14 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
           </button>)}
         {localStorage.getItem('token') ? (
           <button
-            to='/' className='px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
+            to='/' className='hidden lg:block px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
             onClick={() => { handleClearSearchBar(); logout() }}
           >
             <span className='mr-2'>{localStorage.getItem('username')}</span> [Logout]
           </button>
         ) : (
           <button
-            className='px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
+            className='hidden lg:block px-3 font-medium hover:text-navbarbuttonhighlight focus:outline-none'
             onClick={() => {
               setAuthPage('login')
               setOpenAuth(true)
