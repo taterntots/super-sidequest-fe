@@ -53,6 +53,7 @@ const Dashboard = () => {
             render={(props) => (
               <HomePage
                 searchTerm={searchTerm}
+                refresh={refresh}
                 handleClearSearchBar={handleClearSearchBar}
                 {...props}
               />

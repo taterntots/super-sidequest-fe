@@ -21,7 +21,7 @@ import AuthModal from '../components/utils/modals/AuthModal';
 // ------------------------------------ HOMEPAGE ------------------------------------
 // ----------------------------------------------------------------------------------
 
-const HomePage = () => {
+const HomePage = ({ refresh }) => {
   const dispatch = useDispatch();
   const { recent_challenges, featured_challenge } = useSelector(challengeSelector)
   const [openAuth, setOpenAuth] = useState(false);
@@ -29,9 +29,9 @@ const HomePage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(fetchRecentChallenges())
+    dispatch(fetchRecentChallenges(localStorage.getItem('id')))
     dispatch(fetchUserFeaturedChallenge(process.env.REACT_APP_TATER_ID))
-  }, [dispatch])
+  }, [dispatch, refresh])
 
   return (
     <>
