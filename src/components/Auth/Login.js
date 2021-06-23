@@ -6,10 +6,10 @@ import {
 } from '../../features/user/userSlice';
 
 // FORMS
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 
 // IMAGES
-import { ReactComponent as LoadingSpinner } from '../../img/LoadingSpinner.svg';
+import LoadSpinner from '../../components/LoadSpinner';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ LOGIN ---------------------------------------
@@ -99,16 +99,19 @@ const Login = ({ setAuthPage, setOpenAuth, refresh, setRefresh }) => {
               className='ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
             >
               Create account
-					  </p>
+            </p>
           </div>
           <button
             type="submit"
-            className={`${loading && 'opacity-50 pointer-events-none'
-              } flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}>
-            {loading && (
-              <LoadingSpinner />
-            )}
-              SIGN IN
+            className={loading ? 'opacity-80 pointer-events-none flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out' :
+              'flex items-center rounded-lg text-lg px-24 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
+            }
+          >
+            {loading ? (
+              <div className='h-7 mr-6'>
+                <LoadSpinner />
+              </div>
+            ) : 'SIGN IN'}
           </button>
         </div>
       </form>
