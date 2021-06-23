@@ -64,7 +64,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                 <Link
                   to={`/`}
                   onClick={() => {
-                    setDropdown(!dropdown);
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
                   }}
                   className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                 >
@@ -74,7 +75,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                   <Link
                     to={`/${localStorage.getItem('username')}`}
                     onClick={() => {
-                      setDropdown(!dropdown);
+                      handleClearSearchBar()
+                      setDropdown(!dropdown)
                     }}
                     className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                   >
@@ -84,7 +86,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                 <Link
                   to={`/games`}
                   onClick={() => {
-                    setDropdown(!dropdown);
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
                   }}
                   className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                 >
@@ -93,7 +96,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                 <Link
                   to={`/support`}
                   onClick={() => {
-                    setDropdown(!dropdown);
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
                   }}
                   className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                 >
@@ -102,7 +106,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                 <Link
                   to={`/faq`}
                   onClick={() => {
-                    setDropdown(!dropdown);
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
                   }}
                   className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                 >
@@ -111,7 +116,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                 <Link
                   to={`/about`}
                   onClick={() => {
-                    setDropdown(!dropdown);
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
                   }}
                   className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                 >
@@ -120,7 +126,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                 <Link
                   to={`/terms`}
                   onClick={() => {
-                    setDropdown(!dropdown);
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
                   }}
                   className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                 >
@@ -129,7 +136,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                 <Link
                   to={`/contact`}
                   onClick={() => {
-                    setDropdown(!dropdown);
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
                   }}
                   className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                 >
@@ -140,7 +148,8 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     type='button'
                     onClick={() => {
                       logout()
-                      setDropdown(!dropdown);
+                      handleClearSearchBar()
+                      setDropdown(!dropdown)
                     }}
                     className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
                   >
