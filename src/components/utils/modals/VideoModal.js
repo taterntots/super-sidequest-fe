@@ -54,9 +54,9 @@ const VideoModal = ({ open, setOpen, currentPlayer }) => {
                 muted={true}
                 controls
               />
-              <div className='bg-taterpurple px-4 py-4 sm:px-6 sm:flex sm:flex-row-reverse'>
+              <div className='bg-taterpurple px-4 py-4'>
                 <button
-                  className={`w-full inline-flex justify-center rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium text-white bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+                  className='w-full inline-flex justify-center rounded-lg text-lg px-12 py-3 font-medium text-white bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
                   onClick={() => setOpen(false)}
                   ref={cancelButtonRef}
                 >
