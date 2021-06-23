@@ -31,7 +31,7 @@ import LoadSpinner from '../../components/LoadSpinner';
 // -------------------------------- CHALLENGE FORM ----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeForm = () => {
+const ChallengeForm = ({ refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
   const { games, loading: gameLoading } = useSelector(gameSelector)
@@ -55,8 +55,10 @@ const ChallengeForm = () => {
     dispatch(addChallenge(data))
       .then(res => {
         if (res.payload) {
+          setRefresh(!refresh)
           history.push(`/${localStorage.getItem('username')}/challenges/${res.payload.challenge_id}`)
         } else {
+          setRefresh(!refresh)
           history.push(`/`)
         }
       })

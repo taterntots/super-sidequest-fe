@@ -168,8 +168,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           path={`/:username/add-challenge`}
           render={(props) => (
             <ChallengeForm
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
+              refresh={refresh}
+              setRefresh={setRefresh}
               {...props}
             />
           )}

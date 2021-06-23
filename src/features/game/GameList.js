@@ -11,8 +11,6 @@ import { Link } from 'react-router-dom';
 // COMPONENTS
 import GameCard from './GameCard';
 import SearchError from '../../components/SearchError';
-import LoadSpinner from '../../components/LoadSpinner';
-import ServerFailure from '../../components/ServerFailure';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ GAME LIST -----------------------------------
@@ -20,7 +18,7 @@ import ServerFailure from '../../components/ServerFailure';
 
 const GameList = ({ searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { games, loading, error } = useSelector(gameSelector)
+  const { games } = useSelector(gameSelector)
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
@@ -38,32 +36,26 @@ const GameList = ({ searchTerm, handleClearSearchBar }) => {
 
   return (
     <>
-      {loading ? (
-        <LoadSpinner loading={loading} />
-      ) : error ? (
-        <ServerFailure />
-      ) : (
-        <div>
-          {searchResults.length === 0 && searchTerm !== '' ? (
-            <SearchError searchTerm={searchTerm} />
-          ) : (
-            <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-              {searchResults.map((i) => (
-                <Link
+      <div>
+        {searchResults.length === 0 && searchTerm !== '' ? (
+          <SearchError searchTerm={searchTerm} />
+        ) : (
+          <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+            {searchResults.map((i) => (
+              <Link
+                key={i.id}
+                to={`/games/${i.id}/challenges`}
+                onClick={handleClearSearchBar}
+              >
+                <GameCard
                   key={i.id}
-                  to={`/games/${i.id}/challenges`}
-                  onClick={handleClearSearchBar}
-                >
-                  <GameCard
-                    key={i.id}
-                    data={i}
-                  />
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+                  data={i}
+                />
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 }
