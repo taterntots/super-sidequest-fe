@@ -81,11 +81,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   return (
     <>
       {/* USER INFO */}
-      <div className='mb-4'>
+      <div
+        className='mb-4 hover:opacity-50 cursor-pointer transform transition duration-500 hover:scale-95'
+        onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
+      >
+        <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>EDIT</p>
         <div>
           <img
             className='object-cover h-72 w-full rounded-t-md'
-            onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
             src={user.banner_pic_URL ? user.banner_pic_URL : UserBannerPlaceholder}
             alt='banner for a user'
           />
@@ -97,14 +100,12 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                 <img
                   src={user.profile_pic_URL}
                   className='inline-block object-fill w-12 h-12 rounded-md'
-                  onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
                   alt='user avatar'
                 >
                 </img>
               ) : (
                 <BlankUser
                   className='inline-block object-fill w-12 h-12 rounded-md'
-                  onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
                   alt='placeholder for user avatar'
                 />
               )}
