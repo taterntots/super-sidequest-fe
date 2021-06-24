@@ -21,6 +21,7 @@ import ProfilePage from './ProfilePage';
 import ChallengesPage from './ChallengesPage';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import ChallengeForm from '../features/challenge/ChallengeForm';
+import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
@@ -32,13 +33,16 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector(userSelector);
+  const { user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [filteredCompletedChallenges, setFilteredCompletedChallenges] = useState(completed_challenges);
+  const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
+
+  console.log(openProfileEdit)
 
   // Grabs user data from the server
   useEffect(() => {
@@ -63,6 +67,19 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     setFilteredCompletedChallenges(completed_challenges)
   }, [created_challenges, accepted_challenges, completed_challenges])
 
+  // Function to handle submitting changes to the user's profile
+  const submitUserProfile = async (data) => {
+    data.challenge_id = route.params.challengeId
+
+    // dispatch(updateUserChallengeCompletion(data))
+    //   .then(res => {
+    //     setRefresh(!refresh)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
+  };
+
   return (
     <>
       {/* USER INFO */}
@@ -70,6 +87,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         <div>
           <img
             className='object-cover h-72 w-full rounded-t-md'
+            onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(!openProfileEdit) : null}
             src={UserBannerPlaceholder}
             alt='banner for a user'
           />
@@ -77,7 +95,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
           <div className='sm:flex justify-between'>
             <div className='flex justify-center items-center py-3'>
-              <BlankUser className='inline-block object-fill w-12 h-12 rounded-md' />
+              <BlankUser
+                className='inline-block object-fill w-12 h-12 rounded-md'
+                onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(!openProfileEdit) : null}
+              />
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
           </div>
@@ -115,6 +136,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           </Link>
         ) : null}
       </div>
+
+      {/* Modals */}
+      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} submitUserProfile={submitUserProfile} loading={loading} user={user} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}
       <div className='p-4 bg-profiletwo rounded-tr-md rounded-b-md'>
