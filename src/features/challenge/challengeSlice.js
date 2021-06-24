@@ -294,7 +294,7 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
       url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/users/${localStorage.getItem('id')}/update`,
       headers: {
         Accept: 'application/json',
-        Authorization: token,
+        Authorization: token
       }, data: {
         high_score: data.high_score ? data.high_score : null,
         speedrun_hours: data.speedrun_hours ? data.speedrun_hours : null,

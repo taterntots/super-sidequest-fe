@@ -56,9 +56,8 @@ const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user 
                 <h4 className='text-2xl mb-4'>
                   Edit Profile
                 </h4>
-
                 <div className="mt-7 form-group">
-                  <label className='mr-3'>Avatar</label>
+                  <label className='mr-3'>Avatar URL</label>
                   <input
                     name='profile_pic_URL'
                     type='text'
@@ -68,7 +67,17 @@ const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user 
                     {...register('profile_pic_URL')}
                   />
                 </div>
-
+                <div className="mt-7 form-group">
+                  <label className='mr-3'>Banner URL</label>
+                  <input
+                    name='banner_pic_URL'
+                    type='text'
+                    defaultValue={user.banner_pic_URL}
+                    placeholder='Enter a URL for your banner'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('banner_pic_URL')}
+                  />
+                </div>
                 <div className='flex justify-evenly'>
                   <button
                     type="button"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchUserByUsername,
+  updateUser,
   userSelector
 } from '../features/user/userSlice';
 import {
@@ -42,8 +43,6 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
 
-  console.log(openProfileEdit)
-
   // Grabs user data from the server
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
@@ -69,15 +68,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Function to handle submitting changes to the user's profile
   const submitUserProfile = async (data) => {
-    data.challenge_id = route.params.challengeId
-
-    // dispatch(updateUserChallengeCompletion(data))
-    //   .then(res => {
-    //     setRefresh(!refresh)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    dispatch(updateUser(data))
+      .then(res => {
+        setOpenProfileEdit(false)
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   return (
@@ -87,18 +85,29 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         <div>
           <img
             className='object-cover h-72 w-full rounded-t-md'
-            onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(!openProfileEdit) : null}
-            src={UserBannerPlaceholder}
+            onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
+            src={user.banner_pic_URL ? user.banner_pic_URL : UserBannerPlaceholder}
             alt='banner for a user'
           />
         </div>
         <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
           <div className='sm:flex justify-between'>
             <div className='flex justify-center items-center py-3'>
-              <BlankUser
-                className='inline-block object-fill w-12 h-12 rounded-md'
-                onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(!openProfileEdit) : null}
-              />
+              {user.profile_pic_URL ? (
+                <img
+                  src={user.profile_pic_URL}
+                  className='inline-block object-fill w-12 h-12 rounded-md'
+                  onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
+                  alt='user avatar'
+                >
+                </img>
+              ) : (
+                <BlankUser
+                  className='inline-block object-fill w-12 h-12 rounded-md'
+                  onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
+                  alt='placeholder for user avatar'
+                />
+              )}
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
           </div>

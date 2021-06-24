@@ -167,6 +167,37 @@ export const resetPassword = createAsyncThunk('users/resetPassword', async (cred
   }
 });
 
+// API call to update a user's profile
+export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
+  const token = localStorage.getItem('token');
+  
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `users/${localStorage.getItem('id')}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token
+      }, data: {
+        profile_pic_URL: data.profile_pic_URL,
+        banner_pic_URL: data.banner_pic_URL
+      }
+    })
+    cogoToast.success('Profile updated!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // User slice for state change
 export const userSlice = createSlice({
   name: 'users',
@@ -249,6 +280,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [resetPassword.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [updateUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [updateUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [updateUser.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
