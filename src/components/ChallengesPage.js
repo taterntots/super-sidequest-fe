@@ -18,7 +18,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar }) => {
+const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar, ProfileOne, ProfileTwo }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
@@ -85,7 +85,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
   }
 
   return (
-    <>
+    <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <div className="flex flex-col-reverse lg:flex-row lg:justify-between">
         {/* CHALLENGE LIST */}
         <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
@@ -184,7 +184,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
           </div>
         </div>
       </div >
-    </>
+    </ProfileOne>
   );
 }
 

@@ -31,7 +31,7 @@ import LoadSpinner from '../../components/LoadSpinner';
 // -------------------------------- CHALLENGE FORM ----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeForm = ({ refresh, setRefresh }) => {
+const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm }) => {
   // State
   const dispatch = useDispatch();
   const { games, loading: gameLoading } = useSelector(gameSelector)
@@ -68,8 +68,8 @@ const ChallengeForm = ({ refresh, setRefresh }) => {
   };
 
   return (
-    <div className="">
-      <form className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
+    <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
+      <ProfileTwoForm className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
         <h4 className='text-2xl mb-4'>Create a challenge</h4>
         <div className='flex justify-between'>
           <div className="form-group w-5/12">
@@ -262,8 +262,8 @@ const ChallengeForm = ({ refresh, setRefresh }) => {
             ) : 'Submit'}
           </button>
         </div>
-      </form>
-    </div >
+      </ProfileTwoForm>
+    </ProfileOne>
   );
 }
 

@@ -13,7 +13,7 @@ import FeaturedChallengeCard from '../features/challenge/FeaturedChallengeCard';
 
 const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challenge, ProfileOne, ProfileTwo }) => {
   return (
-    <>
+    <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <div className="lg:flex justify-between">
 
         {/* STATS */}
@@ -74,8 +74,8 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
             {/* <div className='invisible pt-1' /> */}
           </div>
         </div>
-      </div >
-    </>
+      </div>
+    </ProfileOne>
   );
 }
 

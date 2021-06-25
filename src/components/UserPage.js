@@ -18,6 +18,7 @@ import {
 import { Route, Link, useRouteMatch } from 'react-router-dom';
 
 // STYLING
+import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
 
 // COMPONENTS
@@ -87,6 +88,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const ProfileTwo = styled.div`
     background-color: ${user.profile_color_two};
   `
+  const ProfileTwoForm = styled.form`
+    background-color: ${user.profile_color_two};
+  `
 
   return (
     <>
@@ -104,7 +108,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           />
         </div>
 
-        <div className={`px-0 sm:px-10 bg-profileone rounded-b-lg`}>
+        <ProfileOne className={`px-0 sm:px-10 bg-profileone rounded-b-lg`}>
           <div className='sm:flex justify-between'>
             <div className='flex justify-center items-center py-3'>
               {user.profile_pic_URL ? (
@@ -123,30 +127,82 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
           </div>
-        </div>
+        </ProfileOne>
       </div>
 
       {/* TAB CONTENT */}
       <div className='flex flex-row items-center justify-start text-xl text-white'>
-        <Link
-          to={`/${user.username}`}
-          onClick={() => handleClearSearchBar()}
-          className={!url.includes('challenges') && !url.includes('add-challenge') ?
-            "px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md" :
-            "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
-        >
-          Profile
-        </Link>
-        <Link
-          to={`/${user.username}/challenges`}
-          onClick={() => handleClearSearchBar()}
-          className={url.includes('challenges') ?
-            "px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md" :
-            "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
-        >
-          Challenges
-        </Link>
+        {/* PROFILE */}
+        {!url.includes('challenges') && !url.includes('add-challenge') ? (
+          <ProfileOne className={'bg-profileone rounded-t-md'}>
+            <Link
+              to={`/${user.username}`}
+              onClick={() => handleClearSearchBar()}
+              className='px-5 hover:text-navbarbuttonhighlight'
+            >
+              Profile
+            </Link>
+          </ProfileOne>
+        ) : (
+          <Link
+            to={`/${user.username}`}
+            onClick={() => handleClearSearchBar()}
+            className='px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md'
+          >
+            Profile
+          </Link>
+        )}
+
+        {/* CHALLENGES */}
+        {url.includes('challenges') ? (
+          <ProfileOne className={'bg-profileone rounded-t-md'}>
+            <Link
+              to={`/${user.username}/challenges`}
+              onClick={() => handleClearSearchBar()}
+              className='px-5 hover:text-navbarbuttonhighlight'
+            >
+              Quests
+            </Link>
+          </ProfileOne>
+        ) : (
+          <Link
+            to={`/${user.username}/challenges`}
+            onClick={() => handleClearSearchBar()}
+            className='px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md'
+          >
+            Quests
+          </Link>
+        )}
+
+        {/* ADD CHALLENGE */}
         {user.id === localStorage.getItem('id') ? (
+          <div>
+            {url.includes('add-challenge') ? (
+              <ProfileOne className={'bg-profileone rounded-t-md'}>
+                <Link
+                  to={`/${localStorage.getItem('username')}/add-challenge`}
+                  onClick={() => handleClearSearchBar()}
+                  className='px-5 hover:text-navbarbuttonhighlight'
+                >
+                  +
+                </Link>
+              </ProfileOne>
+            ) : (
+              <ProfileTwo className={'bg-profiletwo rounded-t-md'}>
+                <Link
+                  to={`/${localStorage.getItem('username')}/add-challenge`}
+                  onClick={() => handleClearSearchBar()}
+                  className='px-5 hover:text-navbarbuttonhighlight'
+                >
+                  +
+                </Link>
+              </ProfileTwo>
+            )}
+          </div>
+        ) : null}
+
+
+        {/* {user.id === localStorage.getItem('id') ? (
           <Link
             to={`/${localStorage.getItem('username')}/add-challenge`}
             className={url.includes('add-challenge') ?
@@ -155,73 +211,77 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           >
             +
           </Link>
-        ) : null}
+        ) : null} */}
       </div>
 
       {/* Modals */}
       <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} submitUserProfile={submitUserProfile} loading={loading} user={user} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}
-      <div className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-        <Route
-          exact
-          path={`/:username`}
-          render={(props) => (
-            <ProfilePage
-              acceptedChallenges={filteredAcceptedChallenges}
-              challenge_game_stats={challenge_game_stats}
-              featured_challenge={featured_challenge}
-              // ProfileOne={ProfileOne}
-              // ProfileTwo={ProfileTwo}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`/:username/challenges`}
-          render={(props) => (
-            <ChallengesPage
-              created_challenges={created_challenges}
-              accepted_challenges={accepted_challenges}
-              completed_challenges={completed_challenges}
-              filteredCreatedChallenges={filteredCreatedChallenges}
-              filteredAcceptedChallenges={filteredAcceptedChallenges}
-              filteredCompletedChallenges={filteredCompletedChallenges}
-              setFilteredCreatedChallenges={setFilteredCreatedChallenges}
-              setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
-              setFilteredCompletedChallenges={setFilteredCompletedChallenges}
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`/:username/challenges/:challengeId`}
-          render={(props) => (
-            <ChallengeDetails
-              searchTerm={searchTerm}
-              handleClearSearchBar={handleClearSearchBar}
-              refresh={refresh}
-              setRefresh={setRefresh}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`/:username/add-challenge`}
-          render={(props) => (
-            <ChallengeForm
-              refresh={refresh}
-              setRefresh={setRefresh}
-              {...props}
-            />
-          )}
-        />
-      </div>
+      {/* <div className='p-4 rounded-tr-md bg-profileone rounded-b-md'> */}
+      <Route
+        exact
+        path={`/:username`}
+        render={(props) => (
+          <ProfilePage
+            acceptedChallenges={filteredAcceptedChallenges}
+            challenge_game_stats={challenge_game_stats}
+            featured_challenge={featured_challenge}
+            ProfileOne={ProfileOne}
+            ProfileTwo={ProfileTwo}
+            {...props}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/:username/challenges`}
+        render={(props) => (
+          <ChallengesPage
+            created_challenges={created_challenges}
+            accepted_challenges={accepted_challenges}
+            completed_challenges={completed_challenges}
+            filteredCreatedChallenges={filteredCreatedChallenges}
+            filteredAcceptedChallenges={filteredAcceptedChallenges}
+            filteredCompletedChallenges={filteredCompletedChallenges}
+            setFilteredCreatedChallenges={setFilteredCreatedChallenges}
+            setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
+            setFilteredCompletedChallenges={setFilteredCompletedChallenges}
+            searchTerm={searchTerm}
+            handleClearSearchBar={handleClearSearchBar}
+            ProfileOne={ProfileOne}
+            ProfileTwo={ProfileTwo}
+            {...props}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/:username/challenges/:challengeId`}
+        render={(props) => (
+          <ChallengeDetails
+            refresh={refresh}
+            setRefresh={setRefresh}
+            ProfileOne={ProfileOne}
+            ProfileTwo={ProfileTwo}
+            {...props}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/:username/add-challenge`}
+        render={(props) => (
+          <ChallengeForm
+            refresh={refresh}
+            setRefresh={setRefresh}
+            ProfileOne={ProfileOne}
+            ProfileTwoForm={ProfileTwoForm}
+            {...props}
+          />
+        )}
+      />
+      {/* </div> */}
     </>
   );
 }

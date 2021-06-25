@@ -34,7 +34,7 @@ import Toggle from '../../components/utils/buttons/Toggle';
 // ------------------------------- CHALLENGE DETAILS --------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeDetails = ({ refresh, setRefresh }) => {
+const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   // State
   const dispatch = useDispatch();
   const { challenge, challenges_high_scores, challenges_speedruns, challenges_for_glorys, acceptedChallenge, featured_challenge, loading: challengeLoading } = useSelector(challengeSelector)
@@ -172,7 +172,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   };
 
   return (
-    <>
+    <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <div className="lg:flex justify-between">
         <div className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
@@ -267,7 +267,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
       <EditChallengeModal open={openEdit} setOpen={setOpenEdit} setOpenDelete={setOpenDelete} submitChallengeEdit={submitChallengeEdit} loading={challengeLoading} challenge={challenge} />
       <DeleteChallengeModal open={openDelete} setOpen={setOpenDelete} submitChallengeDelete={submitChallengeDelete} loading={challengeLoading} />
       <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} challenge={challenge} />
-    </>
+    </ProfileOne>
   );
 }
 
