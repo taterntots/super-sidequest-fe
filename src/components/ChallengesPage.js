@@ -88,7 +88,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
     <>
       <div className="flex flex-col-reverse lg:flex-row lg:justify-between">
         {/* CHALLENGE LIST */}
-        <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profileone rounded-lg text-white">
+        <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             {currentChallengeFilter === 'Created' ? 'Created Quests' :
               currentChallengeFilter === 'Active' ? 'Active Quests' :
@@ -110,14 +110,14 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
 
         {/* CHALLENGE TYPE */}
         <div className='w-full lg:w-1/5'>
-          <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
+          <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
               Quest Type
             </h1>
             <div className='flex flex-col'>
               <button
                 className={currentChallengeFilter === 'Created' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Created')
@@ -129,7 +129,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               </button>
               <button
                 className={currentChallengeFilter === 'Active' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"} onClick={() => {
                     setCurrentChallengeFilter('Active')
                     filterReset()
@@ -140,7 +140,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               </button>
               <button
                 className={currentChallengeFilter === 'Completed' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Completed')
@@ -154,7 +154,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
           </div>
 
           {/* FILTERS */}
-          <div className="px-10 pb-4 mb-3 lg:mb-0 bg-profileone rounded-lg text-white">
+          <div className="px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Filter By
             </h1>
@@ -164,7 +164,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                   filterReset()
                   handleClearSearchBar()
                 }}
-                className={`items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out`}
+                className={`items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out`}
               >
                 Reset
               </button>

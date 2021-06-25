@@ -1,12 +1,13 @@
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
+  mode: 'jit',
   theme: {
     extend: {
       colors: {
         taterpurple: '#483D8B',
-        profileone: '#3E828C',
-        profiletwo: '#483D8B',
+        profileone: '#483D8B',
+        profiletwo: '#3E828C',
         purplebutton: '#9370DB',
         logintext: '#BA55D3',
         sitewidebackground: '#414141',

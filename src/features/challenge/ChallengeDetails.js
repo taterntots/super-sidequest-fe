@@ -174,7 +174,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
   return (
     <>
       <div className="lg:flex justify-between">
-        <div className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profileone rounded-lg text-white">
+        <div className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
             {challenge.name}
           </h1>
@@ -191,7 +191,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
               {challenge.game_title}
             </p>
           </div>
-          <p className='mb-4 p-1 border-2 text-center rounded-md bg-profiletwo'>
+          <p className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
             {challenge.description}
           </p>
           <div className='flex justify-evenly mb-4'>
@@ -232,7 +232,7 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
             {challenge.user_id === localStorage.getItem('id') ? (
               <button
                 onClick={() => setOpenEdit(true)}
-                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 Edit
               </button>
@@ -242,14 +242,14 @@ const ChallengeDetails = ({ refresh, setRefresh }) => {
             {!acceptedChallenge && localStorage.getItem('token') ? (
               <button
                 onClick={() => setOpenAccept(true)}
-                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 Accept
               </button>
             ) : acceptedChallenge && localStorage.getItem('token') ? (
               <button
                 onClick={() => setOpenAbandon(true)}
-                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 Abandon
               </button>

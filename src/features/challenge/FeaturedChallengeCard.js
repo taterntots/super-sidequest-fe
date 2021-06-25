@@ -23,7 +23,7 @@ const FeaturedChallengeCard = ({ data }) => {
   } = data;
 
   return (
-    <div className="px-10 mb-3 pb-4 bg-profileone rounded-lg text-white">
+    <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white">
       <h1 className='text-center text-2xl font-medium pt-4 mt-4 lg:my-0'>
         {name}
       </h1>
@@ -42,7 +42,7 @@ const FeaturedChallengeCard = ({ data }) => {
           </p>
         </div>
       </Link>
-      <p className='mb-4 p-1 border-2 text-center rounded-md bg-profiletwo'>
+      <p className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
         {description}
       </p>
       <div className='flex justify-evenly mb-4'>

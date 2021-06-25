@@ -32,7 +32,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
 
   return (
     <>
-      <div className="w-full lg:w-3/5 h-full pb-4 px-10 bg-profileone rounded-lg text-white">
+      <div className="w-full lg:w-3/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
         <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
           Leaderboard
         </h1>
@@ -49,7 +49,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
 
           {/* LEADERBOARD DATA */}
           {challenges_scores ? challenges_scores.map((score, index) => (
-            <div key={score.id} className={`flex text-center ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:bg-white hover:text-profiletwo`}>
+            <div key={score.id} className={`flex text-center ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:bg-white hover:text-profileone`}>
               <p className='w-1/12'>{index + 1}</p>
               <Link
                 key={score.id}
@@ -130,7 +130,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
               <button
                 onClick={() => setOpen(true)}
                 className={`${acceptedChallenge.completed && `pointer-events-none opacity-50`
-                  } rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profiletwo hover:bg-white hover:text-profiletwo focus:ring transition duration-150 ease-in-out`}
+                  } rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : 'Update Status'}
               </button>

@@ -49,7 +49,7 @@ const ChallengeCard = ({ data }) => {
         </div>
       </div>
       <div className='text-center'>
-        <p className='mt-4 p-1 border-2 px-10 rounded-md bg-profiletwo'>
+        <p className='mt-4 p-1 border-2 px-10 rounded-md bg-profileone'>
           {description}
         </p>
       </div>

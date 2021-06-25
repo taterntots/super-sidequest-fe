@@ -36,7 +36,7 @@ const HomePage = ({ refresh }) => {
   return (
     <>
       {/* HERO */}
-      <div className='py-24 px-4 mb-3 bg-profiletwo rounded-md'>
+      <div className='py-24 px-4 mb-3 bg-profileone rounded-md'>
         <div className='text-center'>
           <h1 className='text-4xl font-bold mb-2 text-white'>
             Super Sidequest
@@ -64,7 +64,7 @@ const HomePage = ({ refresh }) => {
           ) : null}
 
           {/* TATER'S STREAM */}
-          <div className="px-10 mb-3 pb-4 bg-profileone rounded-xl text-white">
+          <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-xl text-white">
             <h1 className='text-center text-2xl font-medium py-4'>
               Tater & Tots
             </h1>
@@ -79,7 +79,7 @@ const HomePage = ({ refresh }) => {
 
         {/* RECENT QUESTS */}
         <div className='w-full xl:w-5/12'>
-          <div className="px-10 pb-4 bg-profileone rounded-xl text-white">
+          <div className="px-10 pb-4 bg-profiletwo rounded-xl text-white">
             <h1 className='text-center text-2xl font-medium py-4'>
               Recent Quests
             </h1>

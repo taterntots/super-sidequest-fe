@@ -13,7 +13,7 @@ import LoadSpinner from '../../LoadSpinner';
 // ----------------------------------------------------------------------------------
 
 const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user }) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const cancelButtonRef = useRef(null)
 
   return (
@@ -78,7 +78,29 @@ const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user 
                     {...register('banner_pic_URL')}
                   />
                 </div>
-                <div className='flex justify-evenly'>
+                <div className='flex justify-between'>
+                  <div className="form-group w-2/5">
+                    <label className='mr-3'>BG Color #1</label>
+                    <input
+                      name='profile_color_one'
+                      type='color'
+                      defaultValue={user.profile_color_one}
+                      className='form-control text-black w-full flex items-center h-8 px-1 mt-3 rounded-md text-lg'
+                      {...register('profile_color_one')}
+                    />
+                  </div>
+                  <div className="form-group w-2/5">
+                    <label className='mr-3'>BG Color #2</label>
+                    <input
+                      name='profile_color_two'
+                      type='color'
+                      defaultValue={user.profile_color_two}
+                      className='form-control text-black w-full flex items-center h-8 px-1 mt-3 rounded-md text-lg'
+                      {...register('profile_color_two')}
+                    />
+                  </div>
+                </div>
+                <div className='flex justify-evenly mt-7'>
                   <button
                     type="button"
                     onClick={() => {

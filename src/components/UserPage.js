@@ -17,6 +17,9 @@ import {
 // ROUTING
 import { Route, Link, useRouteMatch } from 'react-router-dom';
 
+// STYLING
+import styled from '@emotion/styled';
+
 // COMPONENTS
 import ProfilePage from './ProfilePage';
 import ChallengesPage from './ChallengesPage';
@@ -78,11 +81,18 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       })
   };
 
+  const ProfileOne = styled.div`
+    background-color: ${user.profile_color_one};
+  `
+  const ProfileTwo = styled.div`
+    background-color: ${user.profile_color_two};
+  `
+
   return (
     <>
       {/* USER INFO */}
       <div
-        className='mb-4 hover:opacity-50 cursor-pointer transform transition duration-500 hover:scale-95'
+        className='mb-4 hover:opacity-50 cursor-pointer transform transition'
         onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
       >
         <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>EDIT</p>
@@ -93,7 +103,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             alt='banner for a user'
           />
         </div>
-        <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
+
+        <div className={`px-0 sm:px-10 bg-profileone rounded-b-lg`}>
           <div className='sm:flex justify-between'>
             <div className='flex justify-center items-center py-3'>
               {user.profile_pic_URL ? (
@@ -121,7 +132,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           to={`/${user.username}`}
           onClick={() => handleClearSearchBar()}
           className={!url.includes('challenges') && !url.includes('add-challenge') ?
-            "px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+            "px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md" :
             "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Profile
@@ -130,7 +141,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           to={`/${user.username}/challenges`}
           onClick={() => handleClearSearchBar()}
           className={url.includes('challenges') ?
-            "px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
+            "px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md" :
             "px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md"}
         >
           Challenges
@@ -139,8 +150,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           <Link
             to={`/${localStorage.getItem('username')}/add-challenge`}
             className={url.includes('add-challenge') ?
-              "px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md" :
-              "px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md"}
+              `px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md` :
+              `px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md`}
           >
             +
           </Link>
@@ -151,7 +162,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} submitUserProfile={submitUserProfile} loading={loading} user={user} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}
-      <div className='p-4 bg-profiletwo rounded-tr-md rounded-b-md'>
+      <div className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
         <Route
           exact
           path={`/:username`}
@@ -160,6 +171,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               acceptedChallenges={filteredAcceptedChallenges}
               challenge_game_stats={challenge_game_stats}
               featured_challenge={featured_challenge}
+              // ProfileOne={ProfileOne}
+              // ProfileTwo={ProfileTwo}
               {...props}
             />
           )}
