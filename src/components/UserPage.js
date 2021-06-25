@@ -18,7 +18,6 @@ import {
 import { Route, Link, useRouteMatch } from 'react-router-dom';
 
 // STYLING
-import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
 
 // COMPONENTS
@@ -83,23 +82,33 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   };
 
   const ProfileOne = styled.div`
-    background-color: ${user.profile_color_one};
+    background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
   const ProfileTwo = styled.div`
-    background-color: ${user.profile_color_two};
+    background-color: ${user.profile_color_two ? user.profile_color_two : null};
   `
   const ProfileTwoForm = styled.form`
-    background-color: ${user.profile_color_two};
+    background-color: ${user.profile_color_two ? user.profile_color_two : null};
+  `
+  const ProfileOneButton = styled.button`
+    background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
 
   return (
     <>
       {/* USER INFO */}
       <div
-        className='mb-4 hover:opacity-50 cursor-pointer transform transition'
+        className={localStorage.getItem('id') === user.id ?
+          'mb-4 hover:opacity-50 cursor-pointer transform transition' :
+          'mb-4'
+        }
         onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
       >
-        <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>EDIT</p>
+        {localStorage.getItem('id') === user.id ? (
+          <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
+            EDIT
+          </p>
+        ) : null}
         <div>
           <img
             className='object-cover h-72 w-full rounded-t-md'
@@ -200,25 +209,12 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             )}
           </div>
         ) : null}
-
-
-        {/* {user.id === localStorage.getItem('id') ? (
-          <Link
-            to={`/${localStorage.getItem('username')}/add-challenge`}
-            className={url.includes('add-challenge') ?
-              `px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md` :
-              `px-5 hover:text-navbarbuttonhighlight bg-profiletwo rounded-t-md`}
-          >
-            +
-          </Link>
-        ) : null} */}
       </div>
 
       {/* Modals */}
       <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} submitUserProfile={submitUserProfile} loading={loading} user={user} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}
-      {/* <div className='p-4 rounded-tr-md bg-profileone rounded-b-md'> */}
       <Route
         exact
         path={`/:username`}
@@ -229,6 +225,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             featured_challenge={featured_challenge}
             ProfileOne={ProfileOne}
             ProfileTwo={ProfileTwo}
+            user={user}
             {...props}
           />
         )}
@@ -251,6 +248,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             handleClearSearchBar={handleClearSearchBar}
             ProfileOne={ProfileOne}
             ProfileTwo={ProfileTwo}
+            user={user}
             {...props}
           />
         )}
@@ -277,11 +275,11 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setRefresh={setRefresh}
             ProfileOne={ProfileOne}
             ProfileTwoForm={ProfileTwoForm}
+            ProfileOneButton={ProfileOneButton}
             {...props}
           />
         )}
       />
-      {/* </div> */}
     </>
   );
 }

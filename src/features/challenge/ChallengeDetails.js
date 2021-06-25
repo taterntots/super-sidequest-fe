@@ -21,6 +21,9 @@ import {
 // ROUTING
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
+// STYLING
+import styled from '@emotion/styled';
+
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
 import AbandonChallengeModal from '../../components/utils/modals/AbandonChallengeModal';
@@ -171,10 +174,20 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
       })
   };
 
+  const ProfileOnePara = styled.p`
+    background-color: ${challenge.profile_color_one ? challenge.profile_color_one : null};
+  `
+  const ProfileOneButton = styled.button`
+    background-color: ${challenge.profile_color_one ? challenge.profile_color_one : null};
+    $:hover {
+      color: ${challenge.profile_color_one ? challenge.profile_color_one : null};
+    }
+  `
+
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <div className="lg:flex justify-between">
-        <div className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
+        <ProfileTwo className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
             {challenge.name}
           </h1>
@@ -191,9 +204,9 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {challenge.game_title}
             </p>
           </div>
-          <p className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
+          <ProfileOnePara className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
             {challenge.description}
-          </p>
+          </ProfileOnePara>
           <div className='flex justify-evenly mb-4'>
             <p className='px-2 border-2 rounded-md'>
               {challenge.is_high_score ? 'High Score' :
@@ -223,42 +236,42 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
           {challenge.user_id === localStorage.getItem('id') ? (
             <div className='flex justify-center mb-4'>
               <p className='font-bold'>Featured:</p>
-              <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} />
+              <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} userColorOne={challenge.profile_color_one} />
             </div>
           ) : null}
 
           <div className='flex flex-col md:flex-row justify-evenly'>
             {/* EDIT BUTTON */}
             {challenge.user_id === localStorage.getItem('id') ? (
-              <button
+              <ProfileOneButton
                 onClick={() => setOpenEdit(true)}
                 className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 Edit
-              </button>
+              </ProfileOneButton>
             ) : null}
 
             {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
             {!acceptedChallenge && localStorage.getItem('token') ? (
-              <button
+              <ProfileOneButton
                 onClick={() => setOpenAccept(true)}
                 className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 Accept
-              </button>
+              </ProfileOneButton>
             ) : acceptedChallenge && localStorage.getItem('token') ? (
-              <button
+              <ProfileOneButton
                 onClick={() => setOpenAbandon(true)}
                 className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 Abandon
-              </button>
+              </ProfileOneButton>
             ) : null}
           </div>
-        </div>
+        </ProfileTwo>
 
         {/* LEADERBOARD */}
-        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} />
+        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
       </div >
 
       {/* Modals */}

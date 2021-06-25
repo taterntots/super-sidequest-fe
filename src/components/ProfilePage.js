@@ -11,13 +11,13 @@ import FeaturedChallengeCard from '../features/challenge/FeaturedChallengeCard';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challenge, ProfileOne, ProfileTwo }) => {
+const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challenge, ProfileOne, ProfileTwo, user }) => {
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <div className="lg:flex justify-between">
 
         {/* STATS */}
-        <div className="mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+        <ProfileTwo className="mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4'>
             Stats
           </h1>
@@ -44,7 +44,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
               INVISIBLE TEXT TO SHOW ROUNDED BORDER
             </p>
           </div>
-        </div>
+        </ProfileTwo>
 
         <div className='w-full lg:w-3/5'>
           {/* FEATURED CHALLENGE */}
@@ -53,7 +53,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
           ) : null}
 
           {/* ACTIVE CHALLENGES */}
-          <div className="px-10 pb-4 bg-profiletwo rounded-lg text-white">
+          <ProfileTwo className="px-10 pb-4 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Active Quests
             </h1>
@@ -66,13 +66,14 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
                   <ChallengeCard
                     key={acceptedChallenge.challenge_id}
                     data={acceptedChallenge}
+                    user={user}
                   />
                 </Link>
               ))}
             </div>
             {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
             {/* <div className='invisible pt-1' /> */}
-          </div>
+          </ProfileTwo>
         </div>
       </div>
     </ProfileOne>

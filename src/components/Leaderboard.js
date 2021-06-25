@@ -19,7 +19,7 @@ import Toggle from '../components/utils/buttons/Toggle';
 // ---------------------------------- LEADERBOARD -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge, submitChallengeCompleted }) => {
+const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge, submitChallengeCompleted, ProfileTwo, ProfileOneButton }) => {
   const [openVideo, setOpenVideo] = useState(false)
   const [openImage, setOpenImage] = useState(false)
   const [completedOn, setCompletedOn] = useState(acceptedChallenge.completed)
@@ -32,7 +32,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
 
   return (
     <>
-      <div className="w-full lg:w-3/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+      <ProfileTwo className="w-full lg:w-3/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
         <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
           Leaderboard
         </h1>
@@ -55,7 +55,6 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
                 key={score.id}
                 to={`/${score.username}`}
                 className='w-6/12'
-              // onClick={handleClearSearchBar}
               >
                 {score.username}
               </Link>
@@ -127,21 +126,21 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
         <div className='mt-4'>
           {acceptedChallenge && localStorage.getItem('token') ? (
             <div className='flex flex-col md:flex-row justify-evenly'>
-              <button
+              <ProfileOneButton
                 onClick={() => setOpen(true)}
                 className={`${acceptedChallenge.completed && `pointer-events-none opacity-50`
                   } rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
               >
                 {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : 'Update Status'}
-              </button>
+              </ProfileOneButton>
               <div className='flex self-center'>
                 <p className='font-bold'>Completed:</p>
-                <Toggle on={completedOn} setOn={setCompletedOn} submitFunction={submitChallengeCompleted} />
+                <Toggle on={completedOn} setOn={setCompletedOn} submitFunction={submitChallengeCompleted} userColorOne={challenge.profile_color_one} />
               </div>
             </div>
           ) : null}
         </div>
-      </div>
+      </ProfileTwo>
 
       {/* Modals */}
       <VideoModal open={openVideo} setOpen={setOpenVideo} currentPlayer={currentPlayer} />

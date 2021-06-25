@@ -31,7 +31,7 @@ import LoadSpinner from '../../components/LoadSpinner';
 // -------------------------------- CHALLENGE FORM ----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm }) => {
+const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, ProfileOneButton }) => {
   // State
   const dispatch = useDispatch();
   const { games, loading: gameLoading } = useSelector(gameSelector)
@@ -69,7 +69,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm }) => {
 
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-      <ProfileTwoForm className="p-10 bg-taterpurple rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
+      <ProfileTwoForm className="p-10 bg-profiletwo rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
         <h4 className='text-2xl mb-4'>Create a challenge</h4>
         <div className='flex justify-between'>
           <div className="form-group w-5/12">
@@ -249,10 +249,10 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm }) => {
         </div>
 
         <div className='flex justify-center md:mx-0 md:flex md:justify-end md:items-center'>
-          <button
+          <ProfileOneButton
             type="submit"
-            className={challengeLoading ? 'opacity-80 pointer-events-none w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out' :
-              'w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
+            className={challengeLoading ? 'opacity-80 pointer-events-none w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out' :
+              'w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out'
             }
           >
             {challengeLoading ? (
@@ -260,7 +260,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm }) => {
                 <LoadSpinner />
               </div>
             ) : 'Submit'}
-          </button>
+          </ProfileOneButton>
         </div>
       </ProfileTwoForm>
     </ProfileOne>

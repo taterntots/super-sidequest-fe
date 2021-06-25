@@ -1,12 +1,19 @@
 import React from 'react';
 
+// STYLING
+import styled from '@emotion/styled';
+
 // ----------------------------------------------------------------------------------
 // ------------------------------------ TOGGLE --------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Toggle = ({ on, setOn, submitFunction }) => {
+const Toggle = ({ on, setOn, submitFunction, userColorOne }) => {
+  const ProfileOneSpan = styled.span`
+    background-color: ${on && userColorOne ? userColorOne : null};
+  `
+
   return (
-    <span
+    <ProfileOneSpan
       onClick={() => {
         setOn(!on);
         if (on) {
@@ -51,7 +58,7 @@ const Toggle = ({ on, setOn, submitFunction }) => {
           </svg>
         </span>
       </span>
-    </span>
+    </ProfileOneSpan>
   )
 }
 

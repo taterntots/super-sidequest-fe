@@ -18,7 +18,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar, ProfileOne, ProfileTwo }) => {
+const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar, ProfileOne, ProfileTwo, user }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
@@ -88,7 +88,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <div className="flex flex-col-reverse lg:flex-row lg:justify-between">
         {/* CHALLENGE LIST */}
-        <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+        <ProfileTwo className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             {currentChallengeFilter === 'Created' ? 'Created Quests' :
               currentChallengeFilter === 'Active' ? 'Active Quests' :
@@ -105,12 +105,13 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
             }
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
+            user={user}
           />
-        </div>
+        </ProfileTwo>
 
         {/* CHALLENGE TYPE */}
         <div className='w-full lg:w-1/5'>
-          <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white">
+          <ProfileTwo className="px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
               Quest Type
             </h1>
@@ -130,11 +131,12 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               <button
                 className={currentChallengeFilter === 'Active' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"} onClick={() => {
-                    setCurrentChallengeFilter('Active')
-                    filterReset()
-                    handleClearSearchBar()
-                  }}
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
+                onClick={() => {
+                  setCurrentChallengeFilter('Active')
+                  filterReset()
+                  handleClearSearchBar()
+                }}
               >
                 Active
               </button>
@@ -151,10 +153,10 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                 Completed
               </button>
             </div>
-          </div>
+          </ProfileTwo>
 
           {/* FILTERS */}
-          <div className="px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white">
+          <ProfileTwo className="px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Filter By
             </h1>
@@ -181,7 +183,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                 ))}
               </select>
             </div>
-          </div>
+          </ProfileTwo>
         </div>
       </div >
     </ProfileOne>

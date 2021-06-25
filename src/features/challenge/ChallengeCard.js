@@ -1,5 +1,11 @@
 import React from 'react';
 
+// ROUTING
+import { useRouteMatch } from 'react-router-dom';
+
+// STYLING
+import styled from '@emotion/styled';
+
 // IMAGES
 import { ReactComponent as UsersIcon } from '../../img/UsersIcon.svg'
 import { ReactComponent as CompleteBadge } from '../../img/CompleteBadge.svg'
@@ -8,7 +14,8 @@ import { ReactComponent as CompleteBadge } from '../../img/CompleteBadge.svg'
 // --------------------------------- CHALLENGE CARD ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeCard = ({ data }) => {
+const ChallengeCard = ({ data, user }) => {
+  const route = useRouteMatch();
   const {
     challenge_id,
     name,
@@ -22,8 +29,12 @@ const ChallengeCard = ({ data }) => {
     completed
   } = data;
 
+  const ProfileOne = styled.p`
+  background-color: ${route.params.username && user ? user.profile_color_one : null};
+`
+
   return (
-    <div className='p-2 rounded-lg hover:bg-purple-500 transform transition duration-500 hover:scale-105'>
+    <div className='p-2 rounded-lg hover:bg-gray-600 transform transition duration-500 hover:scale-105'>
       <div
         key={challenge_id}
         className='md:flex'
@@ -49,9 +60,9 @@ const ChallengeCard = ({ data }) => {
         </div>
       </div>
       <div className='text-center'>
-        <p className='mt-4 p-1 border-2 px-10 rounded-md bg-profileone'>
+        <ProfileOne className='mt-4 p-1 border-2 px-10 rounded-md bg-profileone'>
           {description}
-        </p>
+        </ProfileOne>
       </div>
       <div className='flex justify-end mt-2'>
         <UsersIcon className='self-center w-10 h-5' />

@@ -11,7 +11,7 @@ import SearchError from '../../components/SearchError';
 // --------------------------------- CHALLENGE LIST ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar }) => {
+const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar, user }) => {
   const [searchResults, setSearchResults] = useState([]);
 
   // Challenge search function
@@ -41,6 +41,7 @@ const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar }) => {
               <ChallengeCard
                 key={i.challenge_id}
                 data={i}
+                user={user}
               />
             </Link>
           ))}
