@@ -70,7 +70,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <ProfileTwoForm className="p-10 bg-profiletwo rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
-        <h4 className='text-2xl mb-4'>Create a challenge</h4>
+        <h4 className='text-2xl mb-4'>Create a quest</h4>
         <div className='flex justify-between'>
           <div className="form-group w-5/12">
             <label className='mr-3'>Game<span className='text-red-500'>*</span></label>
@@ -122,14 +122,14 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
           </div>
         </div>
         <div className="form-group">
-          <label className='mr-3'>Challenge Title<span className='text-red-500'>*</span></label>
+          <label className='mr-3'>Quest Title<span className='text-red-500'>*</span></label>
           {errors.name && (
             <span className='text-red-500'>{errors.name.message}</span>
           )}
           <input
             name='name'
             type='text'
-            placeholder='Enter a snazzy name for your challenge'
+            placeholder='Enter a snazzy name for your quest'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('name', {
               required: 'Required field'
@@ -144,7 +144,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
           <input
             name='description'
             type='text'
-            placeholder='What exactly is the challenge?'
+            placeholder='What is your quest?'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('description', {
               required: 'Required field'
@@ -230,7 +230,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             name='rules'
             type='text'
             rows='12'
-            placeholder='Provide any special rules for the challenge'
+            placeholder='Provide any special rules for your quest'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('rules', {
               required: 'Required field'
@@ -242,7 +242,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
           <input
             name='prize'
             type='text'
-            placeholder='Provide a special prize for completing the challenge'
+            placeholder='Provide a special prize for completing the quest'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('prize')}
           />

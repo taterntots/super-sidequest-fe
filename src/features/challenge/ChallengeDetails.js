@@ -185,94 +185,96 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   `
 
   return (
-    <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-      <div className="lg:flex justify-between">
-        <ProfileTwo className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
-          <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
-            {challenge.name}
-          </h1>
-          <h2 className='text-center text-lg font-medium pb-4 lg:my-0'>
-            by {challenge.username}
-          </h2>
-          <div>
-            <img
-              className='rounded-t-md w-full'
-              src={challenge.banner_pic_URL}
-              alt='banner for a single game'
-            />
-            <p className='mb-4 p-1 text-center text-lg rounded-b-md bg-gray-700'>
-              {challenge.game_title}
-            </p>
-          </div>
-          <ProfileOnePara className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
-            {challenge.description}
-          </ProfileOnePara>
-          <div className='flex justify-evenly mb-4'>
-            <p className='px-2 border-2 rounded-md'>
-              {challenge.is_high_score ? 'High Score' :
-                challenge.is_speedrun ? 'Speedrun' :
-                  'For Glory'}
-            </p>
-            <p className='px-2 border-2 rounded-md'>
-              {challenge.system}
-            </p>
-            <p className='px-2 border-2 rounded-md'>
-              {challenge.difficulty}
-            </p>
-          </div>
-          <p className='whitespace-pre-wrap mb-4'>
-            {challenge.rules}
-          </p>
-          {challenge.prize ? (
-            <div className='text-center border-2 mx-10 mb-4 rounded-md bg-yellow-500'>
-              <p className='text-xl'>Reward</p>
-              <p>
-                {challenge.prize}
+    <>
+      <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
+        <div className="lg:flex justify-between">
+          <ProfileTwo className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
+            <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
+              {challenge.name}
+            </h1>
+            <h2 className='text-center text-lg font-medium pb-4 lg:my-0'>
+              by {challenge.username}
+            </h2>
+            <div>
+              <img
+                className='rounded-t-md w-full'
+                src={challenge.banner_pic_URL}
+                alt='banner for a single game'
+              />
+              <p className='mb-4 p-1 text-center text-lg rounded-b-md bg-gray-700'>
+                {challenge.game_title}
               </p>
             </div>
-          ) : null}
-
-          {/* FEATURED TOGGLE */}
-          {challenge.user_id === localStorage.getItem('id') ? (
-            <div className='flex justify-center mb-4'>
-              <p className='font-bold'>Featured:</p>
-              <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} userColorOne={challenge.profile_color_one} />
+            <ProfileOnePara className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
+              {challenge.description}
+            </ProfileOnePara>
+            <div className='flex justify-evenly mb-4'>
+              <p className='px-2 border-2 rounded-md'>
+                {challenge.is_high_score ? 'High Score' :
+                  challenge.is_speedrun ? 'Speedrun' :
+                    'For Glory'}
+              </p>
+              <p className='px-2 border-2 rounded-md'>
+                {challenge.system}
+              </p>
+              <p className='px-2 border-2 rounded-md'>
+                {challenge.difficulty}
+              </p>
             </div>
-          ) : null}
+            <p className='whitespace-pre-wrap mb-4'>
+              {challenge.rules}
+            </p>
+            {challenge.prize ? (
+              <div className='text-center border-2 mx-10 mb-4 rounded-md bg-yellow-500'>
+                <p className='text-xl'>Reward</p>
+                <p>
+                  {challenge.prize}
+                </p>
+              </div>
+            ) : null}
 
-          <div className='flex flex-col md:flex-row justify-evenly'>
-            {/* EDIT BUTTON */}
+            {/* FEATURED TOGGLE */}
             {challenge.user_id === localStorage.getItem('id') ? (
-              <ProfileOneButton
-                onClick={() => setOpenEdit(true)}
-                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
-              >
-                Edit
-              </ProfileOneButton>
+              <div className='flex justify-center mb-4'>
+                <p className='font-bold'>Featured:</p>
+                <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} userColorOne={challenge.profile_color_one} />
+              </div>
             ) : null}
 
-            {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
-            {!acceptedChallenge && localStorage.getItem('token') ? (
-              <ProfileOneButton
-                onClick={() => setOpenAccept(true)}
-                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
-              >
-                Accept
-              </ProfileOneButton>
-            ) : acceptedChallenge && localStorage.getItem('token') ? (
-              <ProfileOneButton
-                onClick={() => setOpenAbandon(true)}
-                className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
-              >
-                Abandon
-              </ProfileOneButton>
-            ) : null}
-          </div>
-        </ProfileTwo>
+            <div className='flex flex-col md:flex-row justify-evenly'>
+              {/* EDIT BUTTON */}
+              {challenge.user_id === localStorage.getItem('id') ? (
+                <ProfileOneButton
+                  onClick={() => setOpenEdit(true)}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
+                >
+                  Edit
+                </ProfileOneButton>
+              ) : null}
 
-        {/* LEADERBOARD */}
-        <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
-      </div >
+              {/* CHALLENGE ACCEPTED/ABANDONED BUTTONS */}
+              {!acceptedChallenge && localStorage.getItem('token') ? (
+                <ProfileOneButton
+                  onClick={() => setOpenAccept(true)}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
+                >
+                  Accept
+                </ProfileOneButton>
+              ) : acceptedChallenge && localStorage.getItem('token') ? (
+                <ProfileOneButton
+                  onClick={() => setOpenAbandon(true)}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
+                >
+                  Abandon
+                </ProfileOneButton>
+              ) : null}
+            </div>
+          </ProfileTwo>
+
+          {/* LEADERBOARD */}
+          <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
+        </div >
+      </ProfileOne>
 
       {/* Modals */}
       <AcceptChallengeModal open={openAccept} setOpen={setOpenAccept} submitChallengeAccepted={submitChallengeAccepted} />
@@ -280,7 +282,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
       <EditChallengeModal open={openEdit} setOpen={setOpenEdit} setOpenDelete={setOpenDelete} submitChallengeEdit={submitChallengeEdit} loading={challengeLoading} challenge={challenge} />
       <DeleteChallengeModal open={openDelete} setOpen={setOpenDelete} submitChallengeDelete={submitChallengeDelete} loading={challengeLoading} />
       <SubmitChallengeProgressModal open={openProgress} setOpen={setOpenProgress} submitChallengeProgress={submitChallengeProgress} loading={challengeLoading} acceptedChallenge={acceptedChallenge} challenge={challenge} />
-    </ProfileOne>
+    </>
   );
 }
 

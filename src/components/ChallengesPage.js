@@ -11,6 +11,9 @@ import {
   systemSelector
 } from '../features/system/systemSlice';
 
+// STYLING
+import styled from '@emotion/styled';
+
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
 
@@ -48,6 +51,9 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
     var selectedSystemValue = systemBox.options[systemBox.selectedIndex].value;
     var selectedDifficultyValue = difficultyBox.options[difficultyBox.selectedIndex].value;
 
+    console.log(systemBox)
+    console.log(selectedSystemValue)
+
     if (currentChallengeFilter === 'Created') {
       var filtered = created_challenges.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
@@ -84,8 +90,24 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
     }
   }
 
+  const ProfileOneButton = styled.button`
+    background-color: ${user.profile_color_one ? user.profile_color_one : null};
+  `
+  const ProfileOneCreatedButton = styled.button`
+    background-color: ${currentChallengeFilter === 'Created' ? user.profile_color_one : null};
+  `
+  const ProfileOneActiveButton = styled.button`
+    background-color: ${currentChallengeFilter === 'Active' ? user.profile_color_one : null};
+  `
+  const ProfileOneCompletedButton = styled.button`
+    background-color: ${currentChallengeFilter === 'Completed' ? user.profile_color_one : null};
+  `
+
   return (
-    <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
+    <div
+      className='p-4 rounded-tr-md bg-profileone rounded-b-md'
+      style={{ backgroundColor: user.profile_color_one ? user.profile_color_one : null }}
+    >
       <div className="flex flex-col-reverse lg:flex-row lg:justify-between">
         {/* CHALLENGE LIST */}
         <ProfileTwo className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
@@ -116,7 +138,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               Quest Type
             </h1>
             <div className='flex flex-col'>
-              <button
+              <ProfileOneCreatedButton
                 className={currentChallengeFilter === 'Created' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
@@ -127,8 +149,8 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                 }}
               >
                 Created
-              </button>
-              <button
+              </ProfileOneCreatedButton>
+              <ProfileOneActiveButton
                 className={currentChallengeFilter === 'Active' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
@@ -139,8 +161,8 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                 }}
               >
                 Active
-              </button>
-              <button
+              </ProfileOneActiveButton>
+              <ProfileOneCompletedButton
                 className={currentChallengeFilter === 'Completed' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
@@ -151,12 +173,15 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                 }}
               >
                 Completed
-              </button>
+              </ProfileOneCompletedButton>
             </div>
           </ProfileTwo>
 
           {/* FILTERS */}
-          <ProfileTwo className="px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white">
+          <div
+            className={`px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white`}
+            style={{ backgroundColor: user.profile_color_two ? user.profile_color_two : null }}
+          >
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Filter By
             </h1>
@@ -183,10 +208,10 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                 ))}
               </select>
             </div>
-          </ProfileTwo>
+          </div>
         </div>
       </div >
-    </ProfileOne>
+    </div>
   );
 }
 
