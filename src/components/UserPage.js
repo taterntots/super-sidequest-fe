@@ -156,7 +156,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           <Link
             to={`/${user.username}`}
             onClick={() => handleClearSearchBar()}
-            className='px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md'
+            className='px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'
           >
             Profile
           </Link>
@@ -177,7 +177,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           <Link
             to={`/${user.username}/challenges`}
             onClick={() => handleClearSearchBar()}
-            className='px-5 hover:text-navbarbuttonhighlight bg-gray-700 rounded-t-md'
+            className='px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'
           >
             Quests
           </Link>
@@ -246,7 +246,6 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setFilteredCompletedChallenges={setFilteredCompletedChallenges}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
-            ProfileOne={ProfileOne}
             ProfileTwo={ProfileTwo}
             user={user}
             {...props}

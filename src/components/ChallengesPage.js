@@ -21,7 +21,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // --------------------------------- PROFILE PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar, ProfileOne, ProfileTwo, user }) => {
+const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
@@ -90,9 +90,6 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
     }
   }
 
-  const ProfileOneButton = styled.button`
-    background-color: ${user.profile_color_one ? user.profile_color_one : null};
-  `
   const ProfileOneCreatedButton = styled.button`
     background-color: ${currentChallengeFilter === 'Created' ? user.profile_color_one : null};
   `
@@ -140,8 +137,8 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
             <div className='flex flex-col'>
               <ProfileOneCreatedButton
                 className={currentChallengeFilter === 'Created' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Created')
                   filterReset()
@@ -152,8 +149,8 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               </ProfileOneCreatedButton>
               <ProfileOneActiveButton
                 className={currentChallengeFilter === 'Active' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Active')
                   filterReset()
@@ -164,8 +161,8 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               </ProfileOneActiveButton>
               <ProfileOneCompletedButton
                 className={currentChallengeFilter === 'Completed' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-gray-700 hover:bg-white hover:text-profiletwo focus:outline-none transition duration-150 ease-in-out"}
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Completed')
                   filterReset()
@@ -191,7 +188,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
                   filterReset()
                   handleClearSearchBar()
                 }}
-                className={`items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone hover:bg-white hover:text-profileone focus:outline-none transition duration-150 ease-in-out`}
+                className={`items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out`}
               >
                 Reset
               </button>

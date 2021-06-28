@@ -129,7 +129,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
               <ProfileOneButton
                 onClick={() => setOpen(true)}
                 className={`${acceptedChallenge.completed && `pointer-events-none opacity-50`
-                  } rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
+                  } rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
               >
                 {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : 'Update Status'}
               </ProfileOneButton>

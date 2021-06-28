@@ -9,6 +9,7 @@ module.exports = {
         profileone: '#483D8B',
         profiletwo: '#3E828C',
         purplebutton: '#9370DB',
+        graybutton: '#374151',
         logintext: '#BA55D3',
         sitewidebackground: '#414141',
         navbarbuttonhighlight: '#F5F5F5',

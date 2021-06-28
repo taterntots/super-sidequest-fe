@@ -252,7 +252,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
           <ProfileOneButton
             type="submit"
             className={challengeLoading ? 'opacity-80 pointer-events-none w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out' :
-              'w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out'
+              'w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'
             }
           >
             {challengeLoading ? (

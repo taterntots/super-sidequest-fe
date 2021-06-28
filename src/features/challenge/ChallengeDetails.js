@@ -246,7 +246,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {challenge.user_id === localStorage.getItem('id') ? (
                 <ProfileOneButton
                   onClick={() => setOpenEdit(true)}
-                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
                 >
                   Edit
                 </ProfileOneButton>
@@ -256,14 +256,14 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {!acceptedChallenge && localStorage.getItem('token') ? (
                 <ProfileOneButton
                   onClick={() => setOpenAccept(true)}
-                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
                 >
                   Accept
                 </ProfileOneButton>
               ) : acceptedChallenge && localStorage.getItem('token') ? (
                 <ProfileOneButton
                   onClick={() => setOpenAbandon(true)}
-                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out`}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
                 >
                   Abandon
                 </ProfileOneButton>

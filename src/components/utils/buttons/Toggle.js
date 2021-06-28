@@ -50,7 +50,7 @@ const Toggle = ({ on, setOn, submitFunction, userColorOne }) => {
             } opacity-0 ease-out duration-100 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
         >
           <svg
-            className='w-3 h-3 text-indigo-600'
+            className='w-3 h-3 text-graybutton'
             fill='currentColor'
             viewBox='0 0 12 12'
           >
