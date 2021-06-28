@@ -48,7 +48,9 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
 
           {/* LEADERBOARD DATA */}
           {challenges_scores ? challenges_scores.map((score, index) => (
-            <div key={score.id} className={`flex text-center ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:bg-white hover:text-profileone`}>
+            <div key={score.id} className={score.username === localStorage.getItem('username') ?
+              `flex text-center font-medium text-graybutton bg-white px-2 py-1 hover:opacity-60 hover:bg-white hover:text-graybutton` :
+              `flex text-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:opacity-60`}>
               <p className='w-1/12'>{index + 1}</p>
               <Link
                 key={score.id}

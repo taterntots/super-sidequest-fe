@@ -39,7 +39,7 @@ import Leaderboard from '../../components/Leaderboard';
 const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   // State
   const dispatch = useDispatch();
-  const { challenge, challenges_high_scores, challenges_speedruns, challenges_for_glorys, acceptedChallenge, featured_challenge, loading: challengeLoading } = useSelector(challengeSelector)
+  const { challenge, challenges_high_scores, challenges_speedruns, challenges_for_glorys, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const history = useHistory();
   const [openAccept, setOpenAccept] = useState(false)
@@ -68,12 +68,12 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
 
   // UseEffect that sets the toggle correctly on refresh based on whether a challenge is featured or not
   useEffect(() => {
-    if (challenge.challenge_id === featured_challenge.challenge_id) {
+    if (challenge.featured) {
       setFeaturedOn(true)
     } else {
       setFeaturedOn(false)
     }
-  }, [challenge.featured, featured_challenge.featured])
+  }, [challenge, refresh])
 
   // Function to handle accepting a challenged
   const submitChallengeAccepted = async () => {
