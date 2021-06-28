@@ -137,7 +137,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
             <div className='flex flex-col'>
               <ProfileOneCreatedButton
                 className={currentChallengeFilter === 'Created' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Created')
@@ -149,7 +149,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               </ProfileOneCreatedButton>
               <ProfileOneActiveButton
                 className={currentChallengeFilter === 'Active' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Active')
@@ -161,7 +161,7 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
               </ProfileOneActiveButton>
               <ProfileOneCompletedButton
                 className={currentChallengeFilter === 'Completed' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Completed')
