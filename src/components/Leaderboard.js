@@ -13,7 +13,6 @@ import { ReactComponent as ImageIcon } from '../img/ImageIcon.svg'
 // COMPONENTS
 import VideoModal from '../components/utils/modals/VideoModal';
 import ImageModal from '../components/utils/modals/ImageModal';
-import Toggle from '../components/utils/buttons/Toggle';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- LEADERBOARD -----------------------------------
@@ -133,10 +132,22 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
               >
                 {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : 'Update Status'}
               </ProfileOneButton>
-              <div className='flex self-center'>
-                <p className='font-bold'>Completed:</p>
-                <Toggle on={completedOn} setOn={setCompletedOn} submitFunction={submitChallengeCompleted} userColorOne={challenge.profile_color_one} />
-              </div>
+              <button
+                onClick={() => {
+                  setCompletedOn(!completedOn);
+                  if (completedOn) {
+                    submitChallengeCompleted({ completed: false })
+                  }
+                  if (!completedOn) {
+                    submitChallengeCompleted({ completed: true })
+                  }
+                }}
+                className={completedOn ?
+                  'rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-complete hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out' :
+                  'rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
+              >
+                {completedOn ? 'Completed!' : 'Incomplete'}
+              </button>
             </div>
           ) : null}
         </div>

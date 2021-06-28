@@ -29,20 +29,17 @@ const Toggle = ({ on, setOn, submitFunction, userColorOne }) => {
       className={`${on ? 'bg-profileone' : 'bg-gray-300'
         } relative ml-3 inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
     >
-      {/* <!-- On: "translate-x-5", Off: "translate-x-0" --> */}
       <span
         aria-hidden='true'
         className={`${on ? 'translate-x-5' : 'translate-x-0'
           } translate-x-0 relative inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200`}
       >
-        {/* <!-- On: "opacity-0 ease-out duration-100", Off: "opacity-100 ease-in duration-200" --> */}
         <span
           className={`${on
             ? 'opacity-0 ease-out duration-100'
             : 'opacity-100 ease-in duration-200'
             } opacity-100 ease-in duration-200 absolute inset-0 h-full w-full flex items-center justify-center transition-opacity`}
         ></span>
-        {/* <!-- On: "opacity-100 ease-in duration-200", Off: "opacity-0 ease-out duration-100" --> */}
         <span
           className={`${on
             ? 'opacity-100 ease-in duration-200'

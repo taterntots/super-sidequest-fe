@@ -31,7 +31,6 @@ import SubmitChallengeProgressModal from '../../components/utils/modals/SubmitCh
 import EditChallengeModal from '../../components/utils/modals/EditChallengeModal';
 import DeleteChallengeModal from '../../components/utils/modals/DeleteChallengeModal';
 import Leaderboard from '../../components/Leaderboard';
-import Toggle from '../../components/utils/buttons/Toggle';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------- CHALLENGE DETAILS --------------------------------
@@ -225,7 +224,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {challenge.rules}
             </p>
             {challenge.prize ? (
-              <div className='text-center border-2 mx-10 mb-4 rounded-md bg-yellow-500'>
+              <div className='text-center border-2 mx-10 mb-4 rounded-md bg-complete'>
                 <p className='text-xl'>Reward</p>
                 <p>
                   {challenge.prize}
@@ -235,9 +234,23 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
 
             {/* FEATURED TOGGLE */}
             {challenge.user_id === localStorage.getItem('id') ? (
-              <div className='flex justify-center mb-4'>
-                <p className='font-bold'>Featured:</p>
-                <Toggle on={featuredOn} setOn={setFeaturedOn} submitFunction={submitChallengeFeatured} userColorOne={challenge.profile_color_one} />
+              <div className='flex flex-col md:flex-row justify-evenly mb-4'>
+                <button
+                  onClick={() => {
+                    setFeaturedOn(!featuredOn);
+                    if (featuredOn) {
+                      submitChallengeFeatured({ featured: false })
+                    }
+                    if (!featuredOn) {
+                      submitChallengeFeatured({ featured: true })
+                    }
+                  }}
+                  className={featuredOn ?
+                    'rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-addgreen hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out' :
+                    'rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
+                >
+                  {featuredOn ? 'Featured!' : 'Not Featured'}
+                </button>
               </div>
             ) : null}
 
@@ -256,14 +269,14 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {!acceptedChallenge && localStorage.getItem('token') ? (
                 <ProfileOneButton
                   onClick={() => setOpenAccept(true)}
-                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
                 >
                   Accept
                 </ProfileOneButton>
               ) : acceptedChallenge && localStorage.getItem('token') ? (
                 <ProfileOneButton
                   onClick={() => setOpenAbandon(true)}
-                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
+                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
                 >
                   Abandon
                 </ProfileOneButton>

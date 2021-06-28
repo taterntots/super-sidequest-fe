@@ -73,7 +73,7 @@ const FeaturedChallengeCard = ({ data }) => {
           </p>
         </div>
         {prize ? (
-          <div className='text-center border-2 mx-10 mb-4 rounded-md bg-yellow-500'>
+          <div className='text-center border-2 mx-10 mb-4 rounded-md bg-complete'>
             <p className='text-xl'>Reward</p>
             <p>
               {prize}
