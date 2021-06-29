@@ -51,7 +51,7 @@ const HomePage = ({ refresh }) => {
                 setOpenAuth(true)
             }
           >
-            {localStorage.getItem('token') ? 'My Challenges' : 'Get Started'}
+            {localStorage.getItem('token') ? 'My Quests' : 'Get Started'}
           </button>
         </div>
       </div>

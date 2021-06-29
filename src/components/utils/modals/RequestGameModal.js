@@ -27,8 +27,10 @@ const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
   const submitGameRequest = async (data) => {
     dispatch(requestGame(data))
       .then(res => {
-        setRefresh(!refresh)
-        setOpen(false)
+        if (res.payload) {
+          setRefresh(!refresh)
+          setOpen(false)
+        }
       })
       .catch(err => {
         console.log(err)

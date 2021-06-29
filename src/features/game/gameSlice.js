@@ -10,7 +10,8 @@ import cogoToast from 'cogo-toast';
 
 // Initial state
 export const initialState = {
-  games: [],
+  public_games: [],
+  private_games: [],
   game: {},
   challenges: [],
   popular_challenges: [],
@@ -18,11 +19,24 @@ export const initialState = {
   error: false,
 };
 
-// API call to grab all games
-export const fetchGames = createAsyncThunk('games/fetchGames', async () => {
+// API call to grab all public games
+export const fetchPublicGames = createAsyncThunk('games/fetchPublicGames', async () => {
   const response = await axios({
     method: 'get',
-    url: process.env.REACT_APP_API + `games`,
+    url: process.env.REACT_APP_API + `games/public`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all private games
+export const fetchPrivateGames = createAsyncThunk('games/fetchPrivateGames', async () => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `games/private`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -84,7 +98,8 @@ export const requestGame = createAsyncThunk('challenges/requestGame', async (for
         Accept: 'application/json',
         Authorization: token,
       }, data: {
-        name: formData.name
+        name: formData.name,
+        public: false
       }
     })
     cogoToast.success(`Successfully requested ${formData.name}`, {
@@ -108,15 +123,27 @@ export const gameSlice = createSlice({
   name: 'games',
   initialState: initialState,
   extraReducers: {
-    [fetchGames.pending]: (state, action) => {
+    [fetchPublicGames.pending]: (state, action) => {
       state.loading = true
     },
-    [fetchGames.fulfilled]: (state, { payload }) => {
-      state.games = payload
+    [fetchPublicGames.fulfilled]: (state, { payload }) => {
+      state.public_games = payload
       state.loading = false
       state.error = false
     },
-    [fetchGames.rejected]: (state, action) => {
+    [fetchPublicGames.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchPrivateGames.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchPrivateGames.fulfilled]: (state, { payload }) => {
+      state.private_games = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchPrivateGames.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

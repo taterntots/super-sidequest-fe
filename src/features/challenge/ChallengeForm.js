@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchGames,
+  fetchPublicGames,
   gameSelector
 } from '../../features/game/gameSlice';
 import {
@@ -34,7 +34,7 @@ import LoadSpinner from '../../components/LoadSpinner';
 const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, ProfileOneButton }) => {
   // State
   const dispatch = useDispatch();
-  const { games, loading: gameLoading } = useSelector(gameSelector)
+  const { public_games, loading: gameLoading } = useSelector(gameSelector)
   const { systems, loading: systemLoading } = useSelector(systemSelector)
   const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
   const { loading: challengeLoading } = useSelector(challengeSelector);
@@ -45,7 +45,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
 
   // Grabs all necessary data from server
   useEffect(() => {
-    dispatch(fetchGames())
+    dispatch(fetchPublicGames())
     dispatch(fetchSystems())
     dispatch(fetchDifficulties())
   }, [dispatch])
@@ -88,7 +88,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
                   {...field}
                   as={Select}
                   className='text-black mb-7 mt-3 rounded-md text-lg'
-                  options={games.map(g => ({ label: `${g.name}`, value: g.id }))}
+                  options={public_games.map(pg => ({ label: `${pg.name}`, value: pg.id }))}
                   id='game'
                   name='game'
                   isLoading={gameLoading}

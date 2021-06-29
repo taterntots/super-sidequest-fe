@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  fetchGames,
+  fetchPublicGames,
   gameSelector
 } from './gameSlice';
 
@@ -22,22 +22,22 @@ import RequestGameModal from '../../components/utils/modals/RequestGameModal';
 
 const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh }) => {
   const dispatch = useDispatch();
-  const { games } = useSelector(gameSelector)
+  const { public_games } = useSelector(gameSelector)
   const [openGameRequest, setOpenGameRequest] = useState(false)
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    dispatch(fetchGames())
+    dispatch(fetchPublicGames())
   }, [dispatch, refresh])
 
   // Game search function
   useEffect(() => {
-    const results = games.filter(game =>
+    const results = public_games.filter(game =>
       // Accounts for accented letters
       game.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(searchTerm.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ""))
     );
     setSearchResults(results);
-  }, [searchTerm, games]);
+  }, [searchTerm, public_games]);
 
   return (
     <>
