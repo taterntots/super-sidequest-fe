@@ -12,6 +12,7 @@ import cogoToast from 'cogo-toast';
 export const initialState = {
   users: [],
   user: {},
+  user_admin: true,
   loading: false,
   error: false
 };
@@ -47,6 +48,19 @@ export const fetchUserByUsername = createAsyncThunk('users/fetchUserByUsername',
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/username/${username}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to check if a user is an admin
+export const fetchUserAdminStatus = createAsyncThunk('users/fetchUserAdminStatus', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/is-admin`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -238,6 +252,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUserByUsername.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserAdminStatus.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserAdminStatus.fulfilled]: (state, { payload }) => {
+      state.user_admin = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserAdminStatus.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

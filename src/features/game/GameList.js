@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchPublicGames,
-  gameSelector
-} from './gameSlice';
 
 // ROUTING
 import { Link } from 'react-router-dom';
@@ -20,24 +15,19 @@ import RequestGameModal from '../../components/utils/modals/RequestGameModal';
 // ------------------------------------ GAME LIST -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh }) => {
-  const dispatch = useDispatch();
-  const { public_games } = useSelector(gameSelector)
+const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games }) => {
   const [openGameRequest, setOpenGameRequest] = useState(false)
   const [searchResults, setSearchResults] = useState([]);
-
-  useEffect(() => {
-    dispatch(fetchPublicGames())
-  }, [dispatch, refresh])
+  const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL
 
   // Game search function
   useEffect(() => {
-    const results = public_games.filter(game =>
+    const results = games.filter(game =>
       // Accounts for accented letters
       game.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(searchTerm.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ""))
     );
     setSearchResults(results);
-  }, [searchTerm, public_games]);
+  }, [searchTerm, games]);
 
   return (
     <>
@@ -48,9 +38,9 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh }) => 
           <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
 
             {/* REQUEST GAME BUTTON */}
-            {!searchTerm && localStorage.getItem('token') ? (
+            {!searchTerm && localStorage.getItem('token') && !url.includes('private') ? (
               <div
-                className={`p-2 rounded-lg transform transition opacity-60 duration-500 hover:scale-105`}
+                className={`p-2 rounded-lg transform transition opacity-60 cursor-pointer duration-500 hover:scale-105`}
                 onClick={() => {
                   setOpenGameRequest(true)
                 }}

@@ -185,11 +185,12 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
           id='searchBar'
           className={
             location.pathname.includes('/challenges') && !location.pathname.includes('challenges/') ||
-              location.pathname === ('/games')
+              location.pathname === ('/games') ||
+              location.pathname === ('/games/private')
               ? 'px-3 py-1 w-full lg:w-1/4 ml-4 lg:ml-0 rounded text-black'
               : 'invisible px-3 py-1 w-1/4 rounded text-black'}
           placeholder={location.pathname.includes('/challenges') ? 'Search by keyword'
-            : location.pathname === ('/games') ? 'Search by game'
+            : location.pathname.includes('/games') ? 'Search by game'
               : ''}
           onChange={handleInputChange}
           type='search'

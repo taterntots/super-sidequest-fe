@@ -10,8 +10,9 @@ import Footer from './Footer';
 import ResetPassword from './Auth/ResetPassword';
 import HomePage from '../components/HomePage';
 import UserPage from '../components/UserPage';
-import GameList from '../features/game/GameList';
 import GamePage from '../components/GamePage';
+import AdminRoute from '../components/utils/routes/AdminRoute';
+import GameDetails from '../components/GameDetails';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -64,7 +65,20 @@ const Dashboard = () => {
             exact
             path={`/games`}
             render={(props) => (
-              <GameList
+              <GamePage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
+                setRefresh={setRefresh}
+                {...props}
+              />
+            )}
+          />
+          <AdminRoute
+            exact
+            path={`/games/private`}
+            render={(props) => (
+              <GamePage
                 searchTerm={searchTerm}
                 handleClearSearchBar={handleClearSearchBar}
                 refresh={refresh}
@@ -77,7 +91,7 @@ const Dashboard = () => {
             exact
             path={`/games/:gameId/challenges`}
             render={(props) => (
-              <GamePage
+              <GameDetails
                 searchTerm={searchTerm}
                 refresh={refresh}
                 handleClearSearchBar={handleClearSearchBar}
