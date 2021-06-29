@@ -34,7 +34,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
               <Link
                 key={gameStat.game}
                 to={`/games/${gameStat.game_id}/challenges`}
-                className={`flex justify-between ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:bg-white hover:text-profiletwo`}
+                className={`flex justify-between font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:opacity-60`}
               >
                 <p>{gameStat.game}</p>
                 <p className='pl-4'>{gameStat.total_challenges_completed}</p>
