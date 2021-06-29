@@ -67,6 +67,8 @@ const Dashboard = () => {
               <GameList
                 searchTerm={searchTerm}
                 handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
+                setRefresh={setRefresh}
                 {...props}
               />
             )}

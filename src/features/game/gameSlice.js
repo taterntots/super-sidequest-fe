@@ -1,5 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit';
 import axios from 'axios';
+
+// TOAST
+import cogoToast from 'cogo-toast';
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------- GAME SLICE -----------------------------------
@@ -69,6 +72,37 @@ export const fetchGameChallengesByPopularity = createAsyncThunk('games/fetchGame
   return response.data
 });
 
+// API call to request/add a game (requires token from valid user being signed in)
+export const requestGame = createAsyncThunk('challenges/requestGame', async (formData) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'post',
+      url: process.env.REACT_APP_API + `games`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }, data: {
+        name: formData.name
+      }
+    })
+    cogoToast.success(`Successfully requested ${formData.name}`, {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
+
 // Game slice for state change
 export const gameSlice = createSlice({
   name: 'games',
@@ -121,7 +155,18 @@ export const gameSlice = createSlice({
     [fetchGameChallengesByPopularity.rejected]: (state, action) => {
       state.loading = false
       state.error = true
-    }
+    },
+    [requestGame.pending]: (state, action) => {
+      state.loading = true
+    },
+    [requestGame.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [requestGame.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
   }
 });
 
