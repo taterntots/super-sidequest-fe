@@ -94,6 +94,7 @@ const Dashboard = () => {
               <GameDetails
                 searchTerm={searchTerm}
                 refresh={refresh}
+                setRefresh={setRefresh}
                 handleClearSearchBar={handleClearSearchBar}
                 {...props}
               />

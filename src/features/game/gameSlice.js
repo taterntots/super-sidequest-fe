@@ -117,6 +117,39 @@ export const requestGame = createAsyncThunk('challenges/requestGame', async (for
   }
 });
 
+// API call to update/edit a game
+export const updateGame = createAsyncThunk('users/updateGame', async (data) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `games/${data.game_id}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token
+      }, data: {
+        name: data.name,
+        release_date: data.release_date ? data.release_date : null,
+        banner_pic_URL: data.banner_pic_URL,
+        game_pic_URL: data.game_pic_URL,
+        public: data.public
+      }
+    })
+    cogoToast.success('Game updated!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
 
 // Game slice for state change
 export const gameSlice = createSlice({
@@ -194,6 +227,17 @@ export const gameSlice = createSlice({
       state.loading = false
       state.error = true
     },
+    [updateGame.pending]: (state, action) => {
+      state.loading = true
+    },
+    [updateGame.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [updateGame.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    }
   }
 });
 

@@ -1,11 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  requestGame,
-  gameSelector
-} from '../../../features/game/gameSlice';
 
 // FORMS
 import { useForm } from "react-hook-form";
@@ -14,28 +9,12 @@ import { useForm } from "react-hook-form";
 import LoadSpinner from '../../LoadSpinner';
 
 // ----------------------------------------------------------------------------------
-// ------------------------------ REQUEST GAME MODAL --------------------------------
+// -------------------------------- EDIT GAME MODAL ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
-  const dispatch = useDispatch();
+const EditGameModal = ({ open, setOpen, submitGameEdit, loading, game }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const { loading } = useSelector(gameSelector);
   const cancelButtonRef = useRef(null)
-
-  // Function to handle submitting game request
-  const submitGameRequest = async (data) => {
-    dispatch(requestGame(data))
-      .then(res => {
-        if (res.payload) {
-          setRefresh(!refresh)
-          setOpen(false)
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -73,11 +52,10 @@ const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div className="inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <form className="p-10 bg-taterpurple text-white" onSubmit={handleSubmit(submitGameRequest)}>
+              <form className="p-10 bg-taterpurple text-white" onSubmit={handleSubmit(submitGameEdit)}>
                 <h4 className='text-2xl mb-4'>
-                  Request Game
+                  Edit Game
                 </h4>
-
                 <div className="mt-7 form-group">
                   <label className='mr-3'>Game Name<span className='text-red-500'>*</span></label>
                   {errors.name && (
@@ -86,6 +64,7 @@ const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
                     name='name'
                     type='text'
                     placeholder='Name of the game'
+                    defaultValue={game.name}
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('name', {
                       required: 'Required field',
@@ -93,8 +72,49 @@ const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
                     )}
                   />
                 </div>
-
-                <div className='flex justify-evenly'>
+                <div className="mt-7 form-group">
+                  <label className='mr-3'>Release Date</label>
+                  <input
+                    name='release_date'
+                    type='date'
+                    defaultValue={game.release_date ? game.release_date.slice(0, 10) : null}
+                    className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('release_date')}
+                  />
+                </div>
+                <div className="mt-7 form-group">
+                  <label className='mr-3'>Game Banner URL</label>
+                  <input
+                    name='banner_pic_URL'
+                    type='text'
+                    placeholder='Banner url'
+                    defaultValue={game.banner_pic_URL}
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('banner_pic_URL')}
+                  />
+                </div>
+                <div className="mt-7 form-group">
+                  <label className='mr-3'>Game Profile URL</label>
+                  <input
+                    name='game_pic_URL'
+                    type='text'
+                    placeholder='Profile image url'
+                    defaultValue={game.game_pic_URL}
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('game_pic_URL')}
+                  />
+                </div>
+                <div className="form-group mt-7 flex items-center justify-center">
+                  <label className='mr-3'>Public</label>
+                  <input
+                    name='public'
+                    type='checkbox'
+                    defaultChecked={game.public}
+                    className='w-6 h-6'
+                    {...register('public')}
+                  />
+                </div>
+                <div className='flex justify-evenly mt-7'>
                   <button
                     type="button"
                     onClick={() => {
@@ -127,4 +147,4 @@ const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
   )
 }
 
-export default RequestGameModal;
+export default EditGameModal;
