@@ -13,6 +13,7 @@ import { ReactComponent as ImageIcon } from '../img/ImageIcon.svg'
 // COMPONENTS
 import VideoModal from '../components/utils/modals/VideoModal';
 import ImageModal from '../components/utils/modals/ImageModal';
+import Timer from '../components/utils/Timer';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- LEADERBOARD -----------------------------------
@@ -35,6 +36,11 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
         <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
           Leaderboard
         </h1>
+
+        <div className='mb-4'>
+          <Timer start_date={challenge.start_date} end_date={challenge.end_date} />
+        </div>
+
         <div className='rounded-lg bg-gray-700'>
           <div className='flex w-full text-center px-2 py-1 font-bold'>
             <p className='w-1/12'>Rank</p>
