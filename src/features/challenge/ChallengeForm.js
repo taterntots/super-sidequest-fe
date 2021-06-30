@@ -70,6 +70,21 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
       })
   };
 
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd
+  }
+  if (mm < 10) {
+    mm = '0' + mm
+  }
+  today = yyyy + '-' + mm + '-' + dd;
+  // document.getElementById('datefield').setAttribute('max', today);
+
+  // let datePickerId.max = new Date().toISOString().split("T")[0];
+
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <ProfileTwoForm className="p-10 bg-profiletwo rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
@@ -221,6 +236,8 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             <input
               name='end_date'
               type='datetime-local'
+              id='datePickerId'
+              min={moment(Date.now()).format('YYYY-MM-DDThh:mm')}
               className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
               {...register('end_date')}
             />
