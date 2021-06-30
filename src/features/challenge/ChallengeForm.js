@@ -70,21 +70,6 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
       })
   };
 
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth() + 1; //January is 0!
-  var yyyy = today.getFullYear();
-  if (dd < 10) {
-    dd = '0' + dd
-  }
-  if (mm < 10) {
-    mm = '0' + mm
-  }
-  today = yyyy + '-' + mm + '-' + dd;
-  // document.getElementById('datefield').setAttribute('max', today);
-
-  // let datePickerId.max = new Date().toISOString().split("T")[0];
-
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
       <ProfileTwoForm className="p-10 bg-profiletwo rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
@@ -150,7 +135,15 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             placeholder='Enter a snazzy name for your quest'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('name', {
-              required: 'Required field'
+              required: 'Required field',
+              minLength: {
+                value: 6,
+                message: 'Must be at least 6 characters long'
+              },
+              maxLength: {
+                value: 40,
+                message: 'Cannot be more than 40 characters'
+              }
             })}
           />
         </div>
@@ -165,7 +158,15 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             placeholder='What is your quest?'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('description', {
-              required: 'Required field'
+              required: 'Required field',
+              minLength: {
+                value: 6,
+                message: 'Must be at least 6 characters long'
+              },
+              maxLength: {
+                value: 80,
+                message: 'Cannot be more than 80 characters'
+              }
             })}
           />
         </div>
@@ -255,18 +256,34 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             placeholder='Provide any special rules for your quest'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('rules', {
-              required: 'Required field'
+              required: 'Required field',
+              minLength: {
+                value: 6,
+                message: 'Must be at least 6 characters long'
+              }
             })}
           />
         </div>
         <div className="form-group">
           <label className='mr-3'>Prize</label>
+          {errors.prize && (
+            <span className='text-red-500'>{errors.prize.message}</span>
+          )}
           <input
             name='prize'
             type='text'
             placeholder='Provide a special prize for completing the quest'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
-            {...register('prize')}
+            {...register('prize', {
+              minLength: {
+                value: 6,
+                message: 'Must be at least 6 characters long'
+              },
+              maxLength: {
+                value: 80,
+                message: 'Cannot be more than 80 characters'
+              }
+            })}
           />
         </div>
 

@@ -217,7 +217,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
                 {challenge.game_title}
               </p>
             </div>
-            <ProfileOnePara className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
+            <ProfileOnePara className='mb-4 py-2 px-4 border-2 text-center rounded-md bg-profileone'>
               {challenge.description}
             </ProfileOnePara>
             <div className='flex justify-evenly mb-4'>
@@ -237,9 +237,9 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {challenge.rules}
             </p>
             {challenge.prize ? (
-              <div className='text-center border-2 mx-10 mb-4 rounded-md bg-complete'>
+              <div className='text-center border-2 mx-10 mb-4 pt-1 rounded-md bg-complete'>
                 <p className='text-xl'>Reward</p>
-                <p>
+                <p className='pb-2 px-4'>
                   {challenge.prize}
                 </p>
               </div>
