@@ -3,70 +3,103 @@ import { useState, useEffect } from 'react';
 
 // DATE
 import moment from 'moment';
+import countdown from 'moment-countdown'
 
 const Timer = ({ end_date }) => {
   const [state, setState] = useState({
-    days: moment(moment(end_date) - moment()).format('D'),
-    hours: moment(moment(end_date) - moment()).format('HH'),
-    minutes: moment(moment(end_date) - moment()).format('mm'),
-    seconds: moment(moment(end_date) - moment()).format('ss')
+    years: moment(end_date).countdown(moment()).years,
+    months: moment(end_date).countdown(moment()).months,
+    days: moment(end_date).countdown(moment()).days,
+    hours: moment(end_date).countdown(moment()).hours,
+    minutes: moment(end_date).countdown(moment()).minutes,
+    seconds: moment(end_date).countdown(moment()).seconds
   })
-
 
   useEffect(() => {
     let interval = setInterval(() => {
-      const then = moment(end_date);
-      const now = moment();
-      const countdown = moment(then - now);
-      const days = countdown.format('D');
-      const hours = countdown.format('HH');
-      const minutes = countdown.format('mm');
-      const seconds = countdown.format('ss');
+      const count = moment(end_date, countdown.DAYS).countdown(moment())
+      const years = count.years
+      const months = count.months
+      const days = count.days
+      const hours = count.hours
+      const minutes = count.minutes
+      const seconds = count.seconds
 
       setState({ days, hours, minutes, seconds });
 
-      if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+      if (moment(end_date).isAfter()) {
+        setState({ years, months, days, hours, minutes, seconds });
+      } else {
         clearInterval(interval);
       }
     }, 1000);
     return () => {
       clearInterval(interval);
     }
-  });
+  }, [end_date]);
 
   return (
     <div className='flex justify-center sm:justify-evenly font-medium'>
-      <p className='text-2xl'>
-        {state.days}
-        <span className='hidden sm:inline sm:ml-2 text-lg'>
-          days
-        </span>
-        <span className='sm:hidden sm:ml-2 text-2xl'>
-          :
-        </span>
-      </p>
+      {state.years > 0 ? (
+        <p className='text-2xl'>
+          {state.years}
+          <span className='hidden sm:inline sm:ml-2 text-lg'>
+            y
+          </span>
+          <span className='sm:hidden sm:ml-2 text-2xl'>
+            :
+          </span>
+        </p>
+      ) : null}
+
+      {state.months > 0 ? (
+        <p className='text-2xl'>
+          {state.months}
+          <span className='hidden sm:inline sm:ml-2 text-lg'>
+            m
+          </span>
+          <span className='sm:hidden sm:ml-2 text-2xl'>
+            :
+          </span>
+        </p>
+      ) : null}
+
+      {state.days > 0 ? (
+        <p className='text-2xl'>
+          {state.days}
+          <span className='hidden sm:inline sm:ml-2 text-lg'>
+            d
+          </span>
+          <span className='sm:hidden sm:ml-2 text-2xl'>
+            :
+          </span>
+        </p>
+      ) : null}
+
       <p className='text-2xl'>
         {state.hours}
         <span className='hidden sm:inline sm:ml-2 text-lg'>
-          hours
+          hrs
         </span>
         <span className='sm:hidden sm:ml-2 text-2xl'>
           :
         </span>
       </p>
+
       <p className='text-2xl'>
         {state.minutes}
         <span className='hidden sm:inline sm:ml-2 text-lg'>
-          minutes
+          mins
         </span>
         <span className='sm:hidden sm:ml-2 text-2xl'>
           :
         </span>
       </p>
+
       <p className='text-2xl'>
         {state.seconds}
         <span className='hidden sm:inline sm:ml-2 text-lg'>
-          seconds
+          secs
         </span>
       </p>
     </div >

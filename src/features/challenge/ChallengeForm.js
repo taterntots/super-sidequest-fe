@@ -215,7 +215,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             <label className='mr-3'>End Date</label>
             <input
               name='end_date'
-              type='date'
+              type='datetime-local'
               className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
               {...register('end_date')}
             />

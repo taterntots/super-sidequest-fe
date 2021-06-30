@@ -37,9 +37,15 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
           Leaderboard
         </h1>
 
-        <div className='mb-4'>
-          <Timer start_date={challenge.start_date} end_date={challenge.end_date} />
-        </div>
+        {challenge.end_date ? (
+          <div className='mb-4'>
+            {moment(challenge.end_date).isAfter() ? ( // Checks if challenge end date has passed
+              <Timer end_date={challenge.end_date} />
+            ) : (
+              <p>QUEST EXPIRED</p>
+            )}
+          </div>
+        ) : null}
 
         <div className='rounded-lg bg-gray-700'>
           <div className='flex w-full text-center px-2 py-1 font-bold'>
