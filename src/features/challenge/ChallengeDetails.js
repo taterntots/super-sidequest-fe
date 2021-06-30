@@ -24,6 +24,9 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 // STYLING
 import styled from '@emotion/styled';
 
+// DATE
+import moment from 'moment';
+
 // COMPONENTS
 import AcceptChallengeModal from '../../components/utils/modals/AcceptChallengeModal';
 import AbandonChallengeModal from '../../components/utils/modals/AbandonChallengeModal';
@@ -48,6 +51,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   const [openDelete, setOpenDelete] = useState(false)
   const [openProgress, setOpenProgress] = useState(false)
   const [featuredOn, setFeaturedOn] = useState()
+  const [countdownIsAfter, setCountdownIsAfter] = useState(true);
   const isChallengeAcceptedData = {
     user_id: localStorage.getItem('id'),
     challenge_id: route.params.challengeId
@@ -74,6 +78,15 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
       setFeaturedOn(false)
     }
   }, [challenge, refresh])
+
+  // UseEffect that sets whether a challenge has expired or not
+  useEffect(() => {
+    if (moment(challenge.end_date).isAfter()) {
+      setCountdownIsAfter(true)
+    } else {
+      setCountdownIsAfter(false)
+    }
+  }, [challenge.end_date, refresh])
 
   // Function to handle accepting a challenged
   const submitChallengeAccepted = async () => {
@@ -269,7 +282,9 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {!acceptedChallenge && localStorage.getItem('token') ? (
                 <ProfileOneButton
                   onClick={() => setOpenAccept(true)}
-                  className={`rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
+                  className={!countdownIsAfter ?
+                    'pointer-events-none opacity-50 rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out' :
+                    'rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
                 >
                   Accept
                 </ProfileOneButton>
@@ -285,7 +300,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
           </ProfileTwo>
 
           {/* LEADERBOARD */}
-          <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
+          <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} setOpenAccept={setOpenAccept} countdownIsAfter={countdownIsAfter} setCountdownIsAfter={setCountdownIsAfter} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
         </div >
       </ProfileOne>
 

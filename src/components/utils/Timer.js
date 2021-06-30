@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 import countdown from 'moment-countdown'
 
-const Timer = ({ end_date }) => {
+const Timer = ({ end_date, setCountdownIsAfter, setChallengeUpdateModel, setOpenAccept }) => {
   const [state, setState] = useState({
     years: moment(end_date).countdown(moment()).years,
     months: moment(end_date).countdown(moment()).months,
@@ -30,6 +30,9 @@ const Timer = ({ end_date }) => {
       if (moment(end_date).isAfter()) {
         setState({ years, months, days, hours, minutes, seconds });
       } else {
+        setCountdownIsAfter(false)
+        setChallengeUpdateModel(false)
+        setOpenAccept(false)
         clearInterval(interval);
       }
     }, 1000);

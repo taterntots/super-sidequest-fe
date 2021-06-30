@@ -19,11 +19,11 @@ import Timer from '../components/utils/Timer';
 // ---------------------------------- LEADERBOARD -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge, submitChallengeCompleted, ProfileTwo, ProfileOneButton }) => {
-  const [openVideo, setOpenVideo] = useState(false)
-  const [openImage, setOpenImage] = useState(false)
-  const [completedOn, setCompletedOn] = useState(acceptedChallenge.completed)
-  const [currentPlayer, setCurrentPlayer] = useState({})
+const Leaderboard = ({ challenges_scores, challenge, setOpen, setOpenAccept, acceptedChallenge, submitChallengeCompleted, countdownIsAfter, setCountdownIsAfter, ProfileTwo, ProfileOneButton }) => {
+  const [openVideo, setOpenVideo] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
+  const [completedOn, setCompletedOn] = useState(acceptedChallenge.completed);
+  const [currentPlayer, setCurrentPlayer] = useState({});
 
   // UseEffect that sets the toggle correctly on refresh based on whether a challenge is completed or not
   useEffect(() => {
@@ -39,8 +39,8 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
 
         {challenge.end_date ? (
           <div className='mb-4'>
-            {moment(challenge.end_date).isAfter() ? ( // Checks if challenge end date has passed
-              <Timer end_date={challenge.end_date} />
+            {countdownIsAfter ? ( // Checks if challenge end date has passed
+              <Timer end_date={challenge.end_date} setCountdownIsAfter={setCountdownIsAfter} setChallengeUpdateModel={setOpen} setOpenAccept={setOpenAccept} />
             ) : (
               <p>QUEST EXPIRED</p>
             )}
@@ -141,8 +141,9 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, acceptedChallenge,
             <div className='flex flex-col md:flex-row justify-evenly'>
               <ProfileOneButton
                 onClick={() => setOpen(true)}
-                className={`${acceptedChallenge.completed && `pointer-events-none opacity-50`
-                  } rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out`}
+                className={acceptedChallenge.completed || !countdownIsAfter ?
+                  `pointer-events-none opacity-50 rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out` :
+                  'rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
               >
                 {challenge.is_high_score ? 'Update High Score' : challenge.is_speedrun ? 'Update Speedrun' : 'Update Status'}
               </ProfileOneButton>
