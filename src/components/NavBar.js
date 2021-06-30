@@ -41,7 +41,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
             onClick={() => {
               setDropdown(!dropdown);
             }}
-            className='focus:outline-none p-4 hover:bg-gray-700'
+            className='focus:outline-none p-4 hover:bg-navbarbuttonhighlight'
           >
             <MenuDropdown />
           </button>
@@ -67,7 +67,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     handleClearSearchBar()
                     setDropdown(!dropdown)
                   }}
-                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                 >
                   Home
                 </Link>
@@ -78,7 +78,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                       handleClearSearchBar()
                       setDropdown(!dropdown)
                     }}
-                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                   >
                     My Quests
                   </Link>
@@ -89,7 +89,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     handleClearSearchBar()
                     setDropdown(!dropdown)
                   }}
-                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                 >
                   Games
                 </Link>
@@ -99,7 +99,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     handleClearSearchBar()
                     setDropdown(!dropdown)
                   }}
-                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                 >
                   Support Us
                 </Link>
@@ -109,7 +109,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     handleClearSearchBar()
                     setDropdown(!dropdown)
                   }}
-                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                 >
                   FAQ
                 </Link>
@@ -119,7 +119,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     handleClearSearchBar()
                     setDropdown(!dropdown)
                   }}
-                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                 >
                   About Us
                 </Link>
@@ -129,7 +129,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     handleClearSearchBar()
                     setDropdown(!dropdown)
                   }}
-                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                 >
                   Rules & Terms
                 </Link>
@@ -139,7 +139,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                     handleClearSearchBar()
                     setDropdown(!dropdown)
                   }}
-                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                 >
                   Contact
                 </Link>
@@ -151,7 +151,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                       handleClearSearchBar()
                       setDropdown(!dropdown)
                     }}
-                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                   >
                     Logout
                   </button>
@@ -164,7 +164,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                       handleClearSearchBar()
                       setDropdown(!dropdown);
                     }}
-                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-gray-700'
+                    className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarbuttonhighlight'
                   >
                     Login
                   </button>
@@ -175,7 +175,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
         </div>
 
         {/* NAVBAR PROPER */}
-        <Link to='/' className='hidden lg:block px-3 hover:text-navbarbuttonhighlight text-center' onClick={handleClearSearchBar} >Home</Link>
+        <Link to='/' className='hidden lg:block px-3 hover:bg-navbarbuttonhighlight text-center' onClick={handleClearSearchBar}>Home</Link>
         {localStorage.getItem('token') && localStorage.getItem('username') ? (
           <Link to={`/${localStorage.getItem('username')}`} className='hidden lg:block px-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >My Quests</Link>
         ) : null}

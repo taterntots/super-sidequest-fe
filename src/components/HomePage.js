@@ -83,7 +83,7 @@ const HomePage = ({ refresh }) => {
             <h1 className='text-center text-2xl font-medium py-4'>
               Recent Quests
             </h1>
-            <div className='grid gap-6 grig-cols-1'>
+            <div className='grid gap-6 grid-cols-1'>
               {recent_challenges.map(challenge => (
                 <Link
                   key={challenge.challenge_id}

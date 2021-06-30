@@ -12,7 +12,7 @@ module.exports = {
         complete: '#F59E0B',
         logintext: '#BA55D3',
         sitewidebackground: '#414141',
-        navbarbuttonhighlight: '#F5F5F5',
+        navbarbuttonhighlight: '#374151',
         removered: '#F87171',
         addgreen: '#34D399',
         cardhover: '#08f78f',
