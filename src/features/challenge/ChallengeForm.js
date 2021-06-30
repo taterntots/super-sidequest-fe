@@ -24,6 +24,9 @@ import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 
+// DATE
+import moment from 'moment';
+
 // IMAGES
 import LoadSpinner from '../../components/LoadSpinner';
 
@@ -207,6 +210,8 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             <input
               name='start_date'
               type='date'
+              value={moment(Date.now()).format('YYYY-MM-DD')}
+              disabled={true}
               className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
               {...register('start_date')}
             />
