@@ -33,7 +33,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, setOpenAccept, acc
   return (
     <>
       <ProfileTwo className="w-full lg:w-3/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
-        <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
+        <h1 className='text-center text-2xl font-medium pt-4 mt-4 lg:my-0'>
           Leaderboard
         </h1>
 
@@ -42,12 +42,12 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, setOpenAccept, acc
             {countdownIsAfter ? ( // Checks if challenge end date has passed
               <Timer end_date={challenge.end_date} setCountdownIsAfter={setCountdownIsAfter} setChallengeUpdateModel={setOpen} setOpenAccept={setOpenAccept} />
             ) : (
-              <p>QUEST EXPIRED</p>
+              <p className='font-medium text-lg text-center'>Quest Expired</p>
             )}
           </div>
         ) : null}
 
-        <div className='rounded-lg bg-gray-700'>
+        <div className='rounded-lg bg-gray-700 mt-4'>
           <div className='flex w-full text-center px-2 py-1 font-bold'>
             <p className='w-1/12'>Rank</p>
             <p className='w-6/12'>
@@ -141,7 +141,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, setOpenAccept, acc
             <div className='flex flex-col md:flex-row justify-evenly'>
               <ProfileOneButton
                 onClick={() => setOpen(true)}
-                className={acceptedChallenge.completed || !countdownIsAfter ?
+                className={acceptedChallenge.completed || (!countdownIsAfter && challenge.end_date) ?
                   `pointer-events-none opacity-50 rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out` :
                   'rounded-lg text-lg px-12 py-3 mb-4 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
               >

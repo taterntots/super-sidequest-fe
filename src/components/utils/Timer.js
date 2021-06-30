@@ -42,7 +42,7 @@ const Timer = ({ end_date, setCountdownIsAfter, setChallengeUpdateModel, setOpen
   }, [end_date]);
 
   return (
-    <div className='flex justify-center sm:justify-evenly font-medium'>
+    <div className='flex justify-center sm:justify-evenly font-medium mt-4'>
       {state.years > 0 ? (
         <p className='text-2xl'>
           {state.years}

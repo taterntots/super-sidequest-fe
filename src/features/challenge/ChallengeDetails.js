@@ -282,7 +282,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               {!acceptedChallenge && localStorage.getItem('token') ? (
                 <ProfileOneButton
                   onClick={() => setOpenAccept(true)}
-                  className={!countdownIsAfter ?
+                  className={challenge.end_date && !countdownIsAfter ?
                     'pointer-events-none opacity-50 rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out' :
                     'rounded-lg text-lg px-6 md:px-12 lg:px-6 xl:px-12 py-3 md:mb-0 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
                 >
