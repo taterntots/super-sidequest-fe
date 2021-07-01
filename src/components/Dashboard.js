@@ -12,7 +12,8 @@ import UserPage from '../components/UserPage';
 import GamePage from '../components/GamePage';
 import AdminRoute from '../components/utils/routes/AdminRoute';
 import GameDetails from '../components/GameDetails';
-import SupportUsPage from '../components/SupportUsPage';
+import SupportUsPage from '../components/pages/SupportUsPage';
+import AboutUsPage from '../components/pages/AboutUsPage';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -113,7 +114,7 @@ const Dashboard = () => {
             exact
             path={`/about`}
             render={(props) => (
-              <SupportUsPage
+              <AboutUsPage
                 {...props}
               />
             )}
