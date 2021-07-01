@@ -24,7 +24,7 @@ const HeroCard = () => {
             Super Sidequest
           </h1>
           <h2 className='text-2xl mb-8 text-gray-200'>
-            Create challenges for your friends and communities.
+            Create gaming challenges for your friends and communities.
           </h2>
           <button
             className='bg-white font-bold rounded-full py-4 px-8 uppercase tracking-wider transform transition duration-500 hover:scale-105'

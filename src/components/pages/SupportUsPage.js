@@ -15,9 +15,9 @@ const HomePage = () => {
 
       {/* BODY */}
       <div className='px-4 py-4 bg-profiletwo rounded-lg text-white'>
-        <h2 className='px-4 py-2 bg-profileone rounded-md text-white text-2xl font-bold'>
+        <h1 className='px-4 py-2 bg-profileone rounded-md text-white text-2xl font-bold'>
           Support Super Sidequest
-        </h2>
+        </h1>
         <p className='mt-2 mx-2'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius nisl sit amet mauris sodales
           rhoncus. Aliquam iaculis augue volutpat nulla consectetur tempus. Mauris at nibh vestibulum orci blandit

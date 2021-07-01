@@ -14,6 +14,7 @@ import AdminRoute from '../components/utils/routes/AdminRoute';
 import GameDetails from '../components/GameDetails';
 import SupportUsPage from '../components/pages/SupportUsPage';
 import AboutUsPage from '../components/pages/AboutUsPage';
+import FAQPage from '../components/pages/FAQPage';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -123,7 +124,7 @@ const Dashboard = () => {
             exact
             path={`/faq`}
             render={(props) => (
-              <SupportUsPage
+              <FAQPage
                 {...props}
               />
             )}
