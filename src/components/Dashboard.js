@@ -15,6 +15,7 @@ import GameDetails from '../components/GameDetails';
 import SupportUsPage from '../components/pages/SupportUsPage';
 import AboutUsPage from '../components/pages/AboutUsPage';
 import FAQPage from '../components/pages/FAQPage';
+import TermsPage from '../components/pages/TermsPage';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -133,7 +134,7 @@ const Dashboard = () => {
             exact
             path={`/terms`}
             render={(props) => (
-              <SupportUsPage
+              <TermsPage
                 {...props}
               />
             )}
