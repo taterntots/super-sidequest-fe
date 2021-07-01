@@ -36,7 +36,7 @@ const HomePage = ({ refresh }) => {
       <Hero />
 
       {/* BODY */}
-      <div className="xl:flex justify-between">
+      <div className='xl:flex justify-between'>
         {/* TATER'S QUEST */}
         <div className='w-full xl:w-7/12 mr-3'>
           {featured_challenge.challenge_id ? (
@@ -44,7 +44,7 @@ const HomePage = ({ refresh }) => {
           ) : null}
 
           {/* TATER'S STREAM */}
-          <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-xl text-white">
+          <div className='px-10 mb-3 pb-4 bg-profiletwo rounded-xl text-white'>
             <h1 className='text-center text-2xl font-medium py-4'>
               Tater & Tots
             </h1>
@@ -59,7 +59,7 @@ const HomePage = ({ refresh }) => {
 
         {/* RECENT QUESTS */}
         <div className='w-full xl:w-5/12'>
-          <div className="px-10 pb-4 bg-profiletwo rounded-xl text-white">
+          <div className='px-10 pb-4 bg-profiletwo rounded-xl text-white'>
             <h1 className='text-center text-2xl font-medium py-4'>
               Recent Quests
             </h1>

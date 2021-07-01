@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 // COMPONENTS
-import { User } from '../features/user/User';
 import NavBar from './NavBar';
 import Footer from './Footer';
 import ResetPassword from './Auth/ResetPassword';
@@ -13,6 +12,7 @@ import UserPage from '../components/UserPage';
 import GamePage from '../components/GamePage';
 import AdminRoute from '../components/utils/routes/AdminRoute';
 import GameDetails from '../components/GameDetails';
+import SupportUsPage from '../components/SupportUsPage';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -104,7 +104,7 @@ const Dashboard = () => {
             exact
             path={`/support`}
             render={(props) => (
-              <User
+              <SupportUsPage
                 {...props}
               />
             )}
@@ -113,7 +113,7 @@ const Dashboard = () => {
             exact
             path={`/about`}
             render={(props) => (
-              <User
+              <SupportUsPage
                 {...props}
               />
             )}
@@ -122,7 +122,7 @@ const Dashboard = () => {
             exact
             path={`/faq`}
             render={(props) => (
-              <User
+              <SupportUsPage
                 {...props}
               />
             )}
@@ -131,7 +131,7 @@ const Dashboard = () => {
             exact
             path={`/terms`}
             render={(props) => (
-              <User
+              <SupportUsPage
                 {...props}
               />
             )}
@@ -140,7 +140,7 @@ const Dashboard = () => {
             exact
             path={`/contact`}
             render={(props) => (
-              <User
+              <SupportUsPage
                 {...props}
               />
             )}

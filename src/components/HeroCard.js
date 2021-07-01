@@ -18,7 +18,7 @@ const HeroCard = () => {
   return (
     <>
       {/* HERO */}
-      <div className='py-24 px-4 mb-3 bg-profileone rounded-md'>
+      <div className='py-12 px-4 mb-3 bg-profileone rounded-md'>
         <div className='text-center'>
           <h1 className='text-4xl font-bold mb-2 text-white'>
             Super Sidequest
