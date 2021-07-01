@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchRecentChallenges,
@@ -15,7 +15,7 @@ import ReactPlayer from 'react-player/twitch';
 // COMPONENTS
 import ChallengeCard from '../features/challenge/ChallengeCard.js';
 import FeaturedChallengeCard from '../features/challenge/FeaturedChallengeCard.js';
-import Hero from '../components/Hero';
+import Hero from '../components/HeroCard';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ HOMEPAGE ------------------------------------

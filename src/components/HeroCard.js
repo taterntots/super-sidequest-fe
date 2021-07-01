@@ -10,7 +10,7 @@ import AuthModal from '../components/utils/modals/AuthModal';
 // ------------------------------------- HERO ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Hero = () => {
+const HeroCard = () => {
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('signup');
   const history = useHistory();
@@ -44,4 +44,4 @@ const Hero = () => {
   );
 }
 
-export default Hero;
+export default HeroCard;
