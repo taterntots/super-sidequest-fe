@@ -29,7 +29,9 @@ const GamePage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   useEffect(() => {
     dispatch(fetchPublicGames())
     dispatch(fetchPrivateGames())
-    dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+    if (localStorage.getItem('id')) {
+      dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+    }
   }, [dispatch, refresh])
 
   return (

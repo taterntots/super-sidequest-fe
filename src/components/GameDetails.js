@@ -40,7 +40,9 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
     dispatch(fetchGameChallengesByPopularity({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
-    dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+    if (localStorage.getItem('id')) {
+      dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+    }
   }, [dispatch, refresh])
 
   // Resets filter when clicking away from page

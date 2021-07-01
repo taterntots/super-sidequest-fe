@@ -16,6 +16,7 @@ import SupportUsPage from '../components/pages/SupportUsPage';
 import AboutUsPage from '../components/pages/AboutUsPage';
 import FAQPage from '../components/pages/FAQPage';
 import TermsPage from '../components/pages/TermsPage';
+import ContactUsPage from '../components/pages/ContactUsPage';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -143,7 +144,9 @@ const Dashboard = () => {
             exact
             path={`/contact`}
             render={(props) => (
-              <SupportUsPage
+              <ContactUsPage
+                refresh={refresh}
+                setRefresh={setRefresh}
                 {...props}
               />
             )}
