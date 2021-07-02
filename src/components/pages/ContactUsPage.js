@@ -12,6 +12,9 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 
+// GOOGLE RECAPTCHA
+import ReCAPTCHA from 'react-google-recaptcha';
+
 // COMPONENTS
 import Hero from '../HeroCard';
 
@@ -53,6 +56,10 @@ const ContactUsPage = ({ refresh, setRefresh }) => {
         console.log(err)
       })
   };
+
+  function googleRecatpcha(value) {
+    console.log('Captcha value:', value)
+  }
 
   const subjectOptions = [
     { value: 'feedback', label: 'Feedback' },
@@ -131,6 +138,10 @@ const ContactUsPage = ({ refresh, setRefresh }) => {
               {...register('message', {
                 required: 'Required field'
               })}
+            />
+            <ReCAPTCHA className='mb-7'
+              sitekey='fdsfdsafdsa'
+              onChange={googleRecatpcha}
             />
           </div>
           <div className='flex justify-center md:mx-0 md:flex md:justify-end md:items-center'>

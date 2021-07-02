@@ -245,7 +245,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
           </div>
         </div>
         <div className="form-group">
-          <label className='mr-3'>Rules<span className='text-red-500'>*</span></label>
+          <label className='mr-3'>Rules</label>
           {errors.rules && (
             <span className='text-red-500'>{errors.rules.message}</span>
           )}
@@ -256,7 +256,6 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             placeholder='Provide any special rules for your quest'
             className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
             {...register('rules', {
-              required: 'Required field',
               minLength: {
                 value: 6,
                 message: 'Must be at least 6 characters long'
