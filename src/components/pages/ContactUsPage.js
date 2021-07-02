@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // STATE
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,12 +8,18 @@ import {
   userSelector
 } from '../../features/user/userSlice';
 
+// ROUTING
+import { useHistory } from 'react-router-dom';
+
 // FORMS
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 
 // GOOGLE RECAPTCHA
 import ReCAPTCHA from 'react-google-recaptcha';
+
+// TOAST
+import cogoToast from 'cogo-toast';
 
 // COMPONENTS
 import Hero from '../HeroCard';
@@ -27,7 +33,9 @@ import LoadSpinner from '../LoadSpinner';
 
 const ContactUsPage = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { user, loading } = useSelector(userSelector);
+  const [recaptchaValue, setRecaptchaValue] = useState()
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: { email: '' }
   });
@@ -45,20 +53,29 @@ const ContactUsPage = ({ refresh, setRefresh }) => {
 
   // Function to handle submitting the message
   const onSubmit = async (data) => {
-    dispatch(contactUsEmail(data))
-      .then(res => {
-        if (res.payload.message) {
-          setRefresh(!refresh)
-          reset()
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    // Requier recaptcha to have passed before dispatching API to send email
+    if (recaptchaValue) {
+      dispatch(contactUsEmail(data))
+        .then(res => {
+          if (res.payload.message) {
+            setRefresh(!refresh)
+            reset()
+            history.push('/')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } else {
+      cogoToast.error('Please verify you are not R.O.B. the robot', {
+        hideAfter: 3,
+      });
+    }
   };
 
+  // Function to set a reference to a successful recaptcha for passing emails
   function googleRecatpcha(value) {
-    console.log('Captcha value:', value)
+    setRecaptchaValue(value)
   }
 
   const subjectOptions = [
@@ -140,7 +157,7 @@ const ContactUsPage = ({ refresh, setRefresh }) => {
               })}
             />
             <ReCAPTCHA className='mb-7'
-              sitekey='fdsfdsafdsa'
+              sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY}
               onChange={googleRecatpcha}
             />
           </div>
