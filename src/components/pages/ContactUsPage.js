@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 // STATE
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchUserById,
+  contactUsEmail,
   userSelector
 } from '../../features/user/userSlice';
 
@@ -23,11 +24,10 @@ import LoadSpinner from '../LoadSpinner';
 
 const ContactUsPage = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector(userSelector);
+  const { user, loading } = useSelector(userSelector);
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: { email: '' }
   });
-  const [loading, setLoading] = useState(false);
 
   // Grabs filterable data from the server
   useEffect(() => {
@@ -42,17 +42,16 @@ const ContactUsPage = ({ refresh, setRefresh }) => {
 
   // Function to handle submitting the message
   const onSubmit = async (data) => {
-    console.log(data)
-    // dispatch(signInUser(data))
-    //   .then(res => {
-    //     if (res.payload.token) {
-    //       setOpenAuth(false)
-    //       setRefresh(!refresh)
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    dispatch(contactUsEmail(data))
+      .then(res => {
+        if (res.payload.message) {
+          setRefresh(!refresh)
+          reset()
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   const subjectOptions = [

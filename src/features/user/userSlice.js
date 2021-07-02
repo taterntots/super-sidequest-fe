@@ -181,6 +181,32 @@ export const resetPassword = createAsyncThunk('users/resetPassword', async (cred
   }
 });
 
+// API call to send a contact email
+export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (data) => {
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: process.env.REACT_APP_API + `auth/contact-email`,
+      headers: {
+        Accept: 'application/json'
+      }, data: {
+        email: data.email,
+        subject: data.subject.label,
+        message: data.message
+      }
+    })
+    cogoToast.success(response.data.message, {
+      hideAfter: 5,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.message, {
+      hideAfter: 5,
+    });
+    return isRejectedWithValue(err.response.data.message)
+  }
+});
+
 // API call to update a user's profile
 export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
   const token = localStorage.getItem('token');
@@ -308,6 +334,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [resetPassword.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [contactUsEmail.pending]: (state, action) => {
+      state.loading = true
+    },
+    [contactUsEmail.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [contactUsEmail.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
