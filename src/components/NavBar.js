@@ -34,8 +34,10 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
 
   return (
     <>
-      <div className='flex justify-between items-center text-xl px-10 bg-black text-white font-medium sticky top-0 z-50'>
-        {/* <div className='flex justify-between items-center text-xl py-0 lg:py-2 px-10 bg-black text-white font-medium sticky top-0 z-50'> */}
+      <div className={authPage ?
+        'flex justify-between items-center text-xl px-10 bg-black text-white font-medium sticky top-0' :
+        'flex justify-between items-center text-xl px-10 bg-black text-white font-medium sticky top-0 z-50'}
+      >
         {/* NAVBAR DROPDOWN */}
         <div className='relative block lg:hidden'>
           <button
