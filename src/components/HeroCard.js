@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom';
 import AuthModal from '../components/utils/modals/AuthModal';
 
 // IMAGES
-import Tater from '../img/Tater2.png';
-import Tots from '../img/Tots2.png';
+import Tater from '../img/Tater.png';
+import Tots from '../img/Tots.png';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------- HERO ---------------------------------------

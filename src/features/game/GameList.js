@@ -40,15 +40,15 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
             {/* REQUEST GAME BUTTON */}
             {!searchTerm && localStorage.getItem('token') && !url.includes('private') ? (
               <div
-                className={`p-2 rounded-lg transform transition opacity-60 cursor-pointer duration-500 hover:scale-105`}
+                className={`p-2 rounded-lg transform transition cursor-pointer duration-500 hover:scale-105`}
                 onClick={() => {
                   setOpenGameRequest(true)
                 }}
               >
                 {/* TOP IMG */}
-                <div className=''>
+                <div>
                   <img
-                    className='w-full h-48 object-cover bg-gray-300 rounded-t-lg'
+                    className='w-full h-48 object-contain bg-gray-300 rounded-t-lg'
                     src={MultiplayerImage}
                     alt='img for a single game'
                   />
