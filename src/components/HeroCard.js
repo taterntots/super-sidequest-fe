@@ -6,6 +6,10 @@ import { useHistory } from 'react-router-dom';
 // COMPONENTS
 import AuthModal from '../components/utils/modals/AuthModal';
 
+// IMAGES
+import Tater from '../img/Tater2.png';
+import Tots from '../img/Tots2.png';
+
 // ----------------------------------------------------------------------------------
 // ------------------------------------- HERO ---------------------------------------
 // ----------------------------------------------------------------------------------
@@ -18,23 +22,35 @@ const HeroCard = () => {
   return (
     <>
       {/* HERO */}
-      <div className='py-12 px-4 mb-3 bg-profileone rounded-md'>
-        <div className='text-center'>
-          <h1 className='text-4xl font-bold mb-2 text-white'>
-            Super Sidequest
-          </h1>
-          <h2 className='text-2xl mb-8 text-gray-200'>
-            Create gaming challenges for your friends and communities.
-          </h2>
-          <button
-            className='bg-white font-bold rounded-full py-4 px-8 uppercase tracking-wider transform transition duration-500 hover:scale-105'
-            onClick={() =>
-              localStorage.getItem('token') ? history.push(`/${localStorage.getItem('username')}`) :
-                setOpenAuth(true)
-            }
-          >
-            {localStorage.getItem('token') ? 'My Quests' : 'Get Started'}
-          </button>
+      <div className='py-6 px-4 mb-3 bg-profileone rounded-md'>
+        <div className='flex justify-center'>
+          <img
+            className='hidden md:inline w-1/3 h-52 object-contain'
+            src={Tater}
+            alt='img for a single game'
+          />
+          <div className='w-full text-center self-center'>
+            <h1 className='text-4xl font-bold mb-2 text-white'>
+              Super Sidequest
+            </h1>
+            <h2 className='text-2xl mb-8 text-gray-200'>
+              Create gaming challenges for your friends and communities.
+            </h2>
+            <button
+              className='bg-white font-bold rounded-full py-4 px-8 uppercase tracking-wider transform transition duration-500 hover:scale-105'
+              onClick={() =>
+                localStorage.getItem('token') ? history.push(`/${localStorage.getItem('username')}`) :
+                  setOpenAuth(true)
+              }
+            >
+              {localStorage.getItem('token') ? 'My Quests' : 'Get Started'}
+            </button>
+          </div>
+          <img
+            className='hidden md:inline w-1/3 h-52 object-contain'
+            src={Tots}
+            alt='img for a single game'
+          />
         </div>
       </div>
 

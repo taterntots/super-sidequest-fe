@@ -63,7 +63,10 @@ const GamePage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       ) : null}
 
       {/* PAGE ELEMENTS BASED ON TAB */}
-      <div className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
+      <div className={user_admin && localStorage.getItem('token') ?
+        'p-4 rounded-tr-md bg-profileone rounded-b-md' :
+        'p-4 rounded-t-md bg-profileone rounded-b-md'}
+      >
         <div className='p-4 bg-profiletwo rounded-lg'>
           <Route
             exact

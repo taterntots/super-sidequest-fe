@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // IMAGES
-import UserBannerPlaceholder from '../../img/UserBannerPlaceholder.jpg';
+import MultiplayerImage from '../../img/Multiplayer.png';
 
 // COMPONENTS
 import GameCard from './GameCard';
@@ -48,8 +48,8 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
                 {/* TOP IMG */}
                 <div className=''>
                   <img
-                    className='w-full h-48 object-cover rounded-t-lg'
-                    src={UserBannerPlaceholder}
+                    className='w-full h-48 object-cover bg-gray-300 rounded-t-lg'
+                    src={MultiplayerImage}
                     alt='img for a single game'
                   />
                 </div>
