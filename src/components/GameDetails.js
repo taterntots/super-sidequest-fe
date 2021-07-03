@@ -92,7 +92,15 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
         <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
           <div className='sm:flex justify-between'>
             <div className='flex justify-center items-center py-3'>
-              <BlankUser className='inline-block object-fill w-12 h-12 rounded-md' />
+              {game.game_pic_URL ? (
+                <img
+                  className='inline-block object-fill w-12 h-12 rounded-md'
+                  alt='game avatar'
+                  src={game.game_pic_URL}
+                />
+              ) : (
+                <BlankUser className='inline-block object-fill w-12 h-12 rounded-md' />
+              )}
               <h1 className='pl-5 text-3xl text-white'>{game.name}</h1>
             </div>
           </div>
