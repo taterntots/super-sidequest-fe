@@ -16,7 +16,7 @@ import { ReactComponent as CopyrightIcon } from '../img/Copyright.svg';
 const Footer = ({ handleClearSearchBar }) => {
   return (
     <>
-      <div className='flex justify-center lg:justify-between items-center text-xl px-10 bg-black text-white font-medium'>
+      <div className='flex justify-center lg:justify-between items-center text-xl px-0 lg:px-4 bg-black text-white font-medium'>
         <Link to='/about' className='hidden lg:block p-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >About Us</Link>
         <Link to='/faq' className='hidden lg:block p-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >FAQ</Link>
         <p className='flex p-3'><CopyrightIcon className='mr-1 self-center' />{moment(Date.now()).format('YYYY') === '2021' ? null : '2021-'}{moment(Date.now()).format('YYYY')} Super Sidequest</p>
