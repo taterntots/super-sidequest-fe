@@ -58,7 +58,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                 </h4>
 
                 <div className="mt-7 form-group">
-                  <label className='mr-3'>Challenge Title<span className='text-red-500'>*</span></label>
+                  <label className='mr-3'>Title<span className='text-red-500'>*</span></label>
                   {errors.name && (
                     <span className='text-red-500'>{errors.name.message}</span>)}
                   <input
@@ -70,15 +70,38 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                     {...register('name', {
                       required: 'Required field',
                       minLength: {
-                        value: 4,
-                        message: 'Must be at least 4 characters long'
+                        value: 6,
+                        message: 'Must be at least 6 characters long'
                       },
                       maxLength: {
-                        value: 30,
-                        message: 'Cannot be more than 30 characters'
+                        value: 40,
+                        message: 'Cannot be more than 40 characters'
                       }
                     }
                     )}
+                  />
+                </div>
+                <div className="mt-7 form-group">
+                  <label className='mr-3'>Description<span className='text-red-500'>*</span></label>
+                  {errors.description && (
+                    <span className='text-red-500'>{errors.description.message}</span>)}
+                  <input
+                    name='description'
+                    type='text'
+                    defaultValue={challenge.description}
+                    placeholder='Fix your description'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('description', {
+                      required: 'Required field',
+                      minLength: {
+                        value: 6,
+                        message: 'Must be at least 6 characters long'
+                      },
+                      maxLength: {
+                        value: 80,
+                        message: 'Cannot be more than 80 characters'
+                      }
+                    })}
                   />
                 </div>
 

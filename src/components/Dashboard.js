@@ -50,7 +50,7 @@ const Dashboard = () => {
       />
 
       {/* BODY */}
-      <div className='mx-10 my-3'>
+      <div className='mx-0 md:mx-10 my-3'>
         <Switch>
           <Route
             exact
