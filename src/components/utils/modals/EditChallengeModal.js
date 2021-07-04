@@ -1,9 +1,19 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef } from 'react'
+import { Fragment, useRef, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchDifficulties,
+  difficultySelector
+} from '../../../features/difficulty/difficultySlice';
+import {
+  fetchSystems,
+  systemSelector
+} from '../../../features/system/systemSlice';
 
 // FORMS
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import Select from 'react-select';
 
 // IMAGES
 import LoadSpinner from '../../LoadSpinner';
@@ -13,8 +23,17 @@ import LoadSpinner from '../../LoadSpinner';
 // ----------------------------------------------------------------------------------
 
 const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit, loading, challenge }) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const dispatch = useDispatch();
+  const { difficulties, loading: difficultyLoading } = useSelector(difficultySelector);
+  const { systems, loading: systemLoading } = useSelector(systemSelector)
+  const { register, handleSubmit, reset, control, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
+
+  // Grabs all necessary data from server
+  useEffect(() => {
+    dispatch(fetchDifficulties())
+    dispatch(fetchSystems())
+  }, [dispatch])
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -102,6 +121,28 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                         message: 'Cannot be more than 80 characters'
                       }
                     })}
+                  />
+                </div>
+                <div className="mt-7 form-group">
+                  <label className='mr-3'>Difficulty<span className='text-red-500'>*</span></label>
+                  {errors.difficulty && (
+                    <span className='text-red-500'>{errors.difficulty.message}</span>
+                  )}
+                  <Controller
+                    name='difficulty'
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        as={Select}
+                        className='text-black mb-7 mt-3 rounded-md text-lg'
+                        options={difficulties.map(d => ({ label: `${d.name}`, value: d.id }))}
+                        id='difficulty'
+                        name='difficulty'
+                        isLoading={difficultyLoading}
+                        defaultValue={{ label: `${challenge.difficulty}`, value: `${challenge.difficulty_id}` }}
+                      />
+                    )}
                   />
                 </div>
 
