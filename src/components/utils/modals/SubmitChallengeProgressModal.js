@@ -15,7 +15,7 @@ import LoadSpinner from '../../LoadSpinner';
 const SubmitChallengeProgressModal = ({ open, setOpen, submitChallengeProgress, loading, acceptedChallenge, challenge }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
-
+  
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog

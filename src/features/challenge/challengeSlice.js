@@ -296,14 +296,7 @@ export const updateUserChallengeProgress = createAsyncThunk('challenges/updateUs
         Accept: 'application/json',
         Authorization: token
       }, data: {
-        high_score: data.high_score ? data.high_score : null,
-        speedrun_hours: data.speedrun_hours ? data.speedrun_hours : null,
-        speedrun_minutes: data.speedrun_minutes ? data.speedrun_minutes : null,
-        speedrun_seconds: data.speedrun_seconds ? data.speedrun_seconds : null,
-        speedrun_milliseconds: data.speedrun_milliseconds ? data.speedrun_milliseconds : null,
-        total_milliseconds: data.total_milliseconds ? data.total_milliseconds : null,
-        image_URL: data.image_URL ? data.image_URL : null,
-        video_URL: data.video_URL ? data.video_URL : null
+        ...data
       }
     })
     cogoToast.success('Challenge updated!', {
@@ -398,6 +391,8 @@ export const editChallenge = createAsyncThunk('challenges/editChallenge', async 
         description: data.description,
         system_id: data.system.value,
         difficulty_id: data.difficulty.value,
+        is_speedrun: data.is_speedrun ? data.is_speedrun : false,
+        is_high_score: data.is_high_score ? data.is_high_score : false,
         end_date: data.end_date ? data.end_date : null,
         rules: data.rules,
         prize: data.prize

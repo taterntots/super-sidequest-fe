@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef, useEffect } from 'react'
+import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -31,6 +31,8 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
   const { systems, loading: systemLoading } = useSelector(systemSelector)
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
+  const [speedrunDisable, setSpeedrunDisable] = useState(false);
+  const [highScoreDisable, setHighScoreDisable] = useState(false);
 
   // Grabs all necessary data from server
   useEffect(() => {
@@ -38,7 +40,15 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
     dispatch(fetchSystems())
   }, [dispatch])
 
-  console.log(challenge.end_date)
+  // Updates which type of score should be disabled on load
+  useEffect(() => {
+    if (challenge.is_speedrun) {
+      setHighScoreDisable(true)
+    }
+    if (challenge.is_high_score) {
+      setSpeedrunDisable(true)
+    }
+  }, [challenge.is_speedrun, challenge.is_high_score])
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -172,6 +182,32 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                     )}
                   />
                 </div>
+                <div className='flex w-full text-center mb-7'>
+                  <div className='form-group w-1/2 flex items-center justify-center'>
+                    <label className='mr-3'>Speedrun</label>
+                    <input
+                      name='is_speedrun'
+                      type='checkbox'
+                      className='w-6 h-6'
+                      defaultChecked={challenge.is_speedrun}
+                      onClick={() => setHighScoreDisable(!highScoreDisable)}
+                      disabled={speedrunDisable}
+                      {...register('is_speedrun')}
+                    />
+                  </div>
+                  <div className='form-group w-1/2 flex items-center justify-center'>
+                    <label className='mr-3'>High Score</label>
+                    <input
+                      name='is_high_score'
+                      type='checkbox'
+                      className='w-6 h-6'
+                      defaultChecked={challenge.is_high_score}
+                      onClick={() => setSpeedrunDisable(!speedrunDisable)}
+                      disabled={highScoreDisable}
+                      {...register('is_high_score')}
+                    />
+                  </div>
+                </div>
                 <div className="form-group">
                   <label className='mr-3'>End Date</label>
                   <input
@@ -193,6 +229,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                     name='rules'
                     type='text'
                     rows='10'
+                    defaultValue={challenge.rules}
                     placeholder='Provide any special rules for your quest'
                     className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('rules', {
@@ -211,6 +248,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                   <input
                     name='prize'
                     type='text'
+                    defaultValue={challenge.prize}
                     placeholder='Provide a special prize for completing the quest'
                     className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('prize', {
