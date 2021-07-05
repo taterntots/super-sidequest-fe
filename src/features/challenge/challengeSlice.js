@@ -396,7 +396,11 @@ export const editChallenge = createAsyncThunk('challenges/editChallenge', async 
       }, data: {
         name: data.name,
         description: data.description,
-        difficulty_id: data.difficulty.value
+        system_id: data.system.value,
+        difficulty_id: data.difficulty.value,
+        end_date: data.end_date ? data.end_date : null,
+        rules: data.rules,
+        prize: data.prize
       }
     })
     cogoToast.success('Challenge successfully edited!', {

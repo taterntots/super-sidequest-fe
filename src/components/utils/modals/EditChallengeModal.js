@@ -11,6 +11,9 @@ import {
   systemSelector
 } from '../../../features/system/systemSlice';
 
+// DATE
+import moment from 'moment';
+
 // FORMS
 import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
@@ -34,6 +37,8 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
     dispatch(fetchDifficulties())
     dispatch(fetchSystems())
   }, [dispatch])
+
+  console.log(challenge.end_date)
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -124,6 +129,28 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                   />
                 </div>
                 <div className="mt-7 form-group">
+                  <label className='mr-3'>System<span className='text-red-500'>*</span></label>
+                  {errors.system && (
+                    <span className='text-red-500'>{errors.system.message}</span>
+                  )}
+                  <Controller
+                    name='system'
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        as={Select}
+                        className='text-black mb-7 mt-3 rounded-md text-lg'
+                        options={systems.map(d => ({ label: `${d.name}`, value: d.id }))}
+                        id='system'
+                        name='system'
+                        isLoading={systemLoading}
+                        defaultValue={{ label: `${challenge.system}`, value: `${challenge.system_id}` }}
+                      />
+                    )}
+                  />
+                </div>
+                <div className="mt-7 form-group">
                   <label className='mr-3'>Difficulty<span className='text-red-500'>*</span></label>
                   {errors.difficulty && (
                     <span className='text-red-500'>{errors.difficulty.message}</span>
@@ -143,6 +170,59 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                         defaultValue={{ label: `${challenge.difficulty}`, value: `${challenge.difficulty_id}` }}
                       />
                     )}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className='mr-3'>End Date</label>
+                  <input
+                    name='end_date'
+                    type='datetime-local'
+                    id='datePickerId'
+                    defaultValue={moment(challenge.end_date).format('YYYY-MM-DDThh:mm')}
+                    min={moment(Date.now()).format('YYYY-MM-DDThh:mm')}
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('end_date')}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className='mr-3'>Rules</label>
+                  {errors.rules && (
+                    <span className='text-red-500'>{errors.rules.message}</span>
+                  )}
+                  <textarea
+                    name='rules'
+                    type='text'
+                    rows='10'
+                    placeholder='Provide any special rules for your quest'
+                    className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('rules', {
+                      minLength: {
+                        value: 6,
+                        message: 'Must be at least 6 characters long'
+                      }
+                    })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className='mr-3'>Prize</label>
+                  {errors.prize && (
+                    <span className='text-red-500'>{errors.prize.message}</span>
+                  )}
+                  <input
+                    name='prize'
+                    type='text'
+                    placeholder='Provide a special prize for completing the quest'
+                    className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('prize', {
+                      minLength: {
+                        value: 6,
+                        message: 'Must be at least 6 characters long'
+                      },
+                      maxLength: {
+                        value: 80,
+                        message: 'Cannot be more than 80 characters'
+                      }
+                    })}
                   />
                 </div>
 

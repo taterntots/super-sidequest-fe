@@ -59,7 +59,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
           >
             <div className='absolute w-48 origin-top-right shadow-lg'>
               <div
-                className='bg-black divide-y rounded-b-md shadow-xs divide-gray-500'
+                className='bg-black divide-y rounded-br-md shadow-xs divide-gray-500'
                 role='menu'
                 aria-orientation='vertical'
                 aria-labelledby='user-menu'

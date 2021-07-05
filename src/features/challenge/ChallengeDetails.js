@@ -117,7 +117,11 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
     data.challenge_id = route.params.challengeId
     // If difficulty is unchanged, keep it that way (React Select won't let me do this directly in defaultValue)
     if (!data.difficulty) {
-      data.difficulty = { label: `${challenge.difficulty_id}`, value: `${challenge.difficulty_id}` }
+      data.difficulty = { label: `${challenge.difficulty}`, value: `${challenge.difficulty_id}` }
+    }
+    // If system is unchanged, keep it that way (React Select won't let me do this directly in defaultValue)
+    if (!data.system) {
+      data.system = { label: `${challenge.system}`, value: `${challenge.system_id}` }
     }
 
     dispatch(editChallenge(data))
