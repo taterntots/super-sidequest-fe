@@ -60,7 +60,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
         open={open}
         onClose={setOpen}
       >
-        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex items-end justify-center min-h-screen text-center block">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -85,7 +85,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all mb-6 mt-20 sm:mt-20 max-w-3xl">
               <form className="p-10 bg-taterpurple text-white" onSubmit={handleSubmit(submitChallengeEdit)}>
                 <h4 className='text-2xl mb-4'>
                   Edit Challenge
@@ -138,49 +138,51 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                     })}
                   />
                 </div>
-                <div className="mt-7 form-group">
-                  <label className='mr-3'>System<span className='text-red-500'>*</span></label>
-                  {errors.system && (
-                    <span className='text-red-500'>{errors.system.message}</span>
-                  )}
-                  <Controller
-                    name='system'
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        as={Select}
-                        className='text-black mb-7 mt-3 rounded-md text-lg'
-                        options={systems.map(d => ({ label: `${d.name}`, value: d.id }))}
-                        id='system'
-                        name='system'
-                        isLoading={systemLoading}
-                        defaultValue={{ label: `${challenge.system}`, value: `${challenge.system_id}` }}
-                      />
+                <div className='flex justify-between'>
+                  <div className="form-group w-5/12">
+                    <label className='mr-3'>System<span className='text-red-500'>*</span></label>
+                    {errors.system && (
+                      <span className='text-red-500'>{errors.system.message}</span>
                     )}
-                  />
-                </div>
-                <div className="mt-7 form-group">
-                  <label className='mr-3'>Difficulty<span className='text-red-500'>*</span></label>
-                  {errors.difficulty && (
-                    <span className='text-red-500'>{errors.difficulty.message}</span>
-                  )}
-                  <Controller
-                    name='difficulty'
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        as={Select}
-                        className='text-black mb-7 mt-3 rounded-md text-lg'
-                        options={difficulties.map(d => ({ label: `${d.name}`, value: d.id }))}
-                        id='difficulty'
-                        name='difficulty'
-                        isLoading={difficultyLoading}
-                        defaultValue={{ label: `${challenge.difficulty}`, value: `${challenge.difficulty_id}` }}
-                      />
+                    <Controller
+                      name='system'
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          as={Select}
+                          className='text-black mb-7 mt-3 rounded-md text-lg'
+                          options={systems.map(d => ({ label: `${d.name}`, value: d.id }))}
+                          id='system'
+                          name='system'
+                          isLoading={systemLoading}
+                          defaultValue={{ label: `${challenge.system}`, value: `${challenge.system_id}` }}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="form-group w-5/12">
+                    <label className='mr-3'>Difficulty<span className='text-red-500'>*</span></label>
+                    {errors.difficulty && (
+                      <span className='text-red-500'>{errors.difficulty.message}</span>
                     )}
-                  />
+                    <Controller
+                      name='difficulty'
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          as={Select}
+                          className='text-black mb-7 mt-3 rounded-md text-lg'
+                          options={difficulties.map(d => ({ label: `${d.name}`, value: d.id }))}
+                          id='difficulty'
+                          name='difficulty'
+                          isLoading={difficultyLoading}
+                          defaultValue={{ label: `${challenge.difficulty}`, value: `${challenge.difficulty_id}` }}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
                 <div className='flex w-full text-center mb-7'>
                   <div className='form-group w-1/2 flex items-center justify-center'>
