@@ -266,21 +266,21 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                   />
                 </div>
 
-                <div className='flex justify-evenly'>
+                <div className='sm:flex sm:justify-evenly'>
                   <button
                     type='button'
                     onClick={() => {
                       setOpen(false)
                       reset()
                     }}
-                    className={`flex items-center rounded-lg text-lg px-8 sm:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
+                    className={`sm:flex w-full mb-4 sm:mb-0 sm:w-auto items-center rounded-lg text-lg px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out`}
                   >
                     Cancel
                   </button>
                   <button
                     type='submit'
-                    className={loading ? 'opacity-80 pointer-events-none flex items-center rounded-lg text-lg px-12 md:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out' :
-                      'flex items-center rounded-lg text-lg px-8 sm:px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
+                    className={loading ? 'opacity-80 pointer-events-none sm:flex w-full sm:mb-0 sm:w-auto items-center rounded-lg text-lg px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out' :
+                      'sm:flex w-full sm:mb-0 sm:w-auto items-center rounded-lg text-lg px-12 py-3 text-center font-medium bg-purplebutton hover:bg-white hover:text-purplebutton focus:ring transition duration-150 ease-in-out'
                     }
                   >
                     {loading ? (

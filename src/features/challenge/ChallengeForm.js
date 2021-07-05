@@ -72,10 +72,10 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
 
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-      <ProfileTwoForm className="p-10 bg-profiletwo rounded-lg text-white" onSubmit={handleSubmit(onSubmit)}>
+      <ProfileTwoForm className='p-10 bg-profiletwo rounded-lg text-white' onSubmit={handleSubmit(onSubmit)}>
         <h4 className='text-2xl mb-4'>Create a quest</h4>
-        <div className='flex justify-between'>
-          <div className="form-group w-5/12">
+        <div className='sm:flex sm:justify-between'>
+          <div className='form-group sm:w-5/12'>
             <label className='mr-3'>Game<span className='text-red-500'>*</span></label>
             {errors.game && (
               <span className='text-red-500'>{errors.game.message}</span>
@@ -99,7 +99,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
               )}
             />
           </div>
-          <div className="form-group w-5/12">
+          <div className='form-group sm:w-5/12'>
             <label className='mr-3'>System<span className='text-red-500'>*</span></label>
             {errors.system && (
               <span className='text-red-500'>{errors.system.message}</span>
@@ -124,7 +124,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             />
           </div>
         </div>
-        <div className="form-group">
+        <div className='form-group'>
           <label className='mr-3'>Quest Title<span className='text-red-500'>*</span></label>
           {errors.name && (
             <span className='text-red-500'>{errors.name.message}</span>
@@ -147,7 +147,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             })}
           />
         </div>
-        <div className="form-group">
+        <div className='form-group'>
           <label className='mr-3'>Description<span className='text-red-500'>*</span></label>
           {errors.description && (
             <span className='text-red-500'>{errors.description.message}</span>
@@ -170,8 +170,8 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             })}
           />
         </div>
-        <div className='flex'>
-          <div className="form-group w-1/3">
+        <div className='sm:flex'>
+          <div className='form-group sm:w-1/3'>
             <label className='mr-3'>Difficulty<span className='text-red-500'>*</span></label>
             {errors.difficulty && (
               <span className='text-red-500'>{errors.difficulty.message}</span>
@@ -195,7 +195,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
               )}
             />
           </div>
-          <div className='flex w-2/3 text-center'>
+          <div className='flex w-full sm:w-2/3 text-center mb-7 sm:mb-0'>
             <div className='form-group w-1/2 flex items-center justify-center'>
               <label className='mr-3'>Speedrun</label>
               <input
@@ -220,8 +220,8 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             </div>
           </div>
         </div>
-        <div className='flex justify-between'>
-          <div className="form-group w-5/12">
+        <div className='sm:flex sm:justify-between'>
+          <div className='form-group sm:w-5/12'>
             <label className='mr-3'>Start Date</label>
             <input
               name='start_date'
@@ -232,7 +232,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
               {...register('start_date')}
             />
           </div>
-          <div className="form-group w-5/12">
+          <div className='form-group sm:w-5/12'>
             <label className='mr-3'>End Date</label>
             <input
               name='end_date'
@@ -244,7 +244,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             />
           </div>
         </div>
-        <div className="form-group">
+        <div className='form-group'>
           <label className='mr-3'>Rules</label>
           {errors.rules && (
             <span className='text-red-500'>{errors.rules.message}</span>
@@ -263,7 +263,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
             })}
           />
         </div>
-        <div className="form-group">
+        <div className='form-group'>
           <label className='mr-3'>Prize</label>
           {errors.prize && (
             <span className='text-red-500'>{errors.prize.message}</span>
@@ -286,11 +286,11 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
           />
         </div>
 
-        <div className='flex justify-center md:mx-0 md:flex md:justify-end md:items-center'>
+        <div className='flex justify-center sm:mx-0 sm:flex sm:justify-end sm:items-center'>
           <ProfileOneButton
-            type="submit"
-            className={challengeLoading ? 'opacity-80 pointer-events-none w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out' :
-              'w-full md:w-auto rounded-lg text-lg py-3 md:px-12 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'
+            type='submit'
+            className={challengeLoading ? 'opacity-80 pointer-events-none w-full sm:w-auto rounded-lg text-lg py-3 sm:px-12 font-medium bg-profileone hover:bg-white hover:text-profileone focus:ring transition duration-150 ease-in-out' :
+              'w-full sm:w-auto rounded-lg text-lg py-3 sm:px-12 font-medium bg-profileone hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'
             }
           >
             {challengeLoading ? (
