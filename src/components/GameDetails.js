@@ -4,6 +4,7 @@ import {
   fetchGameById,
   fetchGameChallenges,
   fetchGameChallengesByPopularity,
+  deleteGame,
   updateGame,
   gameSelector
 } from '../features/game/gameSlice';
@@ -13,11 +14,12 @@ import {
 } from '../features/user/userSlice';
 
 // ROUTING
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 
 // COMPONENTS
 import GameChallengesPage from './GameChallengesPage';
 import EditGameModal from './utils/modals/EditGameModal';
+import DeleteGameModal from './utils/modals/DeleteGameModal';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
@@ -28,12 +30,14 @@ import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 
 const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const route = useRouteMatch();
   const { game, challenges, popular_challenges, loading } = useSelector(gameSelector);
   const { user_admin } = useSelector(userSelector)
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
   const [filteredPopularChallenges, setFilteredPopularChallenges] = useState(challenges);
   const [openGameEdit, setOpenGameEdit] = useState(false);
+  const [openGameDelete, setOpenGameDelete] = useState(false);
 
   // Grabs all necessary data from server
   useEffect(() => {
@@ -61,6 +65,19 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
           setRefresh(!refresh)
           setOpenGameEdit(false)
         }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle deleting a game
+  const submitGameDelete = async () => {
+    dispatch(deleteGame(route.params.gameId))
+      .then(res => {
+        history.push(`/games`)
+        setOpenGameDelete(false);
+        setRefresh(!refresh)
       })
       .catch(err => {
         console.log(err)
@@ -108,7 +125,8 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
       </div>
 
       {/* Modals */}
-      <EditGameModal open={openGameEdit} setOpen={setOpenGameEdit} submitGameEdit={submitGameEdit} loading={loading} game={game} />
+      <EditGameModal open={openGameEdit} setOpen={setOpenGameEdit} setOpenDelete={setOpenGameDelete} submitGameEdit={submitGameEdit} loading={loading} game={game} />
+      <DeleteGameModal open={openGameDelete} setOpen={setOpenGameDelete} submitGameDelete={submitGameDelete} loading={loading} />
 
       {/* RENDERS GAME CHALLENGES SEARCH PAGE */}
       <div>

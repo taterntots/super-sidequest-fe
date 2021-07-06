@@ -12,7 +12,7 @@ import LoadSpinner from '../../LoadSpinner';
 // -------------------------------- EDIT GAME MODAL ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const EditGameModal = ({ open, setOpen, submitGameEdit, loading, game }) => {
+const EditGameModal = ({ open, setOpen, setOpenDelete, submitGameEdit, loading, game }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const cancelButtonRef = useRef(null)
 
@@ -140,6 +140,17 @@ const EditGameModal = ({ open, setOpen, submitGameEdit, loading, game }) => {
                   </button>
                 </div>
               </form>
+
+              {/* DELETE BUTTON */}
+              <button
+                onClick={() => {
+                  setOpen(false)
+                  setOpenDelete(true)
+                }}
+                className={'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'}
+              >
+                Delete
+              </button>
             </div>
           </Transition.Child>
         </div>

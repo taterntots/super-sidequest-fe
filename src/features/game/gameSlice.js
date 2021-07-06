@@ -117,6 +117,34 @@ export const requestGame = createAsyncThunk('challenges/requestGame', async (for
   }
 });
 
+// API call to delete/remove a game
+export const deleteGame = createAsyncThunk('gamess/deleteGame', async (gameId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: process.env.REACT_APP_API + `games/${gameId}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token,
+      }
+    })
+    cogoToast.success('Game successfully deleted!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // API call to update/edit a game
 export const updateGame = createAsyncThunk('users/updateGame', async (data) => {
   const token = localStorage.getItem('token');
@@ -224,6 +252,17 @@ export const gameSlice = createSlice({
       state.error = false
     },
     [requestGame.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [deleteGame.pending]: (state, action) => {
+      state.loading = true
+    },
+    [deleteGame.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [deleteGame.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
