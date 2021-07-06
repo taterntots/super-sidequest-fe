@@ -58,7 +58,10 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
         className='fixed z-10 inset-0 overflow-y-auto'
         initialFocus={cancelButtonRef}
         open={open}
-        onClose={setOpen}
+        onClose={() => {
+          reset()
+          setOpen(false)
+        }}
       >
         <div className='flex items-end justify-center min-h-screen text-center block'>
           <Transition.Child
@@ -297,6 +300,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                 onClick={() => {
                   setOpen(false)
                   setOpenDelete(true)
+                  reset()
                 }}
                 className={'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'}
               >

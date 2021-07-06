@@ -29,6 +29,7 @@ const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
       .then(res => {
         if (res.payload) {
           setRefresh(!refresh)
+          reset()
           setOpen(false)
         }
       })
@@ -45,7 +46,10 @@ const RequestGameModal = ({ open, setOpen, refresh, setRefresh }) => {
         className='fixed z-10 inset-0 overflow-y-auto'
         initialFocus={cancelButtonRef}
         open={open}
-        onClose={setOpen}
+        onClose={() => {
+          reset()
+          setOpen(false)
+        }}
       >
         <div className='flex items-center justify-center min-h-screen text-center block'>
           <Transition.Child

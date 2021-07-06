@@ -24,7 +24,10 @@ const EditGameModal = ({ open, setOpen, setOpenDelete, submitGameEdit, loading, 
         className='fixed z-10 inset-0 overflow-y-auto'
         initialFocus={cancelButtonRef}
         open={open}
-        onClose={setOpen}
+        onClose={() => {
+          reset()
+          setOpen(false)
+        }}
       >
         <div className='flex items-center justify-center min-h-screen text-center block'>
           <Transition.Child
@@ -146,6 +149,7 @@ const EditGameModal = ({ open, setOpen, setOpenDelete, submitGameEdit, loading, 
                 onClick={() => {
                   setOpen(false)
                   setOpenDelete(true)
+                  reset()
                 }}
                 className={'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'}
               >
