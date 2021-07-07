@@ -48,6 +48,10 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
     if (challenge.is_high_score) {
       setSpeedrunDisable(true)
     }
+    if (!challenge.is_high_score && !challenge.is_speedrun) {
+      setHighScoreDisable(false)
+      setSpeedrunDisable(false)
+    }
   }, [challenge.is_speedrun, challenge.is_high_score])
 
   return (
