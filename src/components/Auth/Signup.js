@@ -81,8 +81,8 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
                 message: 'Must be at least 8 characters long'
               },
               maxLength: {
-                value: 16,
-                message: 'Cannot be more than 16 characters'
+                value: 32,
+                message: 'Cannot be more than 32 characters'
               }
             })}
           />
@@ -104,8 +104,8 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
                 message: 'Must be at least 8 characters long'
               },
               maxLength: {
-                value: 16,
-                message: 'Cannot be more than 16 characters'
+                value: 32,
+                message: 'Cannot be more than 32 characters'
               }
             })}
           />
@@ -123,8 +123,8 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
             {...register('username', {
               required: 'Required field',
               minLength: {
-                value: 6,
-                message: 'Must be at least 6 characters long'
+                value: 4,
+                message: 'Must be at least 4 characters long'
               },
               maxLength: {
                 value: 16,
