@@ -171,7 +171,7 @@ export const fetchUserCompletedChallengeTotal = createAsyncThunk('challenges/fet
   return response.data
 });
 
-// API call to grab a user's total challenge completion stats for all games
+// API call to grab a user's featured challenge
 export const fetchUserFeaturedChallenge = createAsyncThunk('challenges/fetchUserFeaturedChallenge', async (userId) => {
   const response = await axios({
     method: 'get',
@@ -184,7 +184,7 @@ export const fetchUserFeaturedChallenge = createAsyncThunk('challenges/fetchUser
   return response.data
 });
 
-// API call to grab a user's total challenge completion stats for all games
+// API call to tater's featured challenge
 export const fetchTaterFeaturedChallenge = createAsyncThunk('challenges/fetchTaterFeaturedChallenge', async (userId) => {
   const response = await axios({
     method: 'get',
