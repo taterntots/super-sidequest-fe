@@ -53,7 +53,15 @@ const ResetPassword = ({ setAuthPage }) => {
             placeholder='Enter your password'
             className='form-control text-black w-full flex items-center mb-3 mt-3 p-2 rounded-md text-lg'
             {...register('password', {
-              required: 'Required field'
+              required: 'Required field',
+              minLength: {
+                value: 8,
+                message: 'Must be at least 8 characters long'
+              },
+              maxLength: {
+                value: 32,
+                message: 'Cannot be more than 32 characters'
+              }
             })} />
         </div>
 

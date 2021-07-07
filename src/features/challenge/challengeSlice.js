@@ -362,11 +362,12 @@ export const updateUserChallengeCompletion = createAsyncThunk('challenges/update
 // API call to update a user challenge being featured
 export const updateUserChallengeFeatured = createAsyncThunk('challenges/updateUserChallengeFeatured', async (data) => {
   const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('id')
 
   try {
     const response = await axios({
       method: 'put',
-      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/featured`,
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/users/${userId}/featured`,
       headers: {
         Accept: 'application/json',
         Authorization: token,
