@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchRecentChallenges,
-  fetchUserFeaturedChallenge,
+  fetchTaterFeaturedChallenge,
   challengeSelector
 } from '../features/challenge/challengeSlice';
 
@@ -23,11 +23,11 @@ import Hero from '../components/HeroCard';
 
 const HomePage = ({ refresh }) => {
   const dispatch = useDispatch();
-  const { recent_challenges, featured_challenge } = useSelector(challengeSelector)
+  const { recent_challenges, tater_featured_challenge } = useSelector(challengeSelector)
 
   useEffect(() => {
     dispatch(fetchRecentChallenges(localStorage.getItem('id')))
-    dispatch(fetchUserFeaturedChallenge(process.env.REACT_APP_TATER_ID))
+    dispatch(fetchTaterFeaturedChallenge(process.env.REACT_APP_TATER_ID))
   }, [dispatch, refresh])
 
   return (
@@ -39,8 +39,8 @@ const HomePage = ({ refresh }) => {
       <div className='xl:flex justify-between'>
         {/* TATER'S QUEST */}
         <div className='w-full xl:w-7/12 mr-3'>
-          {featured_challenge.challenge_id ? (
-            <FeaturedChallengeCard data={featured_challenge} />
+          {tater_featured_challenge.challenge_id ? (
+            <FeaturedChallengeCard data={tater_featured_challenge} />
           ) : null}
 
           {/* TATER'S STREAM */}

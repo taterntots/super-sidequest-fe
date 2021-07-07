@@ -21,6 +21,7 @@ export const initialState = {
   challenge_game_stats: [],
   challenge: {},
   featured_challenge: {},
+  tater_featured_challenge: {},
   acceptedChallenge: {},
   loading: false,
   error: false,
@@ -172,6 +173,19 @@ export const fetchUserCompletedChallengeTotal = createAsyncThunk('challenges/fet
 
 // API call to grab a user's total challenge completion stats for all games
 export const fetchUserFeaturedChallenge = createAsyncThunk('challenges/fetchUserFeaturedChallenge', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/challenges/featured`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab a user's total challenge completion stats for all games
+export const fetchTaterFeaturedChallenge = createAsyncThunk('challenges/fetchTaterFeaturedChallenge', async (userId) => {
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/challenges/featured`,
@@ -587,6 +601,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchUserFeaturedChallenge.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchTaterFeaturedChallenge.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchTaterFeaturedChallenge.fulfilled]: (state, { payload }) => {
+      state.tater_featured_challenge = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchTaterFeaturedChallenge.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
