@@ -14,6 +14,8 @@ module.exports = {
         sitewidebackground: '#414141',
         navbarbuttonhighlight: '#9CA3AF',
         navbarmobilehighlight: '#374151',
+        texthighlight: '#C4B5FD',
+        texthighlighthover: '#A78BFA',
         removered: '#F87171',
         addgreen: '#34D399',
         cardhover: '#08f78f',

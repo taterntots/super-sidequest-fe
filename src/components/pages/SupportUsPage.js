@@ -18,19 +18,15 @@ const HomePage = () => {
         <h1 className='px-4 py-2 bg-profileone rounded-md text-white text-2xl font-bold'>
           Support Super Sidequest
         </h1>
-        <p className='mt-2 mx-2'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius nisl sit amet mauris sodales
-          rhoncus. Aliquam iaculis augue volutpat nulla consectetur tempus. Mauris at nibh vestibulum orci blandit
-          fringilla dignissim in velit. Morbi nec vulputate nisi. Nulla pretium leo sed lorem rutrum, et feugiat
-          mauris feugiat. Nam elementum enim nec augue viverra mollis. Pellentesque laoreet, sem nec bibendum dapibus,
-          tellus quam molestie purus, a dignissim felis metus vel est. Sed tincidunt ac ipsum a sagittis.
+        <p className='mt-4 mx-2'>
+          Super Sidequest is a one-man show managed solely by the super rad dude named tater_n_tots. Currently
+          I’m doing my best to keep server costs as low as possible, with absolutely no plans or desire to clutter
+          up the site with pesky pop-ups and advertisements. That said, if you’d like to show your thanks by
+          helping keep the lights on, feel free to toss a coin to your Tater!
         </p>
-        <p className='mt-2 mx-2'>
-          Duis lacinia feugiat justo a maximus. Cras sit amet lacus mi. Nullam ac auctor est. Duis tempor elit
-          neque, vel rutrum libero consequat non. Vestibulum convallis neque magna, at commodo sapien molestie
-          vel. Vestibulum convallis pretium odio, vitae luctus odio venenatis posuere. Pellentesque ullamcorper
-          diam nulla, in blandit libero feugiat nec. Praesent porta dolor et cursus rutrum. Nulla porttitor lectus
-          in neque tristique, sagittis facilisis lorem vestibulum.
+        <p className='mt-4 mx-2'>
+          At the moment, PayPal is my primary means for accepting donations, though I plan to eventually create a
+          Patreon once the mood strikes. Thanks for your support!
         </p>
         <form className='flex justify-center mt-4' action='https://www.paypal.com/donate' method='post' target='_blank'>
           <input type='hidden' name='business' value='GKMUYQZGDWLH8' />
