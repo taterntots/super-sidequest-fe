@@ -87,6 +87,7 @@ const EditGameModal = ({ open, setOpen, setOpenDelete, submitGameEdit, loading, 
                 </div>
                 <div className='mt-7 form-group'>
                   <label className='mr-3'>Game Banner URL</label>
+                  <span className='flex sm:inline'>(recommended height: 288px)</span>
                   <input
                     name='banner_pic_URL'
                     type='text'

@@ -72,6 +72,7 @@ const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user 
                 </div>
                 <div className='mt-7 form-group'>
                   <label className='mr-3'>Banner URL</label>
+                  <span className='flex sm:inline'>(recommended height: 288px)</span>
                   <input
                     name='banner_pic_URL'
                     type='text'
