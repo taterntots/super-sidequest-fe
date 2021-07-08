@@ -44,11 +44,12 @@ export const fetchChallenges = createAsyncThunk('challenges/fetchChallenges', as
 });
 
 // API call to grab all recent challenges (limited for homepage)
-export const fetchRecentChallenges = createAsyncThunk('challenges/fetchRecentChallenges', async (userId) => {
+export const fetchRecentChallenges = createAsyncThunk('challenges/fetchRecentChallenges', async () => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
   const response = await axios({
     method: 'get',
-    url: userId ? process.env.REACT_APP_API + `challenges/recent/users/${userId}` :
-      process.env.REACT_APP_API + `challenges/recent`,
+    url: process.env.REACT_APP_API + `challenges/recent/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,

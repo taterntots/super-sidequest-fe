@@ -26,7 +26,7 @@ const HomePage = ({ refresh }) => {
   const { recent_challenges, tater_featured_challenge } = useSelector(challengeSelector)
 
   useEffect(() => {
-    dispatch(fetchRecentChallenges(localStorage.getItem('id')))
+    dispatch(fetchRecentChallenges())
     dispatch(fetchTaterFeaturedChallenge(process.env.REACT_APP_TATER_ID))
   }, [dispatch, refresh])
 
