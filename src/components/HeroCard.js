@@ -27,7 +27,7 @@ const HeroCard = () => {
           <img
             className='hidden md:inline w-1/3 h-52 object-contain'
             src={Tater}
-            alt='img for a single game'
+            alt='img for tater'
           />
           <div className='w-full text-center self-center'>
             <h1 className='text-4xl font-bold mb-2 text-white'>
@@ -49,7 +49,7 @@ const HeroCard = () => {
           <img
             className='hidden md:inline w-1/3 h-52 object-contain'
             src={Tots}
-            alt='img for a single game'
+            alt='img for tots'
           />
         </div>
       </div>

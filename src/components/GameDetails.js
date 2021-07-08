@@ -42,8 +42,8 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchGameById(route.params.gameId))
-    dispatch(fetchGameChallenges({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
-    dispatch(fetchGameChallengesByPopularity({ gameId: route.params.gameId, userId: localStorage.getItem('id') }))
+    dispatch(fetchGameChallenges(route.params.gameId))
+    dispatch(fetchGameChallengesByPopularity(route.params.gameId))
     if (localStorage.getItem('id')) {
       dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
     }

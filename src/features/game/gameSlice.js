@@ -59,11 +59,12 @@ export const fetchGameById = createAsyncThunk('games/fetchGameById', async (game
 });
 
 // API call to grab all challenges associated with a game
-export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges', async (data) => {
+export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges', async (gameId) => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
   const response = await axios({
     method: 'get',
-    url: data.userId ? process.env.REACT_APP_API + `games/${data.gameId}/users/${data.userId}/challenges` :
-      process.env.REACT_APP_API + `games/${data.gameId}/challenges`,
+    url: process.env.REACT_APP_API + `games/${gameId}/challenges/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -73,11 +74,12 @@ export const fetchGameChallenges = createAsyncThunk('games/fetchGameChallenges',
 });
 
 // API call to grab all challenges sorted by popularity associated with a game
-export const fetchGameChallengesByPopularity = createAsyncThunk('games/fetchGameChallengesByPopularity', async (data) => {
+export const fetchGameChallengesByPopularity = createAsyncThunk('games/fetchGameChallengesByPopularity', async (gameId) => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
   const response = await axios({
     method: 'get',
-    url: data.userId ? process.env.REACT_APP_API + `games/${data.gameId}/users/${data.userId}/challenges/popular` :
-      process.env.REACT_APP_API + `games/${data.gameId}/challenges/popular`,
+    url: process.env.REACT_APP_API + `games/${gameId}/challenges/popular/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
