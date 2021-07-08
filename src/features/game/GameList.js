@@ -31,16 +31,15 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
 
   return (
     <>
-      <div>
-        {searchResults.length === 0 && searchTerm !== '' ? (
-          <SearchError searchTerm={searchTerm} />
-        ) : (
-          <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-
+      {searchResults.length === 0 && searchTerm !== '' ? (
+        <SearchError searchTerm={searchTerm} />
+      ) : (
+        <div>
+          <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 mb-5'>
             {/* REQUEST GAME BUTTON */}
             {!searchTerm && localStorage.getItem('token') && !url.includes('private') ? (
               <div
-                className={`p-2 rounded-lg transform transition cursor-pointer duration-500 hover:scale-105`}
+                className='p-2 rounded-lg transform transition cursor-pointer duration-500 hover:scale-105'
                 onClick={() => {
                   setOpenGameRequest(true)
                 }}
@@ -54,13 +53,36 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
                   />
                 </div>
                 {/* color bar */}
-                <div className={`flex justify-center px-4 py-2 text-sm text-white rounded-b-lg bg-gray-600`}>
+                <div className='flex justify-center px-4 py-2 text-sm text-white rounded-b-lg bg-gray-600'>
                   <p>REQUEST A GAME</p>
                 </div>
               </div>
             ) : null}
 
-            {/* GAME LIST */}
+            {/* ALL QUESTS BUTTON */}
+            {!searchTerm && localStorage.getItem('token') && !url.includes('private') ? (
+              <Link
+                className='p-2 rounded-lg transform transition cursor-pointer duration-500 hover:scale-105'
+                to={`/challenges/all`}
+              >
+                {/* TOP IMG */}
+                <div>
+                  <img
+                    className='w-full h-48 object-contain bg-gray-300 rounded-t-lg'
+                    src={MultiplayerImage}
+                    alt='img for a single game'
+                  />
+                </div>
+                {/* color bar */}
+                <div className='flex justify-center px-4 py-2 text-sm text-white rounded-b-lg bg-gray-600'>
+                  <p>ALL QUESTS</p>
+                </div>
+              </Link>
+            ) : null}
+          </div>
+
+          {/* GAME LIST */}
+          <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
             {searchResults.map((i) => (
               <Link
                 key={i.id}
@@ -74,8 +96,8 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
               </Link>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Modals */}
       <RequestGameModal open={openGameRequest} setOpen={setOpenGameRequest} refresh={refresh} setRefresh={setRefresh} />

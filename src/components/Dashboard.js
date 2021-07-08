@@ -7,16 +7,17 @@ import { Route, Switch } from 'react-router-dom';
 import NavBar from './NavBar';
 import Footer from './Footer';
 import ResetPassword from './Auth/ResetPassword';
-import HomePage from '../components/HomePage';
-import UserPage from '../components/UserPage';
-import GamePage from '../components/GamePage';
-import AdminRoute from '../components/utils/routes/AdminRoute';
-import GameDetails from '../components/GameDetails';
-import SupportUsPage from '../components/pages/SupportUsPage';
-import AboutUsPage from '../components/pages/AboutUsPage';
-import FAQPage from '../components/pages/FAQPage';
-import TermsPage from '../components/pages/TermsPage';
-import ContactUsPage from '../components/pages/ContactUsPage';
+import HomePage from './HomePage';
+import UserPage from './UserPage';
+import GamePage from './GamePage';
+import AdminRoute from './utils/routes/AdminRoute';
+import GameDetails from './GameDetails';
+import AllChallengeDetails from './AllChallengeDetails';
+import SupportUsPage from './pages/SupportUsPage';
+import AboutUsPage from './pages/AboutUsPage';
+import FAQPage from './pages/FAQPage';
+import TermsPage from './pages/TermsPage';
+import ContactUsPage from './pages/ContactUsPage';
 
 // ----------------------------------------------------------------------------------
 // ---------------------------------- DASHBOARD -------------------------------------
@@ -96,6 +97,19 @@ const Dashboard = () => {
             path={`/games/:gameId/challenges`}
             render={(props) => (
               <GameDetails
+                searchTerm={searchTerm}
+                refresh={refresh}
+                setRefresh={setRefresh}
+                handleClearSearchBar={handleClearSearchBar}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/challenges/all`}
+            render={(props) => (
+              <AllChallengeDetails
                 searchTerm={searchTerm}
                 refresh={refresh}
                 setRefresh={setRefresh}

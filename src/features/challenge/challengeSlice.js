@@ -12,6 +12,7 @@ import cogoToast from 'cogo-toast';
 export const initialState = {
   challenges: [],
   recent_challenges: [],
+  popular_challenges: [],
   created_challenges: [],
   accepted_challenges: [],
   completed_challenges: [],
@@ -46,6 +47,21 @@ export const fetchRecentChallenges = createAsyncThunk('challenges/fetchRecentCha
     method: 'get',
     url: userId ? process.env.REACT_APP_API + `challenges/recent/users/${userId}` :
       process.env.REACT_APP_API + `challenges/recent`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all challenges sorted by popularity
+export const fetchChallengesByPopularity = createAsyncThunk('challenges/fetchChallengesByPopularity', async () => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/popular/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -482,6 +498,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchRecentChallenges.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchChallengesByPopularity.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchChallengesByPopularity.fulfilled]: (state, { payload }) => {
+      state.popular_challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchChallengesByPopularity.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
