@@ -30,9 +30,11 @@ export const initialState = {
 
 // API call to grab all challenges
 export const fetchChallenges = createAsyncThunk('challenges/fetchChallenges', async () => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
   const response = await axios({
     method: 'get',
-    url: process.env.REACT_APP_API + `challenges`,
+    url: process.env.REACT_APP_API + `challenges/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
