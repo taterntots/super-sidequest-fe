@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 // IMAGES
 import MultiplayerImage from '../../img/Multiplayer.png';
+import AdventureImage from '../../img/AdventureTnT.png';
 
 // COMPONENTS
 import GameCard from './GameCard';
@@ -35,11 +36,14 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
         <SearchError searchTerm={searchTerm} />
       ) : (
         <div>
-          <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 mb-5'>
+          <div className={localStorage.getItem('token') ?
+            'grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 mb-5' :
+            'grid justify-center gap-5 grid-cols-1 mb-5'
+          }
+          >
             {/* REQUEST GAME BUTTON */}
             {!searchTerm && localStorage.getItem('token') && !url.includes('private') ? (
-              <div
-                className='p-2 rounded-lg transform transition cursor-pointer duration-500 hover:scale-105'
+              <div className='p-2 rounded-lg transform transition cursor-pointer duration-500 hover:scale-105'
                 onClick={() => {
                   setOpenGameRequest(true)
                 }}
@@ -47,7 +51,7 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
                 {/* TOP IMG */}
                 <div>
                   <img
-                    className='w-full h-48 object-contain bg-gray-300 rounded-t-lg'
+                    className='w-full h-48 object-contain bg-multiplayer rounded-t-lg'
                     src={MultiplayerImage}
                     alt='img for a single game'
                   />
@@ -60,7 +64,7 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
             ) : null}
 
             {/* ALL QUESTS BUTTON */}
-            {!searchTerm && localStorage.getItem('token') && !url.includes('private') ? (
+            {!searchTerm && !url.includes('private') ? (
               <Link
                 className='p-2 rounded-lg transform transition cursor-pointer duration-500 hover:scale-105'
                 to={`/challenges/all`}
@@ -68,8 +72,8 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
                 {/* TOP IMG */}
                 <div>
                   <img
-                    className='w-full h-48 object-contain bg-gray-300 rounded-t-lg'
-                    src={MultiplayerImage}
+                    className='w-full h-48 object-contain bg-adventure rounded-t-lg'
+                    src={AdventureImage}
                     alt='img for a single game'
                   />
                 </div>
@@ -97,7 +101,8 @@ const GameList = ({ searchTerm, handleClearSearchBar, refresh, setRefresh, games
             ))}
           </div>
         </div>
-      )}
+      )
+      }
 
       {/* Modals */}
       <RequestGameModal open={openGameRequest} setOpen={setOpenGameRequest} refresh={refresh} setRefresh={setRefresh} />

@@ -16,6 +16,8 @@ module.exports = {
         navbarmobilehighlight: '#374151',
         texthighlight: '#C4B5FD',
         texthighlighthover: '#A78BFA',
+        adventure: '#86C31F',
+        multiplayer: '#7C39BD',
         removered: '#F87171',
         addgreen: '#34D399',
         cardhover: '#08f78f',
