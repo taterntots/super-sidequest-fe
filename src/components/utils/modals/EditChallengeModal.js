@@ -225,7 +225,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                     name='end_date'
                     type='datetime-local'
                     id='datePickerId'
-                    defaultValue={moment.utc(challenge.end_date).local().format('YYYY-MM-DDTHH:mm')}
+                    defaultValue={moment(challenge.end_date).format('YYYY-MM-DDTHH:mm')}
                     min={moment(Date.now()).format('YYYY-MM-DDThh:mm')}
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('end_date')}
