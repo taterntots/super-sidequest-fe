@@ -19,7 +19,8 @@ import Timer from '../components/utils/Timer';
 // ---------------------------------- LEADERBOARD -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const Leaderboard = ({ challenges_scores, challenge, setOpen, setOpenAccept, acceptedChallenge, submitChallengeCompleted, countdownIsAfter, setCountdownIsAfter, ProfileTwo, ProfileOneButton }) => {
+const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for_glorys, challenge, setOpen, setOpenAccept, acceptedChallenge, submitChallengeCompleted, countdownIsAfter, setCountdownIsAfter, ProfileTwo, ProfileOneButton }) => {
+  const challengeScores = challenge.is_high_score ? challenge_high_scores : challenge.is_speedrun ? challenge_speedruns : challenge_for_glorys;
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [completedOn, setCompletedOn] = useState(acceptedChallenge.completed);
@@ -59,7 +60,7 @@ const Leaderboard = ({ challenges_scores, challenge, setOpen, setOpenAccept, acc
           </div>
 
           {/* LEADERBOARD DATA */}
-          {challenges_scores ? challenges_scores.map((score, index) => (
+          {challengeScores ? challengeScores.map((score, index) => (
             <div key={score.id} className={score.username === localStorage.getItem('username') ?
               `flex text-center font-medium text-graybutton bg-white px-2 py-1 hover:opacity-60 hover:bg-white hover:text-graybutton` :
               `flex text-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:opacity-60`}>

@@ -42,7 +42,7 @@ import Leaderboard from '../../components/Leaderboard';
 const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   // State
   const dispatch = useDispatch();
-  const { challenge, challenges_high_scores, challenges_speedruns, challenges_for_glorys, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
+  const { challenge, challenge_high_scores, challenge_speedruns, challenge_for_glorys, acceptedChallenge, loading: challengeLoading } = useSelector(challengeSelector)
   const route = useRouteMatch();
   const history = useHistory();
   const [openAccept, setOpenAccept] = useState(false)
@@ -308,7 +308,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
           </ProfileTwo>
 
           {/* LEADERBOARD */}
-          <Leaderboard challenges_scores={challenges_high_scores ? challenges_high_scores : challenges_speedruns ? challenges_speedruns : challenges_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} setOpenAccept={setOpenAccept} countdownIsAfter={countdownIsAfter} setCountdownIsAfter={setCountdownIsAfter} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
+          <Leaderboard challenge_high_scores={challenge_high_scores} challenge_speedruns={challenge_speedruns} challenge_for_glorys={challenge_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} setOpenAccept={setOpenAccept} countdownIsAfter={countdownIsAfter} setCountdownIsAfter={setCountdownIsAfter} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
         </div >
       </ProfileOne>
 

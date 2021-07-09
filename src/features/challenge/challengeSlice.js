@@ -16,9 +16,9 @@ export const initialState = {
   created_challenges: [],
   accepted_challenges: [],
   completed_challenges: [],
-  challenges_high_scores: [],
-  challenges_speedruns: [],
-  challenges_for_glorys: [],
+  challenge_high_scores: [],
+  challenge_speedruns: [],
+  challenge_for_glorys: [],
   challenge_game_stats: [],
   challenge: {},
   featured_challenge: {},
@@ -580,7 +580,7 @@ export const challengeSlice = createSlice({
       state.loading = true
     },
     [fetchAllChallengeHighScores.fulfilled]: (state, { payload }) => {
-      state.challenges_high_scores = payload
+      state.challenge_high_scores = payload
       state.loading = false
       state.error = false
     },
@@ -592,7 +592,7 @@ export const challengeSlice = createSlice({
       state.loading = true
     },
     [fetchAllChallengeSpeedruns.fulfilled]: (state, { payload }) => {
-      state.challenges_speedruns = payload
+      state.challenge_speedruns = payload
       state.loading = false
       state.error = false
     },
@@ -604,7 +604,7 @@ export const challengeSlice = createSlice({
       state.loading = true
     },
     [fetchAllChallengeForGlorys.fulfilled]: (state, { payload }) => {
-      state.challenges_for_glorys = payload
+      state.challenge_for_glorys = payload
       state.loading = false
       state.error = false
     },
