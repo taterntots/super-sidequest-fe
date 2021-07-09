@@ -155,6 +155,14 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
       let second_millis = data.speedrun_seconds * 1000
       let milliseconds = data.speedrun_milliseconds * 1
       data.total_milliseconds = hour_millis + minute_millis + second_millis + milliseconds
+
+      if (data.total_milliseconds === 0) {
+        data.speedrun_hours = null
+        data.speedrun_minutes = null
+        data.speedrun_seconds = null
+        data.speedrun_milliseconds = null
+        data.total_milliseconds = null
+      }
     }
     data.challenge_id = route.params.challengeId
 
