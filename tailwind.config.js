@@ -10,6 +10,7 @@ module.exports = {
         purplebutton: '#9370DB',
         graybutton: '#374151',
         complete: '#F59E0B',
+        active: '#374151',
         logintext: '#BA55D3',
         sitewidebackground: '#414141',
         navbarbuttonhighlight: '#9CA3AF',

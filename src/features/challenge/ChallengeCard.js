@@ -26,6 +26,7 @@ const ChallengeCard = ({ data, user }) => {
     system,
     difficulty,
     active_users,
+    is_active,
     completed
   } = data;
 
@@ -41,6 +42,8 @@ const ChallengeCard = ({ data, user }) => {
       >
         {completed ? (
           <CompleteBadge className='absolute p-1 bg-complete rounded-tl-md rounded-br-md w-8 h-8 opacity-80' />
+        ) : is_active ? (
+          <CompleteBadge className='absolute p-1 bg-active rounded-tl-md rounded-br-md w-8 h-8 opacity-80' />
         ) : null}
         <img
           className='md:h-24 md:w-44 rounded-md'

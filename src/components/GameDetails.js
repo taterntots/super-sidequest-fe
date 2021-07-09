@@ -17,7 +17,7 @@ import {
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
 // COMPONENTS
-import GameChallengesPage from './GameChallengesPage';
+import GameChallengeSearchPage from './GameChallengeSearchPage';
 import EditGameModal from './utils/modals/EditGameModal';
 import DeleteGameModal from './utils/modals/DeleteGameModal';
 
@@ -130,7 +130,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
 
       {/* RENDERS GAME CHALLENGES SEARCH PAGE */}
       <div>
-        <GameChallengesPage
+        <GameChallengeSearchPage
           challenges={challenges}
           popular_challenges={popular_challenges}
           filteredChallenges={filteredChallenges}

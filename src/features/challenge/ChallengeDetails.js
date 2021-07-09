@@ -158,8 +158,6 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
     }
     data.challenge_id = route.params.challengeId
 
-    console.log(data)
-
     dispatch(updateUserChallengeProgress(data))
       .then(res => {
         setRefresh(!refresh)

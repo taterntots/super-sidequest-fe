@@ -18,7 +18,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // ----------------------------- GAME CHALLENGES PAGE -------------------------------
 // ----------------------------------------------------------------------------------
 
-const GameChallengesPage = ({ challenges, popular_challenges, filteredChallenges, filteredPopularChallenges, setFilteredChallenges, setFilteredPopularChallenges, searchTerm, handleClearSearchBar }) => {
+const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChallenges, filteredPopularChallenges, setFilteredChallenges, setFilteredPopularChallenges, searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
@@ -164,4 +164,4 @@ const GameChallengesPage = ({ challenges, popular_challenges, filteredChallenges
   );
 }
 
-export default GameChallengesPage;
+export default GameChallengeSearchPage;

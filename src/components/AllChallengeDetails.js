@@ -7,7 +7,7 @@ import {
 } from '../features/challenge/challengeSlice';
 
 // COMPONENTS
-import GameChallengesPage from './GameChallengesPage';
+import GameChallengeSearchPage from './GameChallengeSearchPage';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------ ALL CHALLENGE DETAILS -----------------------------
@@ -35,7 +35,7 @@ const AllChallengeDetails = ({ searchTerm, refresh, handleClearSearchBar }) => {
     <>
       {/* RENDERS GAME CHALLENGES SEARCH PAGE */}
       <div>
-        <GameChallengesPage
+        <GameChallengeSearchPage
           challenges={challenges}
           popular_challenges={popular_challenges}
           filteredChallenges={filteredChallenges}
