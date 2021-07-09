@@ -54,7 +54,7 @@ const AuthModal = ({ open, setOpen, authPage, setAuthPage, refresh, setRefresh }
               {authPage === 'login' ? (
                 <Login setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} />
               ) : authPage === 'signup' ? (
-                <Signup setAuthPage={setAuthPage} setOpenAuth={setOpen} />
+                <Signup setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} />
               ) : authPage === 'forgot_password' ? (
                 <ForgotPassword setAuthPage={setAuthPage} setOpenAuth={setOpen} />
               ) : authPage === 'reset_password' ? (

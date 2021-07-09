@@ -16,7 +16,7 @@ import cogoToast from 'cogo-toast';
 // ------------------------------------ SIGNUP --------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Signup = ({ setAuthPage, setOpenAuth }) => {
+const Signup = ({ setAuthPage, setOpenAuth, refresh, setRefresh }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -29,6 +29,7 @@ const Signup = ({ setAuthPage, setOpenAuth }) => {
         .then(res => {
           if (res.payload.token) {
             setOpenAuth(false)
+            setRefresh(!refresh)
           }
         })
         .catch(err => {
