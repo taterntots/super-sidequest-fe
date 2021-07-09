@@ -115,6 +115,8 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   // Function to handle submitting edited challenge data
   const submitChallengeEdit = async (data) => {
     data.challenge_id = route.params.challengeId
+    data.end_date = moment(data.end_date).toDate()
+
     // If difficulty is unchanged, keep it that way (React Select won't let me do this directly in defaultValue)
     if (!data.difficulty) {
       data.difficulty = { label: `${challenge.difficulty}`, value: `${challenge.difficulty_id}` }

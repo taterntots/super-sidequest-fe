@@ -34,8 +34,6 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
   const [speedrunDisable, setSpeedrunDisable] = useState(false);
   const [highScoreDisable, setHighScoreDisable] = useState(false);
 
-  console.log(challenge.end_date)
-
   // Grabs all necessary data from server
   useEffect(() => {
     dispatch(fetchDifficulties())
@@ -226,7 +224,7 @@ const EditChallengeModal = ({ open, setOpen, setOpenDelete, submitChallengeEdit,
                     type='datetime-local'
                     id='datePickerId'
                     defaultValue={moment(challenge.end_date).format('YYYY-MM-DDTHH:mm')}
-                    min={moment(Date.now()).format('YYYY-MM-DDThh:mm')}
+                    min={moment(Date.now()).format('YYYY-MM-DDTHH:mm')}
                     className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
                     {...register('end_date')}
                   />

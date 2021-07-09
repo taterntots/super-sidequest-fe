@@ -55,6 +55,8 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
 
   // Function to handle submitting Login form
   const onSubmit = async (data) => {
+    data.end_date = moment(data.end_date).toDate()
+
     dispatch(addChallenge(data))
       .then(res => {
         if (res.payload) {
@@ -238,7 +240,7 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
               name='end_date'
               type='datetime-local'
               id='datePickerId'
-              min={moment(Date.now()).format('YYYY-MM-DDThh:mm')}
+              min={moment(Date.now()).format('YYYY-MM-DDTHH:mm')}
               className='text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
               {...register('end_date')}
             />
