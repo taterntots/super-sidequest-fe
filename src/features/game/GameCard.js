@@ -1,7 +1,7 @@
 import React from 'react';
 
-// DATE
-import moment from 'moment';
+// IMAGES
+import { ReactComponent as QuestListIcon } from '../../img/QuestList.svg';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ GAME CARD -----------------------------------
@@ -11,7 +11,7 @@ const GameCard = ({ data }) => {
   const {
     id,
     name,
-    release_date,
+    challenge_total,
     banner_pic_URL
   } = data;
 
@@ -28,7 +28,12 @@ const GameCard = ({ data }) => {
       {/* color bar */}
       <div className={`flex items-center justify-between px-4 py-2 text-sm text-white rounded-b-lg bg-gray-600`}>
         <span>{name}</span>
-        <span>{moment(release_date).format("YYYY")}</span>
+        <div className='flex'>
+          <QuestListIcon className='self-center ml-2 mr-1 w-5 h-5' />
+          <span className='font-bold'>
+            {challenge_total}
+          </span>
+        </div>
       </div>
     </div>
   );
