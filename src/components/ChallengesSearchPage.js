@@ -18,10 +18,10 @@ import styled from '@emotion/styled';
 import ChallengeList from '../features/challenge/ChallengeList';
 
 // ----------------------------------------------------------------------------------
-// --------------------------------- PROFILE PAGE -----------------------------------
+// ---------------------------- CHALLENGES SEARCH PAGE ------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
+const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
@@ -35,9 +35,15 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
 
   // Filter all challenges
   const filterReset = () => {
-    setFilteredCreatedChallenges(created_challenges)
-    setFilteredAcceptedChallenges(accepted_challenges)
-    setFilteredCompletedChallenges(completed_challenges)
+    if (currentGame.game) {
+      setFilteredCreatedChallenges(created_challenges.filter(crc => crc.game_title === currentGame.game))
+      setFilteredAcceptedChallenges(accepted_challenges.filter(ac => ac.game_title === currentGame.game))
+      setFilteredCompletedChallenges(completed_challenges.filter(coc => coc.game_title === currentGame.game))
+    } else {
+      setFilteredCreatedChallenges(created_challenges)
+      setFilteredAcceptedChallenges(accepted_challenges)
+      setFilteredCompletedChallenges(completed_challenges)
+    }
     var selectBox = document.getElementById("difficultyBox");
     selectBox.selectedIndex = 0;
     var selectBox = document.getElementById("systemBox");
@@ -51,9 +57,6 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
     var selectedSystemValue = systemBox.options[systemBox.selectedIndex].value;
     var selectedDifficultyValue = difficultyBox.options[difficultyBox.selectedIndex].value;
 
-    console.log(systemBox)
-    console.log(selectedSystemValue)
-
     if (currentChallengeFilter === 'Created') {
       var filtered = created_challenges.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
@@ -64,7 +67,11 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredCreatedChallenges(filtered)
+      if (currentGame.game) {
+        setFilteredCreatedChallenges(filtered.filter(crc => crc.game_title === currentGame.game))
+      } else {
+        setFilteredCreatedChallenges(filtered)
+      }
     } else if (currentChallengeFilter === 'Active') {
       var filtered = accepted_challenges.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
@@ -75,7 +82,11 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredAcceptedChallenges(filtered)
+      if (currentGame.game) {
+        setFilteredAcceptedChallenges(filtered.filter(ac => ac.game_title === currentGame.game))
+      } else {
+        setFilteredAcceptedChallenges(filtered)
+      }
     } else if (currentChallengeFilter === 'Completed') {
       var filtered = completed_challenges.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
@@ -86,7 +97,11 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredCompletedChallenges(filtered)
+      if (currentGame.game) {
+        setFilteredCompletedChallenges(filtered.filter(coc => coc.game_title === currentGame.game))
+      } else {
+        setFilteredCompletedChallenges(filtered)
+      }
     }
   }
 
@@ -212,4 +227,4 @@ const ChallengesPage = ({ accepted_challenges, created_challenges, completed_cha
   );
 }
 
-export default ChallengesPage;
+export default ChallengesSearchPage;

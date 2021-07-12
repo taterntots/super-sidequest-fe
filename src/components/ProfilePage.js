@@ -33,50 +33,51 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
             {challenge_game_stats.map((gameStat, index) => (
               <Link
                 key={gameStat.game}
-                to={`/games/${gameStat.game_id}/challenges`}
-                className={`flex justify-between font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:opacity-60`}
+                // to={`/games/${gameStat.game_id}/challenges`}
+                to={`${user.username}/challenges?game=${gameStat.game}`}
+                className = {`flex justify-between font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:opacity-60`}
               >
-                <p>{gameStat.game}</p>
-                <p className='pl-4'>{gameStat.total_challenges_completed}</p>
+            <p>{gameStat.game}</p>
+            <p className='pl-4'>{gameStat.total_challenges_completed}</p>
               </Link>
             ))}
-            <p className='invisible'>
-              INVISIBLE TEXT TO SHOW ROUNDED BORDER
-            </p>
+          <p className='invisible'>
+            INVISIBLE TEXT TO SHOW ROUNDED BORDER
+          </p>
           </div>
         </ProfileTwo>
 
-        <div className='w-full lg:w-3/5'>
-          {/* FEATURED CHALLENGE */}
-          {featured_challenge.challenge_id ? (
-            <FeaturedChallengeCard data={featured_challenge} />
-          ) : null}
+      <div className='w-full lg:w-3/5'>
+        {/* FEATURED CHALLENGE */}
+        {featured_challenge.challenge_id ? (
+          <FeaturedChallengeCard data={featured_challenge} />
+        ) : null}
 
-          {/* ACTIVE CHALLENGES */}
-          <ProfileTwo className="px-10 pb-4 bg-profiletwo rounded-lg text-white">
-            <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
-              Active Quests
-            </h1>
-            <div className='grid gap-6 grig-cols-1'>
-              {acceptedChallenges.map(acceptedChallenge => (
-                <Link
+        {/* ACTIVE CHALLENGES */}
+        <ProfileTwo className="px-10 pb-4 bg-profiletwo rounded-lg text-white">
+          <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
+            Active Quests
+          </h1>
+          <div className='grid gap-6 grig-cols-1'>
+            {acceptedChallenges.map(acceptedChallenge => (
+              <Link
+                key={acceptedChallenge.challenge_id}
+                to={`/${acceptedChallenge.username}/challenges/${acceptedChallenge.challenge_id}`}
+              >
+                <ChallengeCard
                   key={acceptedChallenge.challenge_id}
-                  to={`/${acceptedChallenge.username}/challenges/${acceptedChallenge.challenge_id}`}
-                >
-                  <ChallengeCard
-                    key={acceptedChallenge.challenge_id}
-                    data={acceptedChallenge}
-                    user={user}
-                  />
-                </Link>
-              ))}
-            </div>
-            {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
-            {/* <div className='invisible pt-1' /> */}
-          </ProfileTwo>
-        </div>
+                  data={acceptedChallenge}
+                  user={user}
+                />
+              </Link>
+            ))}
+          </div>
+          {/* FIXES WEIRD MARGIN ISSUE WHEN IN MOBILE VIEW */}
+          {/* <div className='invisible pt-1' /> */}
+        </ProfileTwo>
       </div>
-    </ProfileOne>
+      </div>
+    </ProfileOne >
   );
 }
 

@@ -15,14 +15,17 @@ import {
 } from '../features/challenge/challengeSlice';
 
 // ROUTING
-import { Route, Link, useRouteMatch } from 'react-router-dom';
+import { Route, Link, useRouteMatch, useLocation } from 'react-router-dom';
+
+// UTILS
+import queryString from 'query-string';
 
 // STYLING
 import styled from '@emotion/styled';
 
 // COMPONENTS
 import ProfilePage from './ProfilePage';
-import ChallengesPage from './ChallengesPage';
+import ChallengesSearchPage from './ChallengesSearchPage';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
@@ -42,14 +45,21 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [filteredCompletedChallenges, setFilteredCompletedChallenges] = useState(completed_challenges);
+  const [currentGame, setCurrentGame] = useState({})
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
+  const location = useLocation();
 
   // Grabs user data from the server
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
   }, [dispatch, refresh, route.params.username])
+
+  // Sets game filter if exists in URL
+  useEffect(() => {
+    setCurrentGame(queryString.parse(location.search))
+  }, [refresh, location.search])
 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
   useEffect(() => {
@@ -64,10 +74,16 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Resets filter when clicking away from page
   useEffect(() => {
-    setFilteredCreatedChallenges(created_challenges)
-    setFilteredAcceptedChallenges(accepted_challenges)
-    setFilteredCompletedChallenges(completed_challenges)
-  }, [created_challenges, accepted_challenges, completed_challenges])
+    if (currentGame.game) {
+      setFilteredCreatedChallenges(created_challenges.filter(crc => crc.game_title === currentGame.game))
+      setFilteredAcceptedChallenges(accepted_challenges.filter(ac => ac.game_title === currentGame.game))
+      setFilteredCompletedChallenges(completed_challenges.filter(coc => coc.game_title === currentGame.game))
+    } else {
+      setFilteredCreatedChallenges(created_challenges)
+      setFilteredAcceptedChallenges(accepted_challenges)
+      setFilteredCompletedChallenges(completed_challenges)
+    }
+  }, [currentGame, created_challenges, accepted_challenges, completed_challenges])
 
   // Function to handle submitting changes to the user's profile
   const submitUserProfile = async (data) => {
@@ -234,7 +250,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         exact
         path={`/:username/challenges`}
         render={(props) => (
-          <ChallengesPage
+          <ChallengesSearchPage
             created_challenges={created_challenges}
             accepted_challenges={accepted_challenges}
             completed_challenges={completed_challenges}
@@ -244,6 +260,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setFilteredCreatedChallenges={setFilteredCreatedChallenges}
             setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
             setFilteredCompletedChallenges={setFilteredCompletedChallenges}
+            currentGame={currentGame}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
             ProfileTwo={ProfileTwo}

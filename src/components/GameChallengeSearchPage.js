@@ -15,7 +15,7 @@ import {
 import ChallengeList from '../features/challenge/ChallengeList';
 
 // ----------------------------------------------------------------------------------
-// ----------------------------- GAME CHALLENGES PAGE -------------------------------
+// --------------------------- GAME CHALLENGES SEARCH PAGE --------------------------
 // ----------------------------------------------------------------------------------
 
 const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChallenges, filteredPopularChallenges, setFilteredChallenges, setFilteredPopularChallenges, searchTerm, handleClearSearchBar }) => {
