@@ -94,6 +94,16 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
                   Games
                 </Link>
                 <Link
+                  to={`/users`}
+                  onClick={() => {
+                    handleClearSearchBar()
+                    setDropdown(!dropdown)
+                  }}
+                  className='block w-full px-4 py-2 text-sm font-bold text-center transition duration-150 ease-in-out hover:bg-navbarmobilehighlight'
+                >
+                  Users
+                </Link>
+                <Link
                   to={`/support`}
                   onClick={() => {
                     handleClearSearchBar()
@@ -180,6 +190,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
           <Link to={`/${localStorage.getItem('username')}`} className='hidden lg:block px-3 py-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >My Quests</Link>
         ) : null}
         <Link to='/games' className='hidden lg:block px-3 py-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Games</Link>
+        <Link to='/users' className='hidden lg:block px-3 py-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Users</Link>
         <Link to='/support' className='hidden lg:block px-3 py-3 hover:text-navbarbuttonhighlight' onClick={handleClearSearchBar} >Support Us</Link>
         <input
           id='searchBar'
@@ -187,12 +198,14 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
             location.pathname.includes('/challenges') && !location.pathname.includes('challenges/') ||
               location.pathname === ('/games') ||
               location.pathname === ('/games/private') ||
-              location.pathname === ('/challenges/all')
+              location.pathname === ('/challenges/all') ||
+              location.pathname === ('/users')
               ? 'px-3 py-1 w-full lg:w-1/4 ml-4 lg:ml-0 rounded text-black'
               : 'invisible px-3 py-1 w-1/4 rounded text-black'}
           placeholder={location.pathname.includes('/challenges') || location.pathname.includes('/challenges/all') ? 'Search by keyword'
             : location.pathname.includes('/games') ? 'Search by game'
-              : ''}
+              : location.pathname.includes('/users') ? 'Search by username'
+                : ''}
           onChange={handleInputChange}
           type='search'
         />

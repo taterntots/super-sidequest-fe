@@ -1,16 +1,14 @@
 import React from 'react';
 
-// STYLING
-import './App.css';
-
-// COMPONENTS
-import Dashboard from './components/Dashboard';
-
 // ROUTING
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-// UTILS
+// COMPONENTS
+import Dashboard from './components/Dashboard';
 import ScrollToTop from './components/utils/ScrollToTop';
+
+// STYLING
+import './App.css';
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------- APP ------------------------------------------

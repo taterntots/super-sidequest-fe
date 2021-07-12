@@ -17,10 +17,10 @@ import { Route, Link } from 'react-router-dom';
 import GameList from '../features/game/GameList';
 
 // ----------------------------------------------------------------------------------
-// ----------------------------------- GAME PAGE-------------------------------------
+// --------------------------------- GAME LIST PAGE----------------------------------
 // ----------------------------------------------------------------------------------
 
-const GamePage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
+const GameListPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { public_games, private_games } = useSelector(gameSelector)
   const { user_admin } = useSelector(userSelector)
@@ -102,4 +102,4 @@ const GamePage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   );
 }
 
-export default GamePage;
+export default GameListPage;

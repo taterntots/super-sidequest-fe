@@ -9,7 +9,8 @@ import Footer from './Footer';
 import ResetPassword from './Auth/ResetPassword';
 import HomePage from './HomePage';
 import UserPage from './UserPage';
-import GamePage from './GamePage';
+import GameListPage from './GameListPage';
+import UserListPage from './UserListPage';
 import AdminRoute from './utils/routes/AdminRoute';
 import GameDetails from './GameDetails';
 import AllChallengeDetails from './AllChallengeDetails';
@@ -68,9 +69,22 @@ const Dashboard = () => {
           <Route path={'/reset-password'} handleClearSearchBar={handleClearSearchBar} component={ResetPassword} />
           <Route
             exact
+            path={`/users`}
+            render={(props) => (
+              <UserListPage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
+                setRefresh={setRefresh}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
             path={`/games`}
             render={(props) => (
-              <GamePage
+              <GameListPage
                 searchTerm={searchTerm}
                 handleClearSearchBar={handleClearSearchBar}
                 refresh={refresh}
@@ -83,7 +97,7 @@ const Dashboard = () => {
             exact
             path={`/games/private`}
             render={(props) => (
-              <GamePage
+              <GameListPage
                 searchTerm={searchTerm}
                 handleClearSearchBar={handleClearSearchBar}
                 refresh={refresh}
