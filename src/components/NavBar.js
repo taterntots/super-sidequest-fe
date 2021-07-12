@@ -11,7 +11,7 @@ import cogoToast from 'cogo-toast';
 import { ReactComponent as MenuDropdown } from '../img/MenuDropdown.svg';
 
 // COMPONENTS
-import AuthModal from '../components/utils/modals/AuthModal';
+import AuthModal from './utils/modals/AuthModal';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ NAVBAR --------------------------------------
