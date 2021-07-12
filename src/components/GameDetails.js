@@ -64,6 +64,8 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
         if (res.payload) {
           setRefresh(!refresh)
           setOpenGameEdit(false)
+        } else {
+          setRefresh(!refresh)
         }
       })
       .catch(err => {

@@ -37,7 +37,7 @@ const Signup = ({ setAuthPage, setOpenAuth, refresh, setRefresh }) => {
         })
     } else {
       cogoToast.error('Password does not match', {
-        hideAfter: 3,
+        hideAfter: 5,
       });
     }
   };

@@ -86,13 +86,13 @@ export const signInUser = createAsyncThunk('users/signInUser', async (credential
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username);
       cogoToast.success('Successfully logged in', {
-        hideAfter: 3,
+        hideAfter: 5,
       });
       return res.data
     })
     .catch(err => {
       cogoToast.error(err.response.data.message, {
-        hideAfter: 3,
+        hideAfter: 5,
       });
       return err.response.data.message
     })
@@ -117,13 +117,13 @@ export const signUpUser = createAsyncThunk('users/signUpUser', async (credential
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username);
       cogoToast.success('Successfully created account', {
-        hideAfter: 3,
+        hideAfter: 5,
       });
       return res.data
     })
     .catch(err => {
       cogoToast.error(err.response.data.errorMessage, {
-        hideAfter: 3,
+        hideAfter: 5,
       });
       return err.response.data.errorMessage
     })

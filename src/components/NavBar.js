@@ -27,7 +27,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
   const logout = () => {
     localStorage.clear();
     cogoToast.success('Successfully logged out', {
-      hideAfter: 3,
+      hideAfter: 5,
     });
     setRefresh(!refresh)
   }

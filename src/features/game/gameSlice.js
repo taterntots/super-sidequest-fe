@@ -105,7 +105,7 @@ export const requestGame = createAsyncThunk('challenges/requestGame', async (for
       }
     })
     cogoToast.success(`Successfully requested ${formData.name}`, {
-      hideAfter: 3,
+      hideAfter: 5,
     });
     return response.data
   } catch (err) {
