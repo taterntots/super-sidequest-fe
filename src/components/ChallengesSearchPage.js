@@ -15,6 +15,15 @@ import {
   gameSelector
 } from '../features/game/gameSlice';
 
+// ROUTING
+import { useLocation } from 'react-router-dom';
+
+// UTILS
+import queryString from 'query-string';
+
+// FORMS
+import Select from 'react-select';
+
 // STYLING
 import styled from '@emotion/styled';
 
@@ -25,12 +34,14 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // ---------------------------- CHALLENGES SEARCH PAGE ------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
+const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, setCurrentGame, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
-  const { user_accepted_games } = useSelector(gameSelector)
+  const { user_accepted_games, loading: gameLoading } = useSelector(gameSelector)
   const [currentChallengeFilter, setCurrentChallengeFilter] = useState('Created')
+  const gameFromParam = queryString.parse(location.search).game
 
   // Grabs filterable data from the server
   useEffect(() => {
@@ -41,16 +52,10 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
 
   // Filter all challenges
   const filterReset = () => {
-    var gameBox = document.getElementById("gameBox");
-
-    if (currentGame.game && gameBox.selectedIndex === 0) {
+    if (currentGame.game !== 'All') {
       setFilteredCreatedChallenges(created_challenges.filter(crc => crc.game_title === currentGame.game))
       setFilteredAcceptedChallenges(accepted_challenges.filter(ac => ac.game_title === currentGame.game))
       setFilteredCompletedChallenges(completed_challenges.filter(coc => coc.game_title === currentGame.game))
-    } else if (gameBox.selectedIndex > 0) {
-      setFilteredCreatedChallenges(created_challenges.filter(crc => crc.game_title === gameBox.options[gameBox.selectedIndex].value))
-      setFilteredAcceptedChallenges(accepted_challenges.filter(ac => ac.game_title === gameBox.options[gameBox.selectedIndex].value))
-      setFilteredCompletedChallenges(completed_challenges.filter(coc => coc.game_title === gameBox.options[gameBox.selectedIndex].value))
     }
     else {
       setFilteredCreatedChallenges(created_challenges)
@@ -64,81 +69,92 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
   }
 
   // Filter master
-  const filterMaster = () => {
+  const filterMaster = (data) => {
     var systemBox = document.getElementById("systemBox");
     var difficultyBox = document.getElementById("difficultyBox");
-    var gameBox = document.getElementById("gameBox");
+
+    // Swap game if filter for game changes and also reset all filters
+    if (data.label) {
+      setCurrentGame({ game: data.label })
+      systemBox.selecetdIndex = 0
+      difficultyBox.selectedIndex = 0
+    }
+
     var selectedSystemValue = systemBox.options[systemBox.selectedIndex].value;
     var selectedDifficultyValue = difficultyBox.options[difficultyBox.selectedIndex].value;
-    var selectedGameValue = gameBox.options[gameBox.selectedIndex].value;
+    var selectedGameValue = data.label ? data.label : currentGame.game;
 
     if (currentChallengeFilter === 'Created') {
       var filtered = created_challenges.filter(fc => {
-        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.difficulty === selectedDifficultyValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
           return fc.system === selectedSystemValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'All') {
           return fc.game_title === selectedGameValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
           return
         }
       })
-      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
         setFilteredCreatedChallenges(created_challenges)
       } else {
         setFilteredCreatedChallenges(filtered)
       }
     } else if (currentChallengeFilter === 'Active') {
       var filtered = accepted_challenges.filter(fc => {
-        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.difficulty === selectedDifficultyValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
           return fc.system === selectedSystemValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'All') {
           return fc.game_title === selectedGameValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
+          return
         }
       })
-      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
         setFilteredAcceptedChallenges(accepted_challenges)
       } else {
         setFilteredAcceptedChallenges(filtered)
       }
     } else if (currentChallengeFilter === 'Completed') {
       var filtered = completed_challenges.filter(fc => {
-        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.difficulty === selectedDifficultyValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
           return fc.system === selectedSystemValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'All') {
           return fc.game_title === selectedGameValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue
-        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'Select') {
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
+          return
         }
       })
-      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
         setFilteredCompletedChallenges(completed_challenges)
       } else {
         setFilteredCompletedChallenges(filtered)
@@ -194,12 +210,17 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
               Game
             </h1>
             <div className='flex flex-col'>
-              <select name='game' id='gameBox' onChange={filterMaster} className='text-black px-1 rounded-md'>
-                <option value={'Select'}>All</option>
-                {user_accepted_games.map(game => (
-                  <option key={game.id} value={game.name} selected={game.name === currentGame.game ? true : null}>{game.name}</option>
-                ))}
-              </select>
+              <Select
+                as={Select}
+                className='text-black rounded-md text-lg'
+                options={user_accepted_games.map(uag => ({ label: `${uag.name}`, value: uag.id }))}
+                key={user_accepted_games} // changing the keys lets the defaultValue grab props on a rerender. hacky solution
+                id='game'
+                name='game'
+                onChange={filterMaster}
+                defaultValue={{ label: gameFromParam ? gameFromParam : 'All', value: gameFromParam ? gameFromParam : 'All' }}
+                isLoading={gameLoading}
+              />
             </div>
           </div>
 

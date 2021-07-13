@@ -58,7 +58,11 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Sets game filter if exists in URL
   useEffect(() => {
-    setCurrentGame(queryString.parse(location.search))
+    if (location.search) {
+      setCurrentGame(queryString.parse(location.search))
+    } else {
+      setCurrentGame({ game: 'All' })
+    }
   }, [refresh, location.search])
 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
@@ -74,7 +78,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Resets filter when clicking away from page
   useEffect(() => {
-    if (currentGame.game) {
+    if (currentGame.game !== 'All') {
       setFilteredCreatedChallenges(created_challenges.filter(crc => crc.game_title === currentGame.game))
       setFilteredAcceptedChallenges(accepted_challenges.filter(ac => ac.game_title === currentGame.game))
       setFilteredCompletedChallenges(completed_challenges.filter(coc => coc.game_title === currentGame.game))
@@ -183,7 +187,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           <ProfileOne className={'bg-profileone rounded-t-md'}>
             <Link
               to={`/${user.username}/challenges`}
-              onClick={() => handleClearSearchBar()}
+              onClick={() => {
+                handleClearSearchBar()
+                setCurrentGame({ game: 'All' })
+              }}
               className='px-5 hover:text-navbarbuttonhighlight'
             >
               Quests
@@ -192,7 +199,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         ) : (
           <Link
             to={`/${user.username}/challenges`}
-            onClick={() => handleClearSearchBar()}
+            onClick={() => {
+              handleClearSearchBar()
+              setCurrentGame({ game: 'All' })
+            }}
             className='px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'
           >
             Quests
@@ -261,6 +271,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
             setFilteredCompletedChallenges={setFilteredCompletedChallenges}
             currentGame={currentGame}
+            setCurrentGame={setCurrentGame}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
             ProfileTwo={ProfileTwo}
