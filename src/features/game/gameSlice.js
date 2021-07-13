@@ -12,6 +12,7 @@ import cogoToast from 'cogo-toast';
 export const initialState = {
   public_games: [],
   private_games: [],
+  user_accepted_games: [],
   game: {},
   challenges: [],
   popular_challenges: [],
@@ -37,6 +38,19 @@ export const fetchPrivateGames = createAsyncThunk('games/fetchPrivateGames', asy
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `games/private`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab only games from user accepted/created challenges
+export const fetchUserAcceptedGames = createAsyncThunk('games/fetchUserAcceptedGames', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `games/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -207,6 +221,18 @@ export const gameSlice = createSlice({
       state.error = false
     },
     [fetchPrivateGames.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserAcceptedGames.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserAcceptedGames.fulfilled]: (state, { payload }) => {
+      state.user_accepted_games = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserAcceptedGames.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

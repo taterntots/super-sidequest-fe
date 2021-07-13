@@ -11,7 +11,7 @@ import {
   systemSelector
 } from '../features/system/systemSlice';
 import {
-  fetchPublicGames,
+  fetchUserAcceptedGames,
   gameSelector
 } from '../features/game/gameSlice';
 
@@ -25,19 +25,19 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // ---------------------------- CHALLENGES SEARCH PAGE ------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, setCurrentGame, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
+const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
-  const { public_games } = useSelector(gameSelector)
+  const { user_accepted_games } = useSelector(gameSelector)
   const [currentChallengeFilter, setCurrentChallengeFilter] = useState('Created')
 
   // Grabs filterable data from the server
   useEffect(() => {
     dispatch(fetchDifficulties())
     dispatch(fetchSystems())
-    dispatch(fetchPublicGames())
-  }, [dispatch])
+    dispatch(fetchUserAcceptedGames(user.id))
+  }, [user, dispatch])
 
   // Filter all challenges
   const filterReset = () => {
@@ -196,7 +196,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
             <div className='flex flex-col'>
               <select name='game' id='gameBox' onChange={filterMaster} className='text-black px-1 rounded-md'>
                 <option value={'Select'}>All</option>
-                {public_games.map(game => (
+                {user_accepted_games.map(game => (
                   <option key={game.id} value={game.name} selected={game.name === currentGame.game ? true : null}>{game.name}</option>
                 ))}
               </select>
