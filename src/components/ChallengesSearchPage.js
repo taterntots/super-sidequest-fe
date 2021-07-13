@@ -16,7 +16,7 @@ import {
 } from '../features/game/gameSlice';
 
 // ROUTING
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 // UTILS
 import queryString from 'query-string';
@@ -37,6 +37,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, setCurrentGame, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
   const { user_accepted_games, loading: gameLoading } = useSelector(gameSelector)
@@ -47,7 +48,9 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
   useEffect(() => {
     dispatch(fetchDifficulties())
     dispatch(fetchSystems())
-    dispatch(fetchUserAcceptedGames(user.id))
+    if (user.id) {
+      dispatch(fetchUserAcceptedGames(user.id))
+    }
   }, [user, dispatch])
 
   // Filter all challenges
@@ -76,6 +79,10 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
     // Swap game if filter for game changes and also reset all filters
     if (data.label) {
       setCurrentGame({ game: data.label })
+      history.push({
+        pathname: `challenges`,
+        search: `?game=${data.label}`
+      })
       systemBox.selecetdIndex = 0
       difficultyBox.selectedIndex = 0
     }
