@@ -261,6 +261,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
             setFilteredCompletedChallenges={setFilteredCompletedChallenges}
             currentGame={currentGame}
+            setCurrentGame={setCurrentGame}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
             ProfileTwo={ProfileTwo}
