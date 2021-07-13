@@ -88,9 +88,15 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'Select') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
+        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+          return
         }
       })
-      setFilteredCreatedChallenges(filtered)
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+        setFilteredCreatedChallenges(created_challenges)
+      } else {
+        setFilteredCreatedChallenges(filtered)
+      }
     } else if (currentChallengeFilter === 'Active') {
       var filtered = accepted_challenges.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
@@ -109,7 +115,11 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
         }
       })
-      setFilteredAcceptedChallenges(filtered)
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+        setFilteredAcceptedChallenges(accepted_challenges)
+      } else {
+        setFilteredAcceptedChallenges(filtered)
+      }
     } else if (currentChallengeFilter === 'Completed') {
       var filtered = completed_challenges.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'Select') {
@@ -128,7 +138,11 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
         }
       })
-      setFilteredCompletedChallenges(filtered)
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'Select') {
+        setFilteredCompletedChallenges(completed_challenges)
+      } else {
+        setFilteredCompletedChallenges(filtered)
+      }
     }
   }
 
@@ -181,9 +195,9 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
             </h1>
             <div className='flex flex-col'>
               <select name='game' id='gameBox' onChange={filterMaster} className='text-black px-1 rounded-md'>
-                <option value={currentGame.game ? currentGame.game : 'Select'} disabled selected>{currentGame.game ? currentGame.game : 'Select'}</option>
+                <option value={'Select'}>All</option>
                 {public_games.map(game => (
-                  <option key={game.id} value={game.name}>{game.name}</option>
+                  <option key={game.id} value={game.name} selected={game.name === currentGame.game ? true : null}>{game.name}</option>
                 ))}
               </select>
             </div>
