@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // ROUTING
 import { useRouteMatch } from 'react-router-dom';
@@ -6,9 +6,15 @@ import { useRouteMatch } from 'react-router-dom';
 // STYLING
 import styled from '@emotion/styled';
 
+// DATE
+import moment from 'moment';
+
 // IMAGES
 import { ReactComponent as UsersIcon } from '../../img/UsersIcon.svg'
 import { ReactComponent as CompleteBadge } from '../../img/CompleteBadge.svg'
+
+// COMPONENTS
+import CardTimer from '../../components/utils/CardTimer';
 
 // ----------------------------------------------------------------------------------
 // --------------------------------- CHALLENGE CARD ---------------------------------
@@ -16,6 +22,8 @@ import { ReactComponent as CompleteBadge } from '../../img/CompleteBadge.svg'
 
 const ChallengeCard = ({ data, user }) => {
   const route = useRouteMatch();
+  const [countdownIsAfter, setCountdownIsAfter] = useState(true);
+
   const {
     challenge_id,
     name,
@@ -27,8 +35,18 @@ const ChallengeCard = ({ data, user }) => {
     difficulty,
     active_users,
     is_active,
-    completed
+    completed,
+    end_date
   } = data;
+
+  // UseEffect that sets whether a challenge has expired or not
+  useEffect(() => {
+    if (moment(end_date).isAfter()) {
+      setCountdownIsAfter(true)
+    } else {
+      setCountdownIsAfter(false)
+    }
+  }, [end_date])
 
   const ProfileOne = styled.p`
   background-color: ${route.params.username && user ? user.profile_color_one : null};
@@ -67,11 +85,25 @@ const ChallengeCard = ({ data, user }) => {
           {description}
         </ProfileOne>
       </div>
-      <div className='flex justify-end mt-2'>
-        <UsersIcon className='self-center w-10 h-5' />
+      <div className='flex justify-between mt-2'>
         <p className='font-bold'>
-          {active_users}
+          {countdownIsAfter ? (
+            <CardTimer end_date={end_date} setCountdownIsAfter={setCountdownIsAfter} />
+          ) : (
+            <p className={end_date ?
+              'font-medium text-md text-center' :
+              'hidden font-medium text-md text-center'}
+            >
+              Quest Expired
+            </p>
+          )}
         </p>
+        <div className='flex'>
+          <UsersIcon className='self-center w-10 h-5' />
+          <p className='font-bold'>
+            {active_users}
+          </p>
+        </div>
       </div>
     </div>
   );
