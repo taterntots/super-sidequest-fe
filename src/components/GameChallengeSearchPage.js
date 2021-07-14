@@ -11,6 +11,9 @@ import {
   systemSelector
 } from '../features/system/systemSlice';
 
+// UTILS
+import moment from 'moment';
+
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
 
@@ -39,17 +42,45 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
     selectBox.selectedIndex = 0;
     var selectBox = document.getElementById("systemBox");
     selectBox.selectedIndex = 0;
+    var expiredBox = document.getElementById("expiredBox");
+    expiredBox.checked = false;
   }
 
   // Filter master
   const filterMaster = () => {
     var systemBox = document.getElementById("systemBox");
     var difficultyBox = document.getElementById("difficultyBox");
+    var expiredBox = document.getElementById("expiredBox");
     var selectedSystemValue = systemBox.options[systemBox.selectedIndex].value;
     var selectedDifficultyValue = difficultyBox.options[difficultyBox.selectedIndex].value;
+    var selectedExpiredValue = expiredBox.checked;
 
+    // First, filter game challenges by whether or not they are still active (not passed the end date)
+    var filterByExpired = challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return challenges
+      }
+    })
+    var filterByPopularExpired = popular_challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return popular_challenges
+      }
+    })
+    var filterByTimeLeftExpired = expire_challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return expire_challenges
+      }
+    })
+
+    // Second, filter through challenges already organized by our expiration bool
     if (currentChallengeFilter === 'All') {
-      var filtered = challenges.filter(fc => {
+      var filtered = filterByExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
@@ -58,9 +89,18 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredChallenges(filtered)
+
+      // Third, determine what to return depending on whether nothing is selected in filters, else simply return the filtered list
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && !selectedExpiredValue) {
+        setFilteredChallenges(challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedExpiredValue) {
+        setFilteredChallenges(filterByExpired)
+      } else {
+        setFilteredChallenges(filtered)
+      }
+
     } else if (currentChallengeFilter === 'Popular') {
-      var filtered = popular_challenges.filter(fc => {
+      var filtered = filterByPopularExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
@@ -69,9 +109,16 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredPopularChallenges(filtered)
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && !selectedExpiredValue) {
+        setFilteredPopularChallenges(popular_challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedExpiredValue) {
+        setFilteredPopularChallenges(filterByPopularExpired)
+      } else {
+        setFilteredPopularChallenges(filtered)
+      }
+
     } else if (currentChallengeFilter === 'Expire') {
-      var filtered = expire_challenges.filter(fc => {
+      var filtered = filterByTimeLeftExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
@@ -80,7 +127,13 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredExpireChallenges(filtered)
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && !selectedExpiredValue) {
+        setFilteredExpireChallenges(expire_challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedExpiredValue) {
+        setFilteredExpireChallenges(filterByTimeLeftExpired)
+      } else {
+        setFilteredExpireChallenges(filtered)
+      }
     }
   }
 
@@ -174,12 +227,24 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
                   <option key={difficulty.id} value={difficulty.name}>{difficulty.name}</option>
                 ))}
               </select>
-              <select name='system' id='systemBox' onChange={filterMaster} className='text-black px-1 rounded-md'>
+              <select name='system' id='systemBox' onChange={filterMaster} className='mb-4 text-black px-1 rounded-md'>
                 <option value='Select' disabled selected>System</option>
                 {systems.map(system => (
                   <option key={system.id} value={system.name}>{system.name}</option>
                 ))}
               </select>
+              <div className='flex justify-evenly'>
+                <p className='text-lg font-medium'>
+                  Active
+                </p>
+                <input
+                  name='is_expired'
+                  id='expiredBox'
+                  type='checkbox'
+                  className='w-6 h-6 self-center'
+                  onClick={filterMaster}
+                />
+              </div>
             </div>
           </div>
         </div>
