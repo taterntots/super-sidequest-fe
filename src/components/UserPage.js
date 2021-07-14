@@ -45,6 +45,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [filteredCompletedChallenges, setFilteredCompletedChallenges] = useState(completed_challenges);
+  const [sortOption, setSortOption] = useState('recent');
   const [currentGame, setCurrentGame] = useState({})
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
@@ -68,13 +69,13 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
   useEffect(() => {
     if (Object.keys(user).length > 1) {
-      dispatch(fetchUserCreatedChallenges(user.id))
+      dispatch(fetchUserCreatedChallenges({ user_id: user.id, sort_option: sortOption }))
       dispatch(fetchUserAcceptedChallenges(user.id))
       dispatch(fetchUserCompletedChallenges(user.id))
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
     }
-  }, [dispatch, user, refresh])
+  }, [dispatch, user, sortOption, refresh])
 
   // Resets filter when clicking away from page
   useEffect(() => {
@@ -271,6 +272,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setFilteredAcceptedChallenges={setFilteredAcceptedChallenges}
             setFilteredCompletedChallenges={setFilteredCompletedChallenges}
             currentGame={currentGame}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
             setCurrentGame={setCurrentGame}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}

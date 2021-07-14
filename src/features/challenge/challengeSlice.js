@@ -87,10 +87,10 @@ export const fetchChallengeById = createAsyncThunk('challenges/fetchChallengeByI
 });
 
 // API call to grab all of a user's created challenges
-export const fetchUserCreatedChallenges = createAsyncThunk('challenges/fetchUserCreatedChallenges', async (userId) => {
+export const fetchUserCreatedChallenges = createAsyncThunk('challenges/fetchUserCreatedChallenges', async (data) => {
   const response = await axios({
     method: 'get',
-    url: process.env.REACT_APP_API + `users/${userId}/created-challenges`,
+    url: process.env.REACT_APP_API + `users/${data.user_id}/created-challenges/${data.sort_option}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,

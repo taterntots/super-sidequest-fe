@@ -99,7 +99,7 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
         <div className='w-full lg:w-1/5'>
           <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
-              Quest Type
+              Sort By
             </h1>
             <div className='flex flex-col'>
               <button
@@ -116,8 +116,8 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
               </button>
               <button
                 className={currentChallengeFilter === 'Popular' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
+                  "items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Popular')
                   filterReset()

@@ -35,7 +35,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // ---------------------------- CHALLENGES SEARCH PAGE ------------------------------
 // ----------------------------------------------------------------------------------
 
-const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, setCurrentGame, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
+const ChallengesSearchPage = ({ accepted_challenges, created_challenges, completed_challenges, filteredCreatedChallenges, filteredAcceptedChallenges, filteredCompletedChallenges, setFilteredCreatedChallenges, setFilteredAcceptedChallenges, setFilteredCompletedChallenges, currentGame, setCurrentGame, sortOption, setSortOption, searchTerm, handleClearSearchBar, ProfileTwo, user }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -212,6 +212,12 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
   const ProfileOneCompletedButton = styled.button`
     background-color: ${currentChallengeFilter === 'Completed' ? user.profile_color_one : null};
   `
+  const ProfileOneRecentButton = styled.button`
+    background-color: ${sortOption === 'recent' ? user.profile_color_one : null};
+  `
+  const ProfileOnePopularButton = styled.button`
+    background-color: ${sortOption === 'popular' ? user.profile_color_one : null};
+  `
 
   return (
     <div
@@ -297,8 +303,8 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
               </ProfileOneAcceptedButton>
               <ProfileOneCompletedButton
                 className={currentChallengeFilter === 'Completed' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
+                  "items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
+                  "items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
                   setCurrentChallengeFilter('Completed')
                   filterReset()
@@ -307,6 +313,37 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
               >
                 Completed
               </ProfileOneCompletedButton>
+            </div>
+          </ProfileTwo>
+
+          {/* SORT OPTIONS */}
+          <ProfileTwo className="px-10 mb-3 mt-3 pb-4 bg-profiletwo rounded-lg text-white">
+            <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
+              Sort By
+            </h1>
+            <div className='flex flex-col'>
+              <ProfileOneRecentButton
+                className={sortOption === 'recent' ?
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
+                onClick={() => {
+                  setSortOption('recent')
+                  handleClearSearchBar()
+                }}
+              >
+                Recent
+              </ProfileOneRecentButton>
+              <ProfileOnePopularButton
+                className={sortOption === 'popular' ?
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
+                onClick={() => {
+                  setSortOption('popular')
+                  handleClearSearchBar()
+                }}
+              >
+                Popular
+              </ProfileOnePopularButton>
             </div>
           </ProfileTwo>
 
