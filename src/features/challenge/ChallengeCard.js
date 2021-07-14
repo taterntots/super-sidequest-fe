@@ -94,7 +94,7 @@ const ChallengeCard = ({ data, user }) => {
               'font-medium text-md text-center' :
               'hidden font-medium text-md text-center'}
             >
-              Quest Expired
+              Quest Ended
             </p>
           )}
         </p>

@@ -112,7 +112,7 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
                   handleClearSearchBar()
                 }}
               >
-                All
+                Recent
               </button>
               <button
                 className={currentChallengeFilter === 'Popular' ?

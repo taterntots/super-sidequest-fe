@@ -49,6 +49,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
   useEffect(() => {
     dispatch(fetchDifficulties())
     dispatch(fetchSystems())
+    setSortOption('recent')
     if (user.id) {
       dispatch(fetchUserAcceptedGames(user.id))
     }
@@ -218,6 +219,9 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
   const ProfileOnePopularButton = styled.button`
     background-color: ${sortOption === 'popular' ? user.profile_color_one : null};
   `
+  const ProfileOneExpireButton = styled.button`
+    background-color: ${sortOption === 'expire' ? user.profile_color_one : null};
+  `
 
   return (
     <div
@@ -336,8 +340,8 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
               </ProfileOneRecentButton>
               <ProfileOnePopularButton
                 className={sortOption === 'popular' ?
-                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
-                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
+                  'items-center rounded-lg text-lg py-2 mb-4 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg py-2 mb-4 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setSortOption('popular')
                   filterReset()
@@ -346,6 +350,18 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
               >
                 Popular
               </ProfileOnePopularButton>
+              <ProfileOneExpireButton
+                className={sortOption === 'expire' ?
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
+                onClick={() => {
+                  setSortOption('expire')
+                  filterReset()
+                  handleClearSearchBar()
+                }}
+              >
+                Time Left
+              </ProfileOneExpireButton>
             </div>
           </ProfileTwo>
 
