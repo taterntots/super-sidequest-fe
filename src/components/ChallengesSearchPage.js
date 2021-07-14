@@ -328,6 +328,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
                   'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setSortOption('recent')
+                  filterReset()
                   handleClearSearchBar()
                 }}
               >
@@ -339,6 +340,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
                   'items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setSortOption('popular')
+                  filterReset()
                   handleClearSearchBar()
                 }}
               >

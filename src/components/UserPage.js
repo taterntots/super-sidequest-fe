@@ -70,8 +70,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   useEffect(() => {
     if (Object.keys(user).length > 1) {
       dispatch(fetchUserCreatedChallenges({ user_id: user.id, sort_option: sortOption }))
-      dispatch(fetchUserAcceptedChallenges(user.id))
-      dispatch(fetchUserCompletedChallenges(user.id))
+      dispatch(fetchUserAcceptedChallenges({ user_id: user.id, sort_option: sortOption }))
+      dispatch(fetchUserCompletedChallenges({ user_id: user.id, sort_option: sortOption }))
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
     }
