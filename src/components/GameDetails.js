@@ -4,6 +4,7 @@ import {
   fetchGameById,
   fetchGameChallenges,
   fetchGameChallengesByPopularity,
+  fetchGameChallengesByExpiration,
   deleteGame,
   updateGame,
   gameSelector
@@ -32,10 +33,11 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
   const dispatch = useDispatch();
   const history = useHistory();
   const route = useRouteMatch();
-  const { game, challenges, popular_challenges, loading } = useSelector(gameSelector);
+  const { game, challenges, popular_challenges, expire_challenges, loading } = useSelector(gameSelector);
   const { user_admin } = useSelector(userSelector)
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
   const [filteredPopularChallenges, setFilteredPopularChallenges] = useState(challenges);
+  const [filteredExpireChallenges, setFilteredExpireChallenges] = useState(challenges);
   const [openGameEdit, setOpenGameEdit] = useState(false);
   const [openGameDelete, setOpenGameDelete] = useState(false);
 
@@ -44,6 +46,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges(route.params.gameId))
     dispatch(fetchGameChallengesByPopularity(route.params.gameId))
+    dispatch(fetchGameChallengesByExpiration(route.params.gameId))
     if (localStorage.getItem('id')) {
       dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
     }
@@ -53,7 +56,8 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
   useEffect(() => {
     setFilteredChallenges(challenges)
     setFilteredPopularChallenges(popular_challenges)
-  }, [challenges, popular_challenges])
+    setFilteredExpireChallenges(expire_challenges)
+  }, [challenges, popular_challenges, expire_challenges])
 
   // Function to handle submitting changes/edits to a game
   const submitGameEdit = async (data) => {
@@ -64,6 +68,8 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
         if (res.payload) {
           setRefresh(!refresh)
           setOpenGameEdit(false)
+        } else {
+          setRefresh(!refresh)
         }
       })
       .catch(err => {
@@ -133,10 +139,13 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
         <GameChallengeSearchPage
           challenges={challenges}
           popular_challenges={popular_challenges}
+          expire_challenges={expire_challenges}
           filteredChallenges={filteredChallenges}
           filteredPopularChallenges={filteredPopularChallenges}
+          filteredExpireChallenges={filteredExpireChallenges}
           setFilteredChallenges={setFilteredChallenges}
           setFilteredPopularChallenges={setFilteredPopularChallenges}
+          setFilteredExpireChallenges={setFilteredExpireChallenges}
           searchTerm={searchTerm}
           handleClearSearchBar={handleClearSearchBar}
         />

@@ -68,7 +68,7 @@ const ContactUsPage = ({ refresh, setRefresh }) => {
         })
     } else {
       cogoToast.error('Please verify you are not R.O.B. the robot', {
-        hideAfter: 3,
+        hideAfter: 5,
       });
     }
   };

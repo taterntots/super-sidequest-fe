@@ -12,9 +12,11 @@ import cogoToast from 'cogo-toast';
 export const initialState = {
   public_games: [],
   private_games: [],
+  user_accepted_games: [],
   game: {},
   challenges: [],
   popular_challenges: [],
+  expire_challenges: [],
   loading: false,
   error: false,
 };
@@ -37,6 +39,19 @@ export const fetchPrivateGames = createAsyncThunk('games/fetchPrivateGames', asy
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `games/private`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab only games from user accepted/created challenges
+export const fetchUserAcceptedGames = createAsyncThunk('games/fetchUserAcceptedGames', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `games/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -88,6 +103,21 @@ export const fetchGameChallengesByPopularity = createAsyncThunk('games/fetchGame
   return response.data
 });
 
+// API call to grab all challenges sorted by expiration date
+export const fetchGameChallengesByExpiration = createAsyncThunk('games/fetchGameChallengesByExpiration', async (gameId) => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `games/${gameId}/challenges/expire/users/${userId}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    }
+  })
+  return response.data
+});
+
 // API call to request/add a game (requires token from valid user being signed in)
 export const requestGame = createAsyncThunk('challenges/requestGame', async (formData) => {
   const token = localStorage.getItem('token');
@@ -105,7 +135,7 @@ export const requestGame = createAsyncThunk('challenges/requestGame', async (for
       }
     })
     cogoToast.success(`Successfully requested ${formData.name}`, {
-      hideAfter: 3,
+      hideAfter: 5,
     });
     return response.data
   } catch (err) {
@@ -210,6 +240,18 @@ export const gameSlice = createSlice({
       state.loading = false
       state.error = true
     },
+    [fetchUserAcceptedGames.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserAcceptedGames.fulfilled]: (state, { payload }) => {
+      state.user_accepted_games = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserAcceptedGames.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
     [fetchGameById.pending]: (state, action) => {
       state.loading = true
     },
@@ -243,6 +285,18 @@ export const gameSlice = createSlice({
       state.error = false
     },
     [fetchGameChallengesByPopularity.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchGameChallengesByExpiration.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchGameChallengesByExpiration.fulfilled]: (state, { payload }) => {
+      state.expire_challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchGameChallengesByExpiration.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

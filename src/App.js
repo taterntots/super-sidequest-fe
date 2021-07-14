@@ -1,13 +1,14 @@
 import React from 'react';
 
-// STYLING
-import './App.css';
+// ROUTING
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // COMPONENTS
 import Dashboard from './components/Dashboard';
+import ScrollToTop from './components/utils/ScrollToTop';
 
-// ROUTING
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+// STYLING
+import './App.css';
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------- APP ------------------------------------------
@@ -16,6 +17,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 function App() {
   return (
     <div className='min-h-screen bg-sitewidebackground'>
+      <ScrollToTop />
       <Switch>
         <Route path='/' component={Dashboard} />
       </Switch>

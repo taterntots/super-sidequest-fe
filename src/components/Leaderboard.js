@@ -43,7 +43,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
             {countdownIsAfter ? ( // Checks if challenge end date has passed
               <Timer end_date={challenge.end_date} setCountdownIsAfter={setCountdownIsAfter} setChallengeUpdateModel={setOpen} setOpenAccept={setOpenAccept} />
             ) : (
-              <p className='font-medium text-lg text-center'>Quest Expired</p>
+              <p className='font-medium text-lg text-center'>Quest Ended</p>
             )}
           </div>
         ) : null}

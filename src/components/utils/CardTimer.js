@@ -6,10 +6,10 @@ import moment from 'moment';
 import countdown from 'moment-countdown'
 
 // ----------------------------------------------------------------------------------
-// -------------------------------------- TIMER -------------------------------------
+// ----------------------------------- CARD TIMER -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const Timer = ({ end_date, setCountdownIsAfter, setChallengeUpdateModel, setOpenAccept }) => {
+const CardTimer = ({ end_date, setCountdownIsAfter }) => {
   const [state, setState] = useState({
     years: moment(end_date).countdown(moment()).years,
     months: moment(end_date).countdown(moment()).months,
@@ -35,8 +35,6 @@ const Timer = ({ end_date, setCountdownIsAfter, setChallengeUpdateModel, setOpen
         setState({ years, months, days, hours, minutes, seconds });
       } else {
         setCountdownIsAfter(false)
-        setChallengeUpdateModel(false)
-        setOpenAccept(false)
         clearInterval(interval);
       }
     }, 1000);
@@ -46,70 +44,55 @@ const Timer = ({ end_date, setCountdownIsAfter, setChallengeUpdateModel, setOpen
   }, [end_date]);
 
   return (
-    <div className='flex justify-center sm:justify-evenly font-medium mt-4'>
+    <div className='flex justify-evenly font-medium'>
       {state.years > 0 ? (
-        <p className='text-2xl'>
+        <p className='text-md mr-2'>
           {state.years}
-          <span className='hidden sm:inline sm:ml-2 text-lg'>
+          <span className='ml-1 text-sm'>
             y
-          </span>
-          <span className='sm:hidden sm:ml-2 text-2xl'>
-            :
           </span>
         </p>
       ) : null}
 
       {state.months > 0 ? (
-        <p className='text-2xl'>
+        <p className='text-md mr-2'>
           {state.months}
-          <span className='hidden sm:inline sm:ml-2 text-lg'>
+          <span className='ml-1 text-sm'>
             m
-          </span>
-          <span className='sm:hidden sm:ml-2 text-2xl'>
-            :
           </span>
         </p>
       ) : null}
 
       {state.days > 0 ? (
-        <p className='text-2xl'>
+        <p className='text-md mr-2'>
           {state.days}
-          <span className='hidden sm:inline sm:ml-2 text-lg'>
+          <span className='ml-1 text-sm'>
             d
-          </span>
-          <span className='sm:hidden sm:ml-2 text-2xl'>
-            :
           </span>
         </p>
       ) : null}
 
-      <p className='text-2xl'>
+      <p className='text-md mr-2'>
         {state.hours}
-        <span className='hidden sm:inline sm:ml-2 text-lg'>
+        <span className='ml-1 text-sm'>
           hrs
         </span>
-        <span className='sm:hidden sm:ml-2 text-2xl'>
-          :
-        </span>
       </p>
 
-      <p className='text-2xl'>
+      <p className='text-md mr-2'>
         {state.minutes}
-        <span className='hidden sm:inline sm:ml-2 text-lg'>
+        <span className='ml-1 text-sm'>
           mins
         </span>
-        <span className='sm:hidden sm:ml-2 text-2xl'>
-          :
-        </span>
       </p>
 
-      <p className='text-2xl'>
+      <p className='text-md mr-2'>
         {state.seconds}
-        <span className='hidden sm:inline sm:ml-2 text-lg'>
+        <span className='ml-1 text-sm'>
           secs
         </span>
       </p>
     </div >
   )
 }
-export default Timer;
+export default CardTimer;

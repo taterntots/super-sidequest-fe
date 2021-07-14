@@ -50,7 +50,7 @@ const AuthModal = ({ open, setOpen, authPage, setAuthPage, refresh, setRefresh }
             leaveFrom='opacity-100 translate-y-0 sm:scale-100'
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
-            <div className='inline-block w-full mx-6 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-xl'>
+            <div className='inline-block w-full mx-6 mt-14 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-xl'>
               {authPage === 'login' ? (
                 <Login setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} />
               ) : authPage === 'signup' ? (

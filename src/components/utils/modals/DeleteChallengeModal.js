@@ -47,7 +47,7 @@ const DeleteChallengeModal = ({ open, setOpen, submitChallengeDelete, loading })
             leaveFrom='opacity-100 translate-y-0 sm:scale-100'
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
-            <div className='inline-block w-full mx-6 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-lg'>
+            <div className='inline-block w-full mx-6 mt-14 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-lg'>
               <div className='p-10 bg-taterpurple rounded-lg text-white'>
                 <h4 className='text-2xl text-center mb-4'>
                   Delete Quest

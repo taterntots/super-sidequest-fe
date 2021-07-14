@@ -33,7 +33,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
             {challenge_game_stats.map((gameStat, index) => (
               <Link
                 key={gameStat.game}
-                to={`/games/${gameStat.game_id}/challenges`}
+                to={`${user.username}/challenges?game=${gameStat.game}`}
                 className={`flex justify-between font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:opacity-60`}
               >
                 <p>{gameStat.game}</p>
@@ -52,10 +52,10 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
             <FeaturedChallengeCard data={featured_challenge} />
           ) : null}
 
-          {/* ACTIVE CHALLENGES */}
+          {/* ACCEPTED CHALLENGES */}
           <ProfileTwo className="px-10 pb-4 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
-              Active Quests
+              Accepted Quests
             </h1>
             <div className='grid gap-6 grig-cols-1'>
               {acceptedChallenges.map(acceptedChallenge => (
@@ -76,7 +76,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
           </ProfileTwo>
         </div>
       </div>
-    </ProfileOne>
+    </ProfileOne >
   );
 }
 

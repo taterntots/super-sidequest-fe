@@ -11,14 +11,17 @@ import {
   systemSelector
 } from '../features/system/systemSlice';
 
+// UTILS
+import moment from 'moment';
+
 // COMPONENTS
 import ChallengeList from '../features/challenge/ChallengeList';
 
 // ----------------------------------------------------------------------------------
-// ----------------------------- GAME CHALLENGES PAGE -------------------------------
+// --------------------------- GAME CHALLENGES SEARCH PAGE --------------------------
 // ----------------------------------------------------------------------------------
 
-const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChallenges, filteredPopularChallenges, setFilteredChallenges, setFilteredPopularChallenges, searchTerm, handleClearSearchBar }) => {
+const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challenges, filteredChallenges, filteredPopularChallenges, filteredExpireChallenges, setFilteredChallenges, setFilteredPopularChallenges, setFilteredExpireChallenges, searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
@@ -34,21 +37,50 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
   const filterReset = () => {
     setFilteredChallenges(challenges)
     setFilteredPopularChallenges(popular_challenges)
+    setFilteredExpireChallenges(expire_challenges)
     var selectBox = document.getElementById("difficultyBox");
     selectBox.selectedIndex = 0;
     var selectBox = document.getElementById("systemBox");
     selectBox.selectedIndex = 0;
+    var expiredBox = document.getElementById("expiredBox");
+    expiredBox.checked = false;
   }
 
   // Filter master
   const filterMaster = () => {
     var systemBox = document.getElementById("systemBox");
     var difficultyBox = document.getElementById("difficultyBox");
+    var expiredBox = document.getElementById("expiredBox");
     var selectedSystemValue = systemBox.options[systemBox.selectedIndex].value;
     var selectedDifficultyValue = difficultyBox.options[difficultyBox.selectedIndex].value;
+    var selectedExpiredValue = expiredBox.checked;
 
+    // First, filter game challenges by whether or not they are still active (not passed the end date)
+    var filterByExpired = challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return challenges
+      }
+    })
+    var filterByPopularExpired = popular_challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return popular_challenges
+      }
+    })
+    var filterByTimeLeftExpired = expire_challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return expire_challenges
+      }
+    })
+
+    // Second, filter through challenges already organized by our expiration bool
     if (currentChallengeFilter === 'All') {
-      var filtered = challenges.filter(fc => {
+      var filtered = filterByExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
@@ -57,9 +89,18 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredChallenges(filtered)
+
+      // Third, determine what to return depending on whether nothing is selected in filters, else simply return the filtered list
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && !selectedExpiredValue) {
+        setFilteredChallenges(challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedExpiredValue) {
+        setFilteredChallenges(filterByExpired)
+      } else {
+        setFilteredChallenges(filtered)
+      }
+
     } else if (currentChallengeFilter === 'Popular') {
-      var filtered = popular_challenges.filter(fc => {
+      var filtered = filterByPopularExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
@@ -68,7 +109,31 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
           return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
         }
       })
-      setFilteredPopularChallenges(filtered)
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && !selectedExpiredValue) {
+        setFilteredPopularChallenges(popular_challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedExpiredValue) {
+        setFilteredPopularChallenges(filterByPopularExpired)
+      } else {
+        setFilteredPopularChallenges(filtered)
+      }
+
+    } else if (currentChallengeFilter === 'Expire') {
+      var filtered = filterByTimeLeftExpired.filter(fc => {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
+          return fc.system === selectedSystemValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
+        }
+      })
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && !selectedExpiredValue) {
+        setFilteredExpireChallenges(expire_challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedExpiredValue) {
+        setFilteredExpireChallenges(filterByTimeLeftExpired)
+      } else {
+        setFilteredExpireChallenges(filtered)
+      }
     }
   }
 
@@ -88,8 +153,8 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
             challenges={
               currentChallengeFilter === 'All' ? filteredChallenges :
                 currentChallengeFilter === 'Popular' ? filteredPopularChallenges :
-                  null
-            }
+                  currentChallengeFilter === 'Expire' ? filteredExpireChallenges :
+                    null}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
           />
@@ -99,25 +164,25 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
         <div className='w-full lg:w-1/5'>
           <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white">
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
-              Quest Type
+              Sort By
             </h1>
             <div className='flex flex-col'>
               <button
                 className={currentChallengeFilter === 'All' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setCurrentChallengeFilter('All')
                   filterReset()
                   handleClearSearchBar()
                 }}
               >
-                All
+                Recent
               </button>
               <button
                 className={currentChallengeFilter === 'Popular' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setCurrentChallengeFilter('Popular')
                   filterReset()
@@ -125,6 +190,18 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
                 }}
               >
                 Popular
+              </button>
+              <button
+                className={currentChallengeFilter === 'Expire' ?
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
+                onClick={() => {
+                  setCurrentChallengeFilter('Expire')
+                  filterReset()
+                  handleClearSearchBar()
+                }}
+              >
+                Time Left
               </button>
             </div>
           </div>
@@ -150,12 +227,24 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
                   <option key={difficulty.id} value={difficulty.name}>{difficulty.name}</option>
                 ))}
               </select>
-              <select name='system' id='systemBox' onChange={filterMaster} className='text-black px-1 rounded-md'>
+              <select name='system' id='systemBox' onChange={filterMaster} className='mb-4 text-black px-1 rounded-md'>
                 <option value='Select' disabled selected>System</option>
                 {systems.map(system => (
                   <option key={system.id} value={system.name}>{system.name}</option>
                 ))}
               </select>
+              <div className='flex justify-evenly'>
+                <p className='text-lg font-medium'>
+                  Active
+                </p>
+                <input
+                  name='is_expired'
+                  id='expiredBox'
+                  type='checkbox'
+                  className='w-6 h-6 self-center'
+                  onClick={filterMaster}
+                />
+              </div>
             </div>
           </div>
         </div>
