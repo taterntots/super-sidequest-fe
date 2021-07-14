@@ -20,6 +20,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 // UTILS
 import queryString from 'query-string';
+import moment from 'moment';
 
 // FORMS
 import Select from 'react-select';
@@ -69,12 +70,15 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
     selectBox.selectedIndex = 0;
     var selectBox = document.getElementById("systemBox");
     selectBox.selectedIndex = 0;
+    var expiredBox = document.getElementById("expiredBox");
+    expiredBox.checked = false;
   }
 
   // Filter master
   const filterMaster = (data) => {
     var systemBox = document.getElementById("systemBox");
     var difficultyBox = document.getElementById("difficultyBox");
+    var expiredBox = document.getElementById("expiredBox");
 
     // Swap game if filter for game changes and also reset all filters
     if (data.label) {
@@ -85,14 +89,40 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
       })
       systemBox.selecetdIndex = 0
       difficultyBox.selectedIndex = 0
+      expiredBox.checked = false;
     }
 
     var selectedSystemValue = systemBox.options[systemBox.selectedIndex].value;
     var selectedDifficultyValue = difficultyBox.options[difficultyBox.selectedIndex].value;
+    var selectedExpiredValue = expiredBox.checked;
     var selectedGameValue = data.label ? data.label : currentGame.game;
 
+    // First, filter challenges by whether or not they are still active (not passed the end date)
+    var filterCreatedByExpired = created_challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return created_challenges
+      }
+    })
+    var filterAcceptedByExpired = accepted_challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return accepted_challenges
+      }
+    })
+    var filterCompletedByExpired = completed_challenges.filter(fc => {
+      if (selectedExpiredValue) {
+        return moment(fc.end_date).isAfter() || !fc.end_date // Accounts for challenges without end_dates
+      } else {
+        return completed_challenges
+      }
+    })
+
+    // Second, filter through challenges already organized by our expiration bool
     if (currentChallengeFilter === 'Created') {
-      var filtered = created_challenges.filter(fc => {
+      var filtered = filterCreatedByExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
@@ -107,17 +137,20 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
-          return
         }
       })
-      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
+
+      // Third, determine what to return depending on whether nothing is selected in filters, else simply return the filtered list
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All' && !selectedExpiredValue) {
         setFilteredCreatedChallenges(created_challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All' && selectedExpiredValue) {
+        setFilteredCreatedChallenges(filterCreatedByExpired)
       } else {
         setFilteredCreatedChallenges(filtered)
       }
-    } else if (currentChallengeFilter === 'Active') {
-      var filtered = accepted_challenges.filter(fc => {
+
+    } else if (currentChallengeFilter === 'Accepted') {
+      var filtered = filterAcceptedByExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
@@ -132,17 +165,18 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
-          return
         }
       })
-      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All' && !selectedExpiredValue) {
         setFilteredAcceptedChallenges(accepted_challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All' && selectedExpiredValue) {
+        setFilteredAcceptedChallenges(filterAcceptedByExpired)
       } else {
         setFilteredAcceptedChallenges(filtered)
       }
+
     } else if (currentChallengeFilter === 'Completed') {
-      var filtered = completed_challenges.filter(fc => {
+      var filtered = filterCompletedByExpired.filter(fc => {
         if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue === 'All') {
           return fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
@@ -157,12 +191,12 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue
         } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select' && selectedGameValue !== 'All') {
           return fc.system === selectedSystemValue && fc.difficulty === selectedDifficultyValue && fc.game_title === selectedGameValue
-        } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
-          return
         }
       })
-      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All') {
+      if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All' && !selectedExpiredValue) {
         setFilteredCompletedChallenges(completed_challenges)
+      } else if (selectedSystemValue === 'Select' && selectedDifficultyValue === 'Select' && selectedGameValue === 'All' && selectedExpiredValue) {
+        setFilteredCompletedChallenges(filterCompletedByExpired)
       } else {
         setFilteredCompletedChallenges(filtered)
       }
@@ -172,8 +206,8 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
   const ProfileOneCreatedButton = styled.button`
     background-color: ${currentChallengeFilter === 'Created' ? user.profile_color_one : null};
   `
-  const ProfileOneActiveButton = styled.button`
-    background-color: ${currentChallengeFilter === 'Active' ? user.profile_color_one : null};
+  const ProfileOneAcceptedButton = styled.button`
+    background-color: ${currentChallengeFilter === 'Accepted' ? user.profile_color_one : null};
   `
   const ProfileOneCompletedButton = styled.button`
     background-color: ${currentChallengeFilter === 'Completed' ? user.profile_color_one : null};
@@ -189,7 +223,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
         <ProfileTwo className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             {currentChallengeFilter === 'Created' ? 'Created Quests' :
-              currentChallengeFilter === 'Active' ? 'Active Quests' :
+              currentChallengeFilter === 'Accepted' ? 'Accepted Quests' :
                 currentChallengeFilter === 'Completed' ? 'Completed Quests' :
                   null
             }
@@ -197,7 +231,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           <ChallengeList
             challenges={
               currentChallengeFilter === 'Created' ? filteredCreatedChallenges :
-                currentChallengeFilter === 'Active' ? filteredAcceptedChallenges :
+                currentChallengeFilter === 'Accepted' ? filteredAcceptedChallenges :
                   currentChallengeFilter === 'Completed' ? filteredCompletedChallenges :
                     null
             }
@@ -249,18 +283,18 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
               >
                 Created
               </ProfileOneCreatedButton>
-              <ProfileOneActiveButton
-                className={currentChallengeFilter === 'Active' ?
+              <ProfileOneAcceptedButton
+                className={currentChallengeFilter === 'Accepted' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
                 onClick={() => {
-                  setCurrentChallengeFilter('Active')
+                  setCurrentChallengeFilter('Accepted')
                   filterReset()
                   handleClearSearchBar()
                 }}
               >
-                Active
-              </ProfileOneActiveButton>
+                Accepted
+              </ProfileOneAcceptedButton>
               <ProfileOneCompletedButton
                 className={currentChallengeFilter === 'Completed' ?
                   "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
@@ -306,6 +340,18 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
                   <option key={system.id} value={system.name}>{system.name}</option>
                 ))}
               </select>
+              <div className='flex justify-evenly'>
+                <p className='text-lg font-medium'>
+                  Active
+                </p>
+                <input
+                  name='is_expired'
+                  id='expiredBox'
+                  type='checkbox'
+                  className='w-6 h-6 self-center'
+                  onClick={filterMaster}
+                />
+              </div>
             </div>
           </div>
         </div>
