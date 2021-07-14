@@ -18,7 +18,7 @@ import ChallengeList from '../features/challenge/ChallengeList';
 // --------------------------- GAME CHALLENGES SEARCH PAGE --------------------------
 // ----------------------------------------------------------------------------------
 
-const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChallenges, filteredPopularChallenges, setFilteredChallenges, setFilteredPopularChallenges, searchTerm, handleClearSearchBar }) => {
+const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challenges, filteredChallenges, filteredPopularChallenges, filteredExpireChallenges, setFilteredChallenges, setFilteredPopularChallenges, setFilteredExpireChallenges, searchTerm, handleClearSearchBar }) => {
   const dispatch = useDispatch();
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
@@ -34,6 +34,7 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
   const filterReset = () => {
     setFilteredChallenges(challenges)
     setFilteredPopularChallenges(popular_challenges)
+    setFilteredExpireChallenges(expire_challenges)
     var selectBox = document.getElementById("difficultyBox");
     selectBox.selectedIndex = 0;
     var selectBox = document.getElementById("systemBox");
@@ -69,6 +70,17 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
         }
       })
       setFilteredPopularChallenges(filtered)
+    } else if (currentChallengeFilter === 'Expire') {
+      var filtered = expire_challenges.filter(fc => {
+        if (selectedSystemValue === 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue === 'Select') {
+          return fc.system === selectedSystemValue
+        } else if (selectedSystemValue !== 'Select' && selectedDifficultyValue !== 'Select') {
+          return fc.difficulty === selectedDifficultyValue && fc.system === selectedSystemValue
+        }
+      })
+      setFilteredExpireChallenges(filtered)
     }
   }
 
@@ -88,8 +100,8 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
             challenges={
               currentChallengeFilter === 'All' ? filteredChallenges :
                 currentChallengeFilter === 'Popular' ? filteredPopularChallenges :
-                  null
-            }
+                  currentChallengeFilter === 'Expire' ? filteredExpireChallenges :
+                    null}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
           />
@@ -104,8 +116,8 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
             <div className='flex flex-col'>
               <button
                 className={currentChallengeFilter === 'All' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setCurrentChallengeFilter('All')
                   filterReset()
@@ -116,8 +128,8 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
               </button>
               <button
                 className={currentChallengeFilter === 'Popular' ?
-                  "items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setCurrentChallengeFilter('Popular')
                   filterReset()
@@ -125,6 +137,18 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, filteredChall
                 }}
               >
                 Popular
+              </button>
+              <button
+                className={currentChallengeFilter === 'Expire' ?
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
+                onClick={() => {
+                  setCurrentChallengeFilter('Expire')
+                  filterReset()
+                  handleClearSearchBar()
+                }}
+              >
+                Time Left
               </button>
             </div>
           </div>
