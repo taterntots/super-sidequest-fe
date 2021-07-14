@@ -13,6 +13,7 @@ export const initialState = {
   challenges: [],
   recent_challenges: [],
   popular_challenges: [],
+  expire_challenges: [],
   created_challenges: [],
   accepted_challenges: [],
   completed_challenges: [],
@@ -65,6 +66,21 @@ export const fetchChallengesByPopularity = createAsyncThunk('challenges/fetchCha
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `challenges/popular/users/${userId}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all challenges sorted by expiration date
+export const fetchChallengesByExpiration = createAsyncThunk('challenges/fetchChallengesByExpiration', async () => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `challenges/expire/users/${userId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -513,6 +529,18 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [fetchChallengesByPopularity.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchChallengesByExpiration.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchChallengesByExpiration.fulfilled]: (state, { payload }) => {
+      state.expire_challenges = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchChallengesByExpiration.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
