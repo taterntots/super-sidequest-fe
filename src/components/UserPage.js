@@ -118,6 +118,12 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const ProfileOneButton = styled.button`
     background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
+  const ProfileFollowButton = styled.button`
+    &:hover {
+      background-color: ${user.profile_color_two ? user.profile_color_two : null};
+      border-color: ${user.profile_color_two ? user.profile_color_two : null};
+    }
+  `
 
   return (
     <>
@@ -162,9 +168,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               )}
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
+            <ProfileFollowButton
+              className='my-4 px-5 text-white font-medium border-2 rounded-xl'
+              // onClick={() => {
+
+              // }}
+            >
+              Follow
+            </ProfileFollowButton>
           </div>
         </ProfileOne>
-        
+
         {/* SOCIAL ICONS */}
         <div className='flex rounded-b-lg overflow-hidden'>
           {user.twitter_URL ? (
