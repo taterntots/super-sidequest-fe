@@ -151,8 +151,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           `bg-profileone` :
           `bg-profileone rounded-b-lg`}
         >
-          <div className='sm:flex justify-between px-0 sm:px-10'>
-            <div className='flex justify-center items-center py-3'>
+          <div className='flex justify-between px-10'>
+            <div className='flex items-center py-3'>
               {user.profile_pic_URL ? (
                 <img
                   src={user.profile_pic_URL}
