@@ -33,6 +33,10 @@ import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
+import { ReactComponent as TwitterLogo } from '../img/TwitterLogo.svg';
+import { ReactComponent as DiscordLogo } from '../img/DiscordLogo.svg';
+import { ReactComponent as YouTubeLogo } from '../img/YouTubeLogo.svg';
+import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------- USER PAGE-------------------------------------
@@ -118,28 +122,30 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   return (
     <>
       {/* USER INFO */}
-      <div
-        className={localStorage.getItem('id') === user.id ?
-          'mb-4 hover:opacity-50 cursor-pointer transform transition' :
-          'mb-4'
-        }
-        onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
-      >
-        {localStorage.getItem('id') === user.id ? (
-          <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
-            EDIT
-          </p>
-        ) : null}
-        <div>
+      <div className='mb-4'>
+        <div
+          className={localStorage.getItem('id') === user.id ?
+            'hover:opacity-50 cursor-pointer transform transition' :
+            ''}
+          onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
+        >
           <img
-            className='object-cover h-72 w-full rounded-t-md'
+            className='object-cover h-72 w-full rounded-t-lg'
             src={user.banner_pic_URL ? user.banner_pic_URL : UserBannerPlaceholder}
             alt='banner for a user'
           />
+          {localStorage.getItem('id') === user.id ? (
+            <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
+              EDIT
+            </p>
+          ) : null}
         </div>
 
-        <ProfileOne className={`px-0 sm:px-10 bg-profileone rounded-b-lg`}>
-          <div className='sm:flex justify-between'>
+        <ProfileOne className={user.twitter_URL || user.twitch_URL || user.youtube_URL || user.discord_URL ?
+          `bg-profileone` :
+          `bg-profileone rounded-b-lg`}
+        >
+          <div className='sm:flex justify-between px-0 sm:px-10'>
             <div className='flex justify-center items-center py-3'>
               {user.profile_pic_URL ? (
                 <img
@@ -157,8 +163,33 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
           </div>
+
+          {/* SOCIAL ICONS */}
+          <div className='flex rounded-b-lg overflow-hidden'>
+            <a className='flex justify-center w-full py-1 h-6 bg-twitter cursor-pointer hover:opacity-80' href={user.twitter_URL} target='_blank'>
+              <TwitterLogo />
+            </a>
+            <a className='flex justify-center w-full py-1 h-6 bg-twitch cursor-pointer hover:opacity-80' href={user.twitch_URL} target='_blank'>
+              <TwitchLogo />
+            </a>
+            <a className='flex justify-center w-full py-1 h-6 bg-discord cursor-pointer hover:opacity-80' href={user.discord_URL} target='_blank'>
+              <DiscordLogo />
+            </a>
+            <a className='flex justify-center w-full py-1 h-6 bg-youtube cursor-pointer hover:opacity-80' href={user.youtube_URL} target='_blank'>
+              <YouTubeLogo />
+            </a>
+          </div>
         </ProfileOne>
+
+        {/* SOCIAL ICONS */}
+        {/* <div className='flex justify-end'>
+          <TwitterLogo className='w-1/12 py-1 h-6 self-center bg-twitter rounded-bl' target='_blank' />
+          <TwitchLogo className='w-1/12 py-1 h-6 self-center bg-twitch' target='_blank' />
+          <DiscordLogo className='w-1/12 py-1 h-6 self-center bg-discord' target='_blank' />
+          <YouTubeLogo className='w-1/12 py-1 h-6 self-center bg-youtube rounded-br' target='_blank' />
+        </div> */}
       </div>
+
 
       {/* TAB CONTENT */}
       <div className='flex flex-row items-center justify-start text-xl text-white'>

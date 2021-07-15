@@ -24,7 +24,11 @@ module.exports = {
         cardhover: '#08f78f',
         easy: '#00BFFF',
         medium: '#FF8C00',
-        hard: '#B22222'
+        hard: '#B22222',
+        discord: '#4E62EE',
+        twitch: '#8C45F7',
+        twitter: '#1DA1F2',
+        youtube: '#FF0000'
       }
     }
   },
