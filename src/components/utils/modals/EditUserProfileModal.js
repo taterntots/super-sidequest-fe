@@ -82,6 +82,50 @@ const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user 
                     {...register('banner_pic_URL')}
                   />
                 </div>
+                <div className='mt-7 form-group'>
+                  <label className='mr-3'>Twitter URL</label>
+                  <input
+                    name='twitter_URL'
+                    type='text'
+                    defaultValue={user.twitter_URL}
+                    placeholder='Enter a URL for your twitter account'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('twitter_URL')}
+                  />
+                </div>
+                <div className='mt-7 form-group'>
+                  <label className='mr-3'>Twitch URL</label>
+                  <input
+                    name='twitch_URL'
+                    type='text'
+                    defaultValue={user.twitch_URL}
+                    placeholder='Enter a URL for your twitch account'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('twitch_URL')}
+                  />
+                </div>
+                <div className='mt-7 form-group'>
+                  <label className='mr-3'>Discord URL</label>
+                  <input
+                    name='discord_URL'
+                    type='text'
+                    defaultValue={user.discord_URL}
+                    placeholder='Enter a URL for your discord account'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('discord_URL')}
+                  />
+                </div>
+                <div className='mt-7 form-group'>
+                  <label className='mr-3'>YouTube URL</label>
+                  <input
+                    name='youtube_URL'
+                    type='text'
+                    defaultValue={user.youtube_URL}
+                    placeholder='Enter a URL for your youtube account'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('youtube_URL')}
+                  />
+                </div>
                 <div className='flex justify-between'>
                   <div className='form-group w-2/5'>
                     <label className='mr-3'>BG Color #1</label>

@@ -209,7 +209,7 @@ export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (da
 // API call to update a user's profile
 export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
   const token = localStorage.getItem('token');
-
+  
   try {
     const response = await axios({
       method: 'put',
@@ -218,10 +218,7 @@ export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
         Accept: 'application/json',
         Authorization: token
       }, data: {
-        profile_pic_URL: data.profile_pic_URL,
-        banner_pic_URL: data.banner_pic_URL,
-        profile_color_one: data.profile_color_one,
-        profile_color_two: data.profile_color_two
+        ...data
       }
     })
     cogoToast.success('Profile updated!', {

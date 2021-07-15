@@ -163,33 +163,32 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
           </div>
-
-          {/* SOCIAL ICONS */}
-          <div className='flex rounded-b-lg overflow-hidden'>
+        </ProfileOne>
+        
+        {/* SOCIAL ICONS */}
+        <div className='flex rounded-b-lg overflow-hidden'>
+          {user.twitter_URL ? (
             <a className='flex justify-center w-full py-1 h-6 bg-twitter cursor-pointer hover:opacity-80' href={user.twitter_URL} target='_blank'>
               <TwitterLogo />
             </a>
+          ) : null}
+          {user.twitch_URL ? (
             <a className='flex justify-center w-full py-1 h-6 bg-twitch cursor-pointer hover:opacity-80' href={user.twitch_URL} target='_blank'>
               <TwitchLogo />
             </a>
+          ) : null}
+          {user.discord_URL ? (
             <a className='flex justify-center w-full py-1 h-6 bg-discord cursor-pointer hover:opacity-80' href={user.discord_URL} target='_blank'>
               <DiscordLogo />
             </a>
+          ) : null}
+          {user.youtube_URL ? (
             <a className='flex justify-center w-full py-1 h-6 bg-youtube cursor-pointer hover:opacity-80' href={user.youtube_URL} target='_blank'>
               <YouTubeLogo />
             </a>
-          </div>
-        </ProfileOne>
-
-        {/* SOCIAL ICONS */}
-        {/* <div className='flex justify-end'>
-          <TwitterLogo className='w-1/12 py-1 h-6 self-center bg-twitter rounded-bl' target='_blank' />
-          <TwitchLogo className='w-1/12 py-1 h-6 self-center bg-twitch' target='_blank' />
-          <DiscordLogo className='w-1/12 py-1 h-6 self-center bg-discord' target='_blank' />
-          <YouTubeLogo className='w-1/12 py-1 h-6 self-center bg-youtube rounded-br' target='_blank' />
-        </div> */}
+          ) : null}
+        </div>
       </div>
-
 
       {/* TAB CONTENT */}
       <div className='flex flex-row items-center justify-start text-xl text-white'>
