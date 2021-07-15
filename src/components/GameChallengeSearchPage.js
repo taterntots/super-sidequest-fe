@@ -143,11 +143,7 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
         {/* CHALLENGE LIST */}
         <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
-            {currentChallengeFilter === 'All' ? 'All Quests' :
-              currentChallengeFilter === 'Popular' ? 'Popular Quests' :
-                currentChallengeFilter === 'Completed' ? 'Completed Quests' :
-                  null
-            }
+            All Quests
           </h1>
           <ChallengeList
             challenges={
