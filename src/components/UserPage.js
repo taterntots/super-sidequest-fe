@@ -57,6 +57,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [sortOption, setSortOption] = useState('recent');
   const [currentGame, setCurrentGame] = useState({})
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
+  const [followingButtonText, setFollowingButtonText] = useState('Following')
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
   const location = useLocation();
@@ -207,8 +208,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               <ProfileUnfollowButton
                 className='my-4 px-4 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
                 onClick={submitUnfollowUser}
+                onMouseOver={() => {
+                  setFollowingButtonText('Unfollow')
+                }}
+                onMouseLeave={() => {
+                  setFollowingButtonText('Following')
+                }}
               >
-                Following
+                {followingButtonText}
               </ProfileUnfollowButton>
             ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
               <ProfileFollowButton
