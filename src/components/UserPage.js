@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchUserFollowers,
   fetchUserByUsername,
+  followUser,
   updateUser,
   userSelector
 } from '../features/user/userSlice';
@@ -109,6 +110,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       })
   };
 
+  // Function to handle following a user
+  const submitFollowUser = async () => {
+    dispatch(followUser(user.id))
+      .then(res => {
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
   const ProfileOne = styled.div`
     background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
@@ -172,10 +184,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
             <ProfileFollowButton
-              className='my-4 px-5 text-white font-medium border-2 rounded-xl'
-            // onClick={() => {
-
-            // }}
+              className='my-4 px-4 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+              onClick={submitFollowUser}
             >
               Follow
             </ProfileFollowButton>

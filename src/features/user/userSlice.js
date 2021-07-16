@@ -25,7 +25,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     url: process.env.REACT_APP_API + `users`,
     headers: {
       Accept: 'application/json',
-      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
     },
   })
   return response.data
@@ -40,7 +40,7 @@ export const fetchUserFollowers = createAsyncThunk('users/fetchUserFollowers', a
     url: process.env.REACT_APP_API + `users/${userId}/followers`,
     headers: {
       Accept: 'application/json',
-      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
     },
   })
   return response.data
@@ -53,7 +53,7 @@ export const fetchUserById = createAsyncThunk('users/fetchUserById', async (user
     url: process.env.REACT_APP_API + `users/${userId}`,
     headers: {
       Accept: 'application/json',
-      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
     },
   })
   return response.data
@@ -66,7 +66,7 @@ export const fetchUserByUsername = createAsyncThunk('users/fetchUserByUsername',
     url: process.env.REACT_APP_API + `users/username/${username}`,
     headers: {
       Accept: 'application/json',
-      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
     },
   })
   return response.data
@@ -79,10 +79,43 @@ export const fetchUserAdminStatus = createAsyncThunk('users/fetchUserAdminStatus
     url: process.env.REACT_APP_API + `users/${userId}/is-admin`,
     headers: {
       Accept: 'application/json',
-      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
     },
   })
   return response.data
+});
+
+// API call to follower a user
+export const followUser = createAsyncThunk('users/followUser', async (followerId) => {
+  const userId = localStorage.getItem('id')
+
+  const response = await axios({
+    method: 'post',
+    url: process.env.REACT_APP_API + `users/${userId}/followers/${followerId}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    }
+  })
+    .then(res => {
+      if (res.data.errorMessage) {
+        cogoToast.error(res.data.errorMessage, {
+          hideAfter: 5,
+        });
+      } else if (res.data.success) {
+        cogoToast.success(res.data.success, {
+          hideAfter: 5,
+        });
+      }
+      return res.data
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.errorMessage, {
+        hideAfter: 5,
+      });
+      return err.response.data.message
+    })
+  return response
 });
 
 // API call to sign in user
@@ -314,6 +347,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUserAdminStatus.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [followUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [followUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [followUser.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

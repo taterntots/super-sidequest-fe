@@ -33,7 +33,10 @@ module.exports = {
     }
   },
   variants: {
-    extend: {},
+    extend: {
+      visibility: ['hover', 'focus'],
+      display: ['hover', 'focus']
+    },
   },
   plugins: [
     // require('@tailwindcss/forms')
