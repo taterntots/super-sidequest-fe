@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  fetchUserFollowers,
   fetchUserByUsername,
   updateUser,
   userSelector
@@ -27,6 +28,7 @@ import styled from '@emotion/styled';
 import ProfilePage from './ProfilePage';
 import ChallengesSearchPage from './ChallengesSearchPage';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
+import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 
@@ -44,7 +46,7 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, loading } = useSelector(userSelector);
+  const { user, user_followers, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -59,6 +61,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   // Grabs user data from the server
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
+    dispatch(fetchUserFollowers())
   }, [dispatch, refresh, route.params.username])
 
   // Sets game filter if exists in URL
@@ -170,9 +173,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             </div>
             <ProfileFollowButton
               className='my-4 px-5 text-white font-medium border-2 rounded-xl'
-              // onClick={() => {
+            // onClick={() => {
 
-              // }}
+            // }}
             >
               Follow
             </ProfileFollowButton>
@@ -207,7 +210,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       {/* TAB CONTENT */}
       <div className='flex flex-row items-center justify-start text-xl text-white'>
         {/* PROFILE */}
-        {!url.includes('challenges') && !url.includes('add-challenge') ? (
+        {!url.includes('challenges') && !url.includes('friends') && !url.includes('add-challenge') ? (
           <ProfileOne className={'bg-profileone rounded-t-md'}>
             <Link
               to={`/${user.username}`}
@@ -251,6 +254,27 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             className='px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'
           >
             Quests
+          </Link>
+        )}
+
+        {/* FRIENDS */}
+        {url.includes('friends') ? (
+          <ProfileOne className={'bg-profileone rounded-t-md'}>
+            <Link
+              to={`/${user.username}/friends`}
+              onClick={() => handleClearSearchBar()}
+              className='px-5 hover:text-navbarbuttonhighlight'
+            >
+              Friends
+            </Link>
+          </ProfileOne>
+        ) : (
+          <Link
+            to={`/${user.username}/friends`}
+            onClick={() => handleClearSearchBar()}
+            className='px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'
+          >
+            Friends
           </Link>
         )}
 
@@ -336,6 +360,20 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setRefresh={setRefresh}
             ProfileOne={ProfileOne}
             ProfileTwo={ProfileTwo}
+            {...props}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/:username/friends`}
+        render={(props) => (
+          <FollowerPage
+            user_followers={user_followers}
+            searchTerm={searchTerm}
+            handleClearSearchBar={handleClearSearchBar}
+            ProfileTwo={ProfileTwo}
+            user={user}
             {...props}
           />
         )}

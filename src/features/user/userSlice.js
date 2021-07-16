@@ -11,6 +11,7 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   users: [],
+  user_followers: [],
   user: {},
   user_admin: true,
   loading: false,
@@ -22,6 +23,21 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
+    },
+  })
+  return response.data
+});
+
+// API call to grab all of a user's followers
+export const fetchUserFollowers = createAsyncThunk('users/fetchUserFollowers', async () => {
+  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
+
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/followers`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY,
@@ -209,7 +225,7 @@ export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (da
 // API call to update a user's profile
 export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
   const token = localStorage.getItem('token');
-  
+
   try {
     const response = await axios({
       method: 'put',
@@ -250,6 +266,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUsers.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserFollowers.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserFollowers.fulfilled]: (state, { payload }) => {
+      state.user_followers = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserFollowers.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
