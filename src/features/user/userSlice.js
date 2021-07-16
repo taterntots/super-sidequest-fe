@@ -14,6 +14,7 @@ export const initialState = {
   user_followers: [],
   user: {},
   user_admin: true,
+  is_following_user: false,
   loading: false,
   error: false
 };
@@ -32,12 +33,25 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 });
 
 // API call to grab all of a user's followers
-export const fetchUserFollowers = createAsyncThunk('users/fetchUserFollowers', async () => {
-  const userId = localStorage.getItem('id') ? localStorage.getItem('id') : 'no-user'
-
+export const fetchUserFollowers = createAsyncThunk('users/fetchUserFollowers', async (userId) => {
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/followers`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to check if a user is being followed by someone specific
+export const fetchCheckIfFollowingUser = createAsyncThunk('users/fetchCheckIfFollowingUser', async (followerId) => {
+  const userId = localStorage.getItem('id')
+
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/followers/${followerId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -91,6 +105,40 @@ export const followUser = createAsyncThunk('users/followUser', async (followerId
 
   const response = await axios({
     method: 'post',
+    url: process.env.REACT_APP_API + `users/${userId}/followers/${followerId}`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    }
+  })
+    .then(res => {
+      if (res.data.errorMessage) {
+        cogoToast.error(res.data.errorMessage, {
+          hideAfter: 5,
+        });
+      } else if (res.data.success) {
+        cogoToast.success(res.data.success, {
+          hideAfter: 5,
+        });
+      }
+      return res.data
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.errorMessage, {
+        hideAfter: 5,
+      });
+      return err.response.data.message
+    })
+  return response
+});
+
+
+// API call to unfollow a user
+export const unfollowUser = createAsyncThunk('users/unfollowUser', async (followerId) => {
+  const userId = localStorage.getItem('id')
+
+  const response = await axios({
+    method: 'delete',
     url: process.env.REACT_APP_API + `users/${userId}/followers/${followerId}`,
     headers: {
       Accept: 'application/json',
@@ -314,6 +362,18 @@ export const userSlice = createSlice({
       state.loading = false
       state.error = true
     },
+    [fetchCheckIfFollowingUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchCheckIfFollowingUser.fulfilled]: (state, { payload }) => {
+      state.is_following_user = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchCheckIfFollowingUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
     [fetchUserById.pending]: (state, action) => {
       state.loading = true
     },
@@ -358,6 +418,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [followUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [unfollowUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [unfollowUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [unfollowUser.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchUserFollowers,
+  fetchCheckIfFollowingUser,
   fetchUserByUsername,
   followUser,
+  unfollowUser,
   updateUser,
   userSelector
 } from '../features/user/userSlice';
@@ -47,7 +49,7 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, user_followers, loading } = useSelector(userSelector);
+  const { user, user_followers, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -62,7 +64,6 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   // Grabs user data from the server
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
-    dispatch(fetchUserFollowers())
   }, [dispatch, refresh, route.params.username])
 
   // Sets game filter if exists in URL
@@ -82,6 +83,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallenges({ user_id: user.id, sort_option: sortOption }))
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
+      dispatch(fetchUserFollowers(user.id))
+      dispatch(fetchCheckIfFollowingUser(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
 
@@ -121,6 +124,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       })
   };
 
+  // Function to handle unfollowing a user
+  const submitUnfollowUser = async () => {
+    dispatch(unfollowUser(user.id))
+      .then(res => {
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
   const ProfileOne = styled.div`
     background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
@@ -138,6 +152,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       background-color: ${user.profile_color_two ? user.profile_color_two : null};
       border-color: ${user.profile_color_two ? user.profile_color_two : null};
     }
+  `
+  const ProfileUnfollowButton = styled.button`
+    background-color: ${user.profile_color_two ? user.profile_color_two : null};
+    border-color: ${user.profile_color_two ? user.profile_color_two : null};
   `
 
   return (
@@ -183,12 +201,23 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               )}
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
-            <ProfileFollowButton
-              className='my-4 px-4 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
-              onClick={submitFollowUser}
-            >
-              Follow
-            </ProfileFollowButton>
+
+            {/* FOLLOWER BUTTONS */}
+            {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+              <ProfileUnfollowButton
+                className='my-4 px-4 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
+                onClick={submitUnfollowUser}
+              >
+                Following
+              </ProfileUnfollowButton>
+            ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+              <ProfileFollowButton
+                className='my-4 px-4 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                onClick={submitFollowUser}
+              >
+                Follow
+              </ProfileFollowButton>
+            ) : null}
           </div>
         </ProfileOne>
 
