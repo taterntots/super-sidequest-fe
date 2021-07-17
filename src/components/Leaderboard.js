@@ -160,7 +160,11 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                 }}
                 className={completedOn ?
                   'rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-complete hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out' :
-                  'rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
+                  !completedOn && challenge.is_high_score && !acceptedChallenge.high_score ?
+                    'pointer-events-none opacity-50 rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out' :
+                    !completedOn && challenge.is_speedrun && !acceptedChallenge.total_milliseconds ?
+                      'pointer-events-none opacity-50 rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out' :
+                      'rounded-lg text-lg px-12 py-3 md:mb-0 font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:ring transition duration-150 ease-in-out'}
               >
                 {completedOn ? 'Completed!' : 'Incomplete'}
               </button>
