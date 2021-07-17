@@ -199,12 +199,13 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
               location.pathname === ('/games') ||
               location.pathname === ('/games/private') ||
               location.pathname === ('/challenges/all') ||
-              location.pathname === ('/users')
+              location.pathname === ('/users') ||
+              location.pathname.includes('/friends')
               ? 'px-3 py-1 w-full lg:w-1/4 ml-4 lg:ml-0 rounded text-black'
               : 'invisible px-3 py-1 w-1/4 rounded text-black'}
           placeholder={location.pathname.includes('/challenges') || location.pathname.includes('/challenges/all') ? 'Search by keyword'
             : location.pathname.includes('/games') ? 'Search by game'
-              : location.pathname.includes('/users') ? 'Search by username'
+              : location.pathname.includes('/users') || location.pathname.includes('/friends') ? 'Search by username'
                 : ''}
           onChange={handleInputChange}
           type='search'
