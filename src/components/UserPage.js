@@ -57,6 +57,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [sortOption, setSortOption] = useState('recent');
   const [currentGame, setCurrentGame] = useState({})
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
+  const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
   const location = useLocation();
@@ -84,9 +85,15 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
       dispatch(fetchUserFollowers(user.id))
-      dispatch(fetchCheckIfFollowingUser(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
+
+  // UseEffect to check if the logged in user is following the current user profile
+  useEffect(() => {
+    if (Object.keys(user).length > 1) {
+      dispatch(fetchCheckIfFollowingUser(user.id))
+    }
+  }, [user, isFollowingToggle])
 
   // Resets filter when clicking away from page
   useEffect(() => {
@@ -117,7 +124,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const submitFollowUser = async () => {
     dispatch(followUser(user.id))
       .then(res => {
-        setRefresh(!refresh)
+        setIsFollowingToggle(!isFollowingToggle)
       })
       .catch(err => {
         console.log(err)
@@ -128,7 +135,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const submitUnfollowUser = async () => {
     dispatch(unfollowUser(user.id))
       .then(res => {
-        setRefresh(!refresh)
+        setIsFollowingToggle(!isFollowingToggle)
       })
       .catch(err => {
         console.log(err)
@@ -184,8 +191,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           `bg-profileone` :
           `bg-profileone rounded-b-lg`}
         >
-          <div className='flex justify-between px-10'>
-            <div className='flex items-center py-3'>
+          <div className='sm:flex sm:justify-between text-center px-10'>
+            <div className='flex justify-center items-center py-3'>
               {user.profile_pic_URL ? (
                 <img
                   src={user.profile_pic_URL}
@@ -205,14 +212,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             {/* FOLLOWER BUTTONS */}
             {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
               <ProfileUnfollowButton
-                className='my-4 px-4 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
+                className='mb-4 sm:my-4 w-full sm:px-6 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
                 onClick={submitUnfollowUser}
               >
               Following
               </ProfileUnfollowButton>
             ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
               <ProfileFollowButton
-                className='my-4 px-4 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
                 onClick={submitFollowUser}
               >
                 Follow
