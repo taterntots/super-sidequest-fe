@@ -212,7 +212,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             {/* FOLLOWER BUTTONS */}
             {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
               <ProfileUnfollowButton
-                className='mb-4 sm:my-4 w-full sm:px-6 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
+                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
                 onClick={submitUnfollowUser}
               >
               Following
