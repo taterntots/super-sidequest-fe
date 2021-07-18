@@ -194,29 +194,32 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           `bg-profileone` :
           `bg-profileone rounded-b-lg`}
         >
-          <div className='sm:flex sm:justify-between text-center px-10'>
-            <div className='flex justify-center items-center py-3'>
-              {user.profile_pic_URL ? (
-                <img
-                  src={user.profile_pic_URL}
-                  className='inline-block object-fill w-12 h-12 rounded-md'
-                  alt='user avatar'
-                >
-                </img>
-              ) : (
-                <BlankUser
-                  className='inline-block object-fill w-12 h-12 rounded-md'
-                  alt='placeholder for user avatar'
-                />
-              )}
-              <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
+          <div className='px-10'>
+            <div className='flex justify-center sm:justify-between py-3'>
+              <div className='flex'>
+                {user.profile_pic_URL ? (
+                  <img
+                    src={user.profile_pic_URL}
+                    className='hidden sm:inline object-fill w-20 h-20 rounded-md'
+                    alt='user avatar'
+                  >
+                  </img>
+                ) : (
+                  <BlankUser
+                    className='hidden sm:inline object-fill w-20 h-20 rounded-md'
+                    alt='placeholder for user avatar'
+                  />
+                )}
+                <div className='sm:hidden'>
+                  <Level user_experience_points={user_experience_points} user={user} />
+                </div>
+                <h1 className='pl-5 pb-2 self-center text-4xl text-white'>{user.username}</h1>
+              </div>
+              <div className='hidden sm:inline'>
+                <Level user_experience_points={user_experience_points} user={user} />
+              </div>
             </div>
-
-            {/* TOTAL EXPERIENCE LEVEL */}
-            <div className='self-center'>
-              <Level user_experience_points={user_experience_points} />
-            </div>
-
+            
             {/* FOLLOWER BUTTONS */}
             {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
               <ProfileUnfollowButton
