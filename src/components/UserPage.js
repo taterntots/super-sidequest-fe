@@ -4,6 +4,7 @@ import {
   fetchUserFollowers,
   fetchCheckIfFollowingUser,
   fetchUserByUsername,
+  fetchUserEXPForAllGames,
   followUser,
   unfollowUser,
   updateUser,
@@ -33,6 +34,7 @@ import ChallengesSearchPage from './ChallengesSearchPage';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
+import Level from './utils/Level';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 
 // IMAGES
@@ -49,7 +51,7 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, user_followers, is_following_user, loading } = useSelector(userSelector);
+  const { user, user_followers, user_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -85,6 +87,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
       dispatch(fetchUserFollowers(user.id))
+      dispatch(fetchUserEXPForAllGames(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
 
@@ -209,13 +212,18 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
 
+            {/* TOTAL EXPERIENCE LEVEL */}
+            <div className='self-center'>
+              <Level user_experience_points={user_experience_points} />
+            </div>
+
             {/* FOLLOWER BUTTONS */}
             {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
               <ProfileUnfollowButton
                 className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
                 onClick={submitUnfollowUser}
               >
-              Following
+                Following
               </ProfileUnfollowButton>
             ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
               <ProfileFollowButton

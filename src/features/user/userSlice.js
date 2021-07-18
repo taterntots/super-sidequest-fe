@@ -12,6 +12,7 @@ import cogoToast from 'cogo-toast';
 export const initialState = {
   users: [],
   user_followers: [],
+  user_experience_points: 0,
   user: {},
   user_admin: true,
   is_following_user: false,
@@ -91,6 +92,19 @@ export const fetchUserAdminStatus = createAsyncThunk('users/fetchUserAdminStatus
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/is-admin`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to calculate a user's experience points for all games
+export const fetchUserEXPForAllGames = createAsyncThunk('users/fetchUserEXPForAllGames', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/exp`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -407,6 +421,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUserAdminStatus.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserEXPForAllGames.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserEXPForAllGames.fulfilled]: (state, { payload }) => {
+      state.user_experience_points = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserEXPForAllGames.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
