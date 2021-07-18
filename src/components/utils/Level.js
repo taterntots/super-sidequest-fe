@@ -38,13 +38,15 @@ const Level = ({ user_experience_points, user }) => {
         background
         backgroundPadding={6}
         styles={buildStyles({
-          backgroundColor: user.profile_color_two,
+          backgroundColor: user.profile_color_two ? user.profile_color_two : '#3E828C',
           textColor: '#FFFFFF',
           pathColor: '#FFFFFF',
           trailColor: 'transparent'
         })}
       >
-        {level}
+        <p className='cursor-default'>
+          {level}
+        </p>
       </CircularProgressbarWithChildren>
     </div >
   )

@@ -196,6 +196,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         >
           <div className='px-10'>
             <div className='flex justify-center sm:justify-between py-3'>
+
+              {/* Profile Pic and Name Container */}
               <div className='flex'>
                 {user.profile_pic_URL ? (
                   <img
@@ -213,29 +215,33 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                 <div className='sm:hidden'>
                   <Level user_experience_points={user_experience_points} user={user} />
                 </div>
-                <h1 className='pl-5 pb-2 self-center text-4xl text-white'>{user.username}</h1>
+
+                {/* Name and follower buttons */}
+                <div className='self-center text-center pl-2'>
+                  <h1 className='pb-2 px-2 text-4xl text-white'>{user.username}</h1>
+                  {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+                    <ProfileUnfollowButton
+                      className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
+                      onClick={submitUnfollowUser}
+                    >
+                      Following
+                    </ProfileUnfollowButton>
+                  ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+                    <ProfileFollowButton
+                      className='w-full px-3 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                      onClick={submitFollowUser}
+                    >
+                      Follow
+                    </ProfileFollowButton>
+                  ) : null}
+                </div>
               </div>
+
+              {/* LEVEL UP ICON */}
               <div className='hidden sm:inline'>
                 <Level user_experience_points={user_experience_points} user={user} />
               </div>
             </div>
-            
-            {/* FOLLOWER BUTTONS */}
-            {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
-              <ProfileUnfollowButton
-                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
-                onClick={submitUnfollowUser}
-              >
-                Following
-              </ProfileUnfollowButton>
-            ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
-              <ProfileFollowButton
-                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
-                onClick={submitFollowUser}
-              >
-                Follow
-              </ProfileFollowButton>
-            ) : null}
           </div>
         </ProfileOne>
 
