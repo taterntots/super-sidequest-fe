@@ -14,10 +14,10 @@ import FeaturedChallengeCard from '../features/challenge/FeaturedChallengeCard';
 const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challenge, ProfileOne, ProfileTwo, user }) => {
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-      <div className="lg:flex justify-between">
+      <div className='lg:flex justify-between'>
 
         {/* STATS */}
-        <ProfileTwo className="mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+        <ProfileTwo className='mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white'>
           <h1 className='text-center text-2xl font-medium py-4'>
             Stats
           </h1>
@@ -40,8 +40,9 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
                 <p className='pl-4'>{gameStat.total_challenges_completed}</p>
               </Link>
             ))}
+            {/* ADDS BOTTOM LAYER */}
             <p className='invisible'>
-              INVISIBLE TEXT TO SHOW ROUNDED BORDER
+              BOTTOM
             </p>
           </div>
         </ProfileTwo>

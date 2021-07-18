@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  fetchUserFollowers,
+  fetchCheckIfFollowingUser,
   fetchUserByUsername,
+  followUser,
+  unfollowUser,
   updateUser,
   userSelector
 } from '../features/user/userSlice';
@@ -27,12 +31,17 @@ import styled from '@emotion/styled';
 import ProfilePage from './ProfilePage';
 import ChallengesSearchPage from './ChallengesSearchPage';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
+import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
+import { ReactComponent as TwitterLogo } from '../img/TwitterLogo.svg';
+import { ReactComponent as DiscordLogo } from '../img/DiscordLogo.svg';
+import { ReactComponent as YouTubeLogo } from '../img/YouTubeLogo.svg';
+import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------- USER PAGE-------------------------------------
@@ -40,7 +49,7 @@ import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, loading } = useSelector(userSelector);
+  const { user, user_followers, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -48,6 +57,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [sortOption, setSortOption] = useState('recent');
   const [currentGame, setCurrentGame] = useState({})
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
+  const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
   const location = useLocation();
@@ -55,7 +65,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   // Grabs user data from the server
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
-  }, [dispatch, refresh, route.params.username])
+  }, [route.params.username])
 
   // Sets game filter if exists in URL
   useEffect(() => {
@@ -74,8 +84,16 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallenges({ user_id: user.id, sort_option: sortOption }))
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
+      dispatch(fetchUserFollowers(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
+
+  // UseEffect to check if the logged in user is following the current user profile
+  useEffect(() => {
+    if (Object.keys(user).length > 1) {
+      dispatch(fetchCheckIfFollowingUser(user.id))
+    }
+  }, [user, isFollowingToggle])
 
   // Resets filter when clicking away from page
   useEffect(() => {
@@ -102,6 +120,28 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       })
   };
 
+  // Function to handle following a user
+  const submitFollowUser = async () => {
+    dispatch(followUser(user.id))
+      .then(res => {
+        setIsFollowingToggle(!isFollowingToggle)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle unfollowing a user
+  const submitUnfollowUser = async () => {
+    dispatch(unfollowUser(user.id))
+      .then(res => {
+        setIsFollowingToggle(!isFollowingToggle)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
   const ProfileOne = styled.div`
     background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
@@ -114,32 +154,44 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const ProfileOneButton = styled.button`
     background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
+  const ProfileFollowButton = styled.button`
+    &:hover {
+      background-color: ${user.profile_color_two ? user.profile_color_two : null};
+      border-color: ${user.profile_color_two ? user.profile_color_two : null};
+    }
+  `
+  const ProfileUnfollowButton = styled.button`
+    background-color: ${user.profile_color_two ? user.profile_color_two : null};
+    border-color: ${user.profile_color_two ? user.profile_color_two : null};
+  `
 
   return (
     <>
       {/* USER INFO */}
-      <div
-        className={localStorage.getItem('id') === user.id ?
-          'mb-4 hover:opacity-50 cursor-pointer transform transition' :
-          'mb-4'
-        }
-        onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
-      >
-        {localStorage.getItem('id') === user.id ? (
-          <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
-            EDIT
-          </p>
-        ) : null}
-        <div>
+      <div className='mb-4'>
+        <div
+          className={localStorage.getItem('id') === user.id ?
+            'hover:opacity-50 cursor-pointer transform transition' :
+            ''}
+          onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
+        >
           <img
-            className='object-cover h-72 w-full rounded-t-md'
+            className='object-cover h-72 w-full rounded-t-lg'
             src={user.banner_pic_URL ? user.banner_pic_URL : UserBannerPlaceholder}
             alt='banner for a user'
           />
+          {localStorage.getItem('id') === user.id ? (
+            <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
+              EDIT
+            </p>
+          ) : null}
         </div>
 
-        <ProfileOne className={`px-0 sm:px-10 bg-profileone rounded-b-lg`}>
-          <div className='sm:flex justify-between'>
+        <ProfileOne className={user.twitter_URL || user.twitch_URL || user.youtube_URL || user.discord_URL ?
+          `bg-profileone` :
+          `bg-profileone rounded-b-lg`}
+        >
+          <div className='sm:flex sm:justify-between text-center px-10'>
             <div className='flex justify-center items-center py-3'>
               {user.profile_pic_URL ? (
                 <img
@@ -156,14 +208,55 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               )}
               <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
             </div>
+
+            {/* FOLLOWER BUTTONS */}
+            {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+              <ProfileUnfollowButton
+                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
+                onClick={submitUnfollowUser}
+              >
+              Following
+              </ProfileUnfollowButton>
+            ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+              <ProfileFollowButton
+                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                onClick={submitFollowUser}
+              >
+                Follow
+              </ProfileFollowButton>
+            ) : null}
           </div>
         </ProfileOne>
+
+        {/* SOCIAL ICONS */}
+        <div className='flex rounded-b-lg overflow-hidden'>
+          {user.twitter_URL ? (
+            <a className='flex justify-center w-full py-1 h-6 bg-twitter cursor-pointer hover:opacity-80' href={user.twitter_URL} target='_blank'>
+              <TwitterLogo />
+            </a>
+          ) : null}
+          {user.twitch_URL ? (
+            <a className='flex justify-center w-full py-1 h-6 bg-twitch cursor-pointer hover:opacity-80' href={user.twitch_URL} target='_blank'>
+              <TwitchLogo />
+            </a>
+          ) : null}
+          {user.discord_URL ? (
+            <a className='flex justify-center w-full py-1 h-6 bg-discord cursor-pointer hover:opacity-80' href={user.discord_URL} target='_blank'>
+              <DiscordLogo />
+            </a>
+          ) : null}
+          {user.youtube_URL ? (
+            <a className='flex justify-center w-full py-1 h-6 bg-youtube cursor-pointer hover:opacity-80' href={user.youtube_URL} target='_blank'>
+              <YouTubeLogo />
+            </a>
+          ) : null}
+        </div>
       </div>
 
       {/* TAB CONTENT */}
       <div className='flex flex-row items-center justify-start text-xl text-white'>
         {/* PROFILE */}
-        {!url.includes('challenges') && !url.includes('add-challenge') ? (
+        {!url.includes('challenges') && !url.includes('friends') && !url.includes('add-challenge') ? (
           <ProfileOne className={'bg-profileone rounded-t-md'}>
             <Link
               to={`/${user.username}`}
@@ -207,6 +300,27 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             className='px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'
           >
             Quests
+          </Link>
+        )}
+
+        {/* FRIENDS */}
+        {url.includes('friends') ? (
+          <ProfileOne className={'bg-profileone rounded-t-md'}>
+            <Link
+              to={`/${user.username}/friends`}
+              onClick={() => handleClearSearchBar()}
+              className='px-5 hover:text-navbarbuttonhighlight'
+            >
+              Friends
+            </Link>
+          </ProfileOne>
+        ) : (
+          <Link
+            to={`/${user.username}/friends`}
+            onClick={() => handleClearSearchBar()}
+            className='px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'
+          >
+            Friends
           </Link>
         )}
 
@@ -292,6 +406,20 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             setRefresh={setRefresh}
             ProfileOne={ProfileOne}
             ProfileTwo={ProfileTwo}
+            {...props}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/:username/friends`}
+        render={(props) => (
+          <FollowerPage
+            user_followers={user_followers}
+            searchTerm={searchTerm}
+            handleClearSearchBar={handleClearSearchBar}
+            ProfileTwo={ProfileTwo}
+            user={user}
             {...props}
           />
         )}

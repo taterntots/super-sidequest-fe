@@ -39,11 +39,11 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
+  const gameFromParam = queryString.parse(location.search).game
   const { difficulties } = useSelector(difficultySelector);
   const { systems } = useSelector(systemSelector)
   const { user_accepted_games, loading: gameLoading } = useSelector(gameSelector)
-  const [currentChallengeFilter, setCurrentChallengeFilter] = useState('Created')
-  const gameFromParam = queryString.parse(location.search).game
+  const [currentChallengeFilter, setCurrentChallengeFilter] = useState(gameFromParam ? 'Completed' : 'Created')
 
   // Grabs filterable data from the server
   useEffect(() => {
