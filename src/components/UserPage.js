@@ -65,7 +65,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   // Grabs user data from the server
   useEffect(() => {
     dispatch(fetchUserByUsername(route.params.username))
-  }, [route.params.username])
+  }, [refresh, route.params.username])
 
   // Sets game filter if exists in URL
   useEffect(() => {
