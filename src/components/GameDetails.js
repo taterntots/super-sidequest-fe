@@ -158,7 +158,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
               )}
               <div
                 className={localStorage.getItem('id') ?
-                  'inline sm:hidden' :
+                  'inline sm:hidden self-center' :
                   'hidden'}
               >
                 <Level user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
@@ -166,7 +166,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
 
               {/* Name */}
               <div className='self-center text-center ml-3'>
-                <h1 className='pb-2 px-2 text-4xl text-white'>{game.name}</h1>
+                <h1 className='pb-2 px-2 text-2xl sm:text-4xl text-white'>{game.name}</h1>
               </div>
             </div>
 

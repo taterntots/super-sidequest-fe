@@ -212,13 +212,13 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                     alt='placeholder for user avatar'
                   />
                 )}
-                <div className='sm:hidden'>
+                <div className='sm:hidden self-center'>
                   <Level user_experience_points={user_experience_points} user={user} />
                 </div>
 
                 {/* Name and follower buttons */}
                 <div className='self-center text-center ml-3'>
-                  <h1 className='pb-2 px-2 text-4xl text-white'>{user.username}</h1>
+                  <h1 className='pb-2 px-2 text-2xl sm:text-4xl text-white'>{user.username}</h1>
                   {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileUnfollowButton
                       className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
@@ -238,7 +238,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
               </div>
 
               {/* LEVEL UP ICON */}
-              <div className='hidden sm:inline'>
+              <div className='hidden sm:inline self-center'>
                 <Level user_experience_points={user_experience_points} user={user} />
               </div>
             </div>
