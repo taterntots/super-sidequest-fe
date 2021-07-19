@@ -19,7 +19,7 @@ import {
 } from '../challenge/challengeSlice';
 
 // ROUTING
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 
 // STYLING
 import styled from '@emotion/styled';
@@ -225,16 +225,19 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
             <h2 className='text-center text-lg font-medium pb-4 lg:my-0'>
               by {challenge.username}
             </h2>
-            <div>
-              <img
-                className='rounded-t-md w-full'
-                src={challenge.banner_pic_URL}
-                alt='banner for a single game'
-              />
-              <p className='mb-4 p-1 text-center text-lg rounded-b-md bg-gray-700'>
-                {challenge.game_title}
-              </p>
-            </div>
+            <Link to={`/games/${challenge.game_id}/challenges`}>
+              <div className='transform transition duration-500 hover:scale-105'>
+                <img
+                  className='rounded-t-md w-full'
+                  src={challenge.banner_pic_URL}
+                  alt='banner for a single game'
+                />
+                <p className='mb-4 p-1 text-center text-lg rounded-b-md bg-gray-700'>
+                  {challenge.game_title}
+                </p>
+              </div>
+            </Link>
+
             <ProfileOnePara className='mb-4 py-2 px-4 border-2 text-center rounded-md bg-profileone'>
               {challenge.description}
             </ProfileOnePara>
