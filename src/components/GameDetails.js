@@ -10,7 +10,7 @@ import {
   gameSelector
 } from '../features/game/gameSlice';
 import {
-  fetchUsers,
+  fetchUsersWithGameExperience,
   fetchUserAdminStatus,
   fetchUserEXPForGameById,
   userSelector
@@ -38,7 +38,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
   const history = useHistory();
   const route = useRouteMatch();
   const { game, challenges, popular_challenges, expire_challenges, loading } = useSelector(gameSelector);
-  const { users, user_admin, user_game_experience_points } = useSelector(userSelector)
+  const { users_with_game_experience, user_admin, user_game_experience_points } = useSelector(userSelector)
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
   const [filteredPopularChallenges, setFilteredPopularChallenges] = useState(challenges);
   const [filteredExpireChallenges, setFilteredExpireChallenges] = useState(challenges);
@@ -48,11 +48,11 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
 
   // Grabs all necessary data from server
   useEffect(() => {
-    dispatch(fetchUsers())
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges(route.params.gameId))
     dispatch(fetchGameChallengesByPopularity(route.params.gameId))
     dispatch(fetchGameChallengesByExpiration(route.params.gameId))
+    dispatch(fetchUsersWithGameExperience(route.params.gameId))
     if (localStorage.getItem('id')) {
       dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
       dispatch(fetchUserEXPForGameById({ user_id: localStorage.getItem('id'), game_id: route.params.gameId }))
@@ -224,7 +224,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
             path={`/games/:gameId/leaderboard`}
             render={(props) => (
               <UserLeaderboard
-                users={users}
+                users={users_with_game_experience}
                 {...props}
               />
             )}

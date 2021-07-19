@@ -11,6 +11,7 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   users: [],
+  users_with_game_experience: [],
   user_followers: [],
   user_experience_points: 0,
   user_game_experience_points: 0,
@@ -26,6 +27,19 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to grab all users with specific game experience points
+export const fetchUsersWithGameExperience = createAsyncThunk('users/fetchUsersWithGameExperience', async (gameId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/games/${gameId}`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -375,6 +389,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUsers.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUsersWithGameExperience.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUsersWithGameExperience.fulfilled]: (state, { payload }) => {
+      state.users_with_game_experience = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUsersWithGameExperience.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
