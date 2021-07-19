@@ -4,6 +4,8 @@ import {
   fetchUserFollowers,
   fetchCheckIfFollowingUser,
   fetchUserByUsername,
+  fetchUserEXPForAllGames,
+  fetchUserEXPForGameById,
   followUser,
   unfollowUser,
   updateUser,
@@ -33,6 +35,7 @@ import ChallengesSearchPage from './ChallengesSearchPage';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
+import LevelProgressBar from './utils/LevelProgressBar';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 
 // IMAGES
@@ -49,13 +52,14 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, user_followers, is_following_user, loading } = useSelector(userSelector);
+  const { user, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [filteredCompletedChallenges, setFilteredCompletedChallenges] = useState(completed_challenges);
   const [sortOption, setSortOption] = useState('recent');
   const [currentGame, setCurrentGame] = useState({})
+  const [currentGameId, setCurrentGameId] = useState()
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
@@ -74,7 +78,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     } else {
       setCurrentGame({ game: 'All' })
     }
-  }, [refresh, location.search])
+  }, [location.search, completed_challenges])
+
+  // Sets current game ID based on game filter
+  useEffect(() => {
+    if (completed_challenges.length > 0) {
+      setCurrentGameId(completed_challenges.find(coc => coc.game_title === currentGame.game))
+    }
+  }, [currentGame, completed_challenges])
 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
   useEffect(() => {
@@ -85,8 +96,18 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
       dispatch(fetchUserFollowers(user.id))
+      dispatch(fetchUserEXPForAllGames(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
+
+  // Fetches experience points for game if URL is looking for a specific game
+  useEffect(() => {
+    if (Object.keys(user).length > 1) {
+      if (currentGameId && currentGame.game !== 'All') {
+        dispatch(fetchUserEXPForGameById({ user_id: user.id, game_id: currentGameId.game_id }))
+      }
+    }
+  }, [dispatch, user, currentGameId, currentGame, refresh])
 
   // UseEffect to check if the logged in user is following the current user profile
   useEffect(() => {
@@ -191,40 +212,64 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           `bg-profileone` :
           `bg-profileone rounded-b-lg`}
         >
-          <div className='sm:flex sm:justify-between text-center px-10'>
-            <div className='flex justify-center items-center py-3'>
-              {user.profile_pic_URL ? (
-                <img
-                  src={user.profile_pic_URL}
-                  className='inline-block object-fill w-12 h-12 rounded-md'
-                  alt='user avatar'
-                >
-                </img>
-              ) : (
-                <BlankUser
-                  className='inline-block object-fill w-12 h-12 rounded-md'
-                  alt='placeholder for user avatar'
-                />
-              )}
-              <h1 className='pl-5 text-3xl text-white'>{user.username}</h1>
-            </div>
+          <div className='sm:px-10'>
+            <div className='flex justify-center sm:justify-between py-3'>
 
-            {/* FOLLOWER BUTTONS */}
-            {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
-              <ProfileUnfollowButton
-                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
-                onClick={submitUnfollowUser}
-              >
-              Following
-              </ProfileUnfollowButton>
-            ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
-              <ProfileFollowButton
-                className='mb-4 sm:my-4 w-full sm:w-auto sm:px-6 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
-                onClick={submitFollowUser}
-              >
-                Follow
-              </ProfileFollowButton>
-            ) : null}
+              {/* Profile Pic and Name Container */}
+              <div className='flex'>
+                {user.profile_pic_URL ? (
+                  <img
+                    src={user.profile_pic_URL}
+                    className='hidden sm:inline object-fill w-20 h-20 rounded-md'
+                    alt='user avatar'
+                  >
+                  </img>
+                ) : (
+                  <BlankUser
+                    className='hidden sm:inline object-fill w-20 h-20 rounded-md'
+                    alt='placeholder for user avatar'
+                  />
+                )}
+                <div className='sm:hidden self-center'>
+                  <LevelProgressBar user_experience_points={!location.search || currentGame.game === 'All' ?
+                    user_experience_points :
+                    location.search && currentGame.game !== 'All' && currentGameId ? user_game_experience_points :
+                      null}
+                    user={user}
+                  />
+                </div>
+
+                {/* Name and follower buttons */}
+                <div className='self-center text-center ml-3'>
+                  <h1 className='pb-2 px-2 text-3xl sm:text-4xl text-white'>{user.username}</h1>
+                  {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+                    <ProfileUnfollowButton
+                      className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
+                      onClick={submitUnfollowUser}
+                    >
+                      Following
+                    </ProfileUnfollowButton>
+                  ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
+                    <ProfileFollowButton
+                      className='w-full px-3 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                      onClick={submitFollowUser}
+                    >
+                      Follow
+                    </ProfileFollowButton>
+                  ) : null}
+                </div>
+              </div>
+
+              {/* LEVEL UP ICON */}
+              <div className='hidden sm:inline self-center'>
+                <LevelProgressBar user_experience_points={!location.search || currentGame.game === 'All' ?
+                  user_experience_points :
+                  location.search && currentGame.game !== 'All' && currentGameId ? user_game_experience_points :
+                    null}
+                  user={user}
+                />
+              </div>
+            </div>
           </div>
         </ProfileOne>
 

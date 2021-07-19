@@ -75,7 +75,18 @@ const Dashboard = () => {
                 searchTerm={searchTerm}
                 handleClearSearchBar={handleClearSearchBar}
                 refresh={refresh}
-                setRefresh={setRefresh}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/users/leaderboard`}
+            render={(props) => (
+              <UserListPage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
                 {...props}
               />
             )}
@@ -115,6 +126,19 @@ const Dashboard = () => {
                 refresh={refresh}
                 setRefresh={setRefresh}
                 handleClearSearchBar={handleClearSearchBar}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/games/:gameId/leaderboard`}
+            render={(props) => (
+              <GameDetails
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
+                setRefresh={setRefresh}
                 {...props}
               />
             )}
