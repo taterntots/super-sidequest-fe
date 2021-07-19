@@ -78,14 +78,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     } else {
       setCurrentGame({ game: 'All' })
     }
-  }, [refresh, location.search, completed_challenges])
+  }, [location.search, completed_challenges])
 
   // Sets current game ID based on game filter
   useEffect(() => {
     if (completed_challenges.length > 0) {
       setCurrentGameId(completed_challenges.find(coc => coc.game_title === currentGame.game))
     }
-  }, [refresh, currentGame, completed_challenges])
+  }, [currentGame, completed_challenges])
 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
   useEffect(() => {
