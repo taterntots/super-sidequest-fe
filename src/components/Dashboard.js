@@ -75,7 +75,18 @@ const Dashboard = () => {
                 searchTerm={searchTerm}
                 handleClearSearchBar={handleClearSearchBar}
                 refresh={refresh}
-                setRefresh={setRefresh}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/users/leaderboard`}
+            render={(props) => (
+              <UserListPage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
                 {...props}
               />
             )}
