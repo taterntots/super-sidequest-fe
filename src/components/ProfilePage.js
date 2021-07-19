@@ -3,6 +3,9 @@ import React from 'react';
 // ROUTING
 import { Link } from 'react-router-dom';
 
+// FUNCTIONS
+import { levelUp } from './utils/Functions';
+
 // COMPONENTS
 import ChallengeCard from '../features/challenge/ChallengeCard';
 import FeaturedChallengeCard from '../features/challenge/FeaturedChallengeCard';
@@ -27,7 +30,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
                 Game
               </p>
               <p>
-                Quests Completed
+                Level
               </p>
             </div>
             {challenge_game_stats.map((gameStat, index) => (
@@ -37,7 +40,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
                 className={`flex justify-between font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:opacity-60`}
               >
                 <p>{gameStat.game}</p>
-                <p className='pl-4'>{gameStat.total_challenges_completed}</p>
+                <p className='pl-4'>{levelUp(gameStat.total_points).level}</p>
               </Link>
             ))}
             {/* ADDS BOTTOM LAYER */}

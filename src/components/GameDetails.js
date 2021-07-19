@@ -22,7 +22,7 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 import GameChallengeSearchPage from './GameChallengeSearchPage';
 import EditGameModal from './utils/modals/EditGameModal';
 import DeleteGameModal from './utils/modals/DeleteGameModal';
-import Level from './utils/Level';
+import LevelProgressBar from './utils/LevelProgressBar';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
@@ -144,7 +144,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
                   'inline sm:hidden self-center' :
                   'hidden'}
               >
-                <Level user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
+                <LevelProgressBar user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
               </div>
 
               {/* Name */}
@@ -158,7 +158,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
               'hidden sm:inline' :
               'hidden'}
             >
-              <Level user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
+              <LevelProgressBar user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
             </div>
           </div>
         </div>

@@ -35,7 +35,7 @@ import ChallengesSearchPage from './ChallengesSearchPage';
 import ChallengeDetails from '../features/challenge/ChallengeDetails';
 import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
-import Level from './utils/Level';
+import LevelProgressBar from './utils/LevelProgressBar';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 
 // IMAGES
@@ -231,7 +231,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                   />
                 )}
                 <div className='sm:hidden self-center'>
-                  <Level user_experience_points={!location.search || currentGame.game === 'All' ?
+                  <LevelProgressBar user_experience_points={!location.search || currentGame.game === 'All' ?
                     user_experience_points :
                     location.search && currentGame.game !== 'All' && currentGameId ? user_game_experience_points :
                       null}
@@ -262,7 +262,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
               {/* LEVEL UP ICON */}
               <div className='hidden sm:inline self-center'>
-                <Level user_experience_points={!location.search || currentGame.game === 'All' ?
+                <LevelProgressBar user_experience_points={!location.search || currentGame.game === 'All' ?
                   user_experience_points :
                   location.search && currentGame.game !== 'All' && currentGameId ? user_game_experience_points :
                     null}
