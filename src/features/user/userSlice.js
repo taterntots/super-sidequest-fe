@@ -13,6 +13,7 @@ export const initialState = {
   users: [],
   user_followers: [],
   user_experience_points: 0,
+  user_game_experience_points: 0,
   user: {},
   user_admin: true,
   is_following_user: false,
@@ -105,6 +106,21 @@ export const fetchUserEXPForAllGames = createAsyncThunk('users/fetchUserEXPForAl
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/exp`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to calculate a user's experience points for a specific game
+export const fetchUserEXPForGameById= createAsyncThunk('users/fetchUserEXPForGameById', async (gameId) => {
+  const userId = localStorage.getItem('id')
+
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/games/${gameId}/exp`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -433,6 +449,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUserEXPForAllGames.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserEXPForGameById.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserEXPForGameById.fulfilled]: (state, { payload }) => {
+      state.user_game_experience_points = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserEXPForGameById.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

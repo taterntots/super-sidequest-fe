@@ -217,7 +217,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                 </div>
 
                 {/* Name and follower buttons */}
-                <div className='self-center text-center pl-2'>
+                <div className='self-center text-center ml-3'>
                   <h1 className='pb-2 px-2 text-4xl text-white'>{user.username}</h1>
                   {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileUnfollowButton

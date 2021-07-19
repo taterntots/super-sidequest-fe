@@ -11,6 +11,7 @@ import {
 } from '../features/game/gameSlice';
 import {
   fetchUserAdminStatus,
+  fetchUserEXPForGameById,
   userSelector
 } from '../features/user/userSlice';
 
@@ -21,6 +22,7 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 import GameChallengeSearchPage from './GameChallengeSearchPage';
 import EditGameModal from './utils/modals/EditGameModal';
 import DeleteGameModal from './utils/modals/DeleteGameModal';
+import Level from './utils/Level';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
@@ -34,7 +36,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
   const history = useHistory();
   const route = useRouteMatch();
   const { game, challenges, popular_challenges, expire_challenges, loading } = useSelector(gameSelector);
-  const { user_admin } = useSelector(userSelector)
+  const { user_admin, user_game_experience_points } = useSelector(userSelector)
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
   const [filteredPopularChallenges, setFilteredPopularChallenges] = useState(challenges);
   const [filteredExpireChallenges, setFilteredExpireChallenges] = useState(challenges);
@@ -49,6 +51,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
     dispatch(fetchGameChallengesByExpiration(route.params.gameId))
     if (localStorage.getItem('id')) {
       dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+      dispatch(fetchUserEXPForGameById(route.params.gameId))
     }
   }, [dispatch, refresh])
 
@@ -112,7 +115,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
             alt='banner for a single game'
           />
         </div>
-        <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
+        {/* <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
           <div className='sm:flex justify-between'>
             <div className='flex justify-center items-center py-3'>
               {game.game_pic_URL ? (
@@ -124,7 +127,55 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
               ) : (
                 <BlankUser className='inline-block object-fill w-12 h-12 rounded-md' />
               )}
+              <div className='sm:hidden'>
+                <Level user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
+              </div>
               <h1 className='pl-5 text-3xl text-white'>{game.name}</h1>
+            </div>
+          </div>
+        </div> */}
+        <div className='px-10 bg-profiletwo rounded-b-lg'>
+          <div className='flex justify-center sm:justify-between py-3'>
+
+            {/* Game Pic and Name Container */}
+            <div className='flex'>
+              {game.game_pic_URL ? (
+                <img
+                  src={game.game_pic_URL}
+                  className={localStorage.getItem('id') ?
+                    'hidden sm:inline object-fill w-20 h-20 rounded-md' :
+                    'object-fill w-20 h-20 rounded-md'}
+                  alt='game avatar'
+                >
+                </img>
+              ) : (
+                <BlankUser
+                  className={localStorage.getItem('id') ?
+                    'hidden sm:inline object-fill w-20 h-20 rounded-md' :
+                    'object-fill w-20 h-20 rounded-md'}
+                  alt='placeholder for game avatar'
+                />
+              )}
+              <div
+                className={localStorage.getItem('id') ?
+                  'inline sm:hidden' :
+                  'hidden'}
+              >
+                <Level user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
+              </div>
+
+              {/* Name */}
+              <div className='self-center text-center ml-3'>
+                <h1 className='pb-2 px-2 text-4xl text-white'>{game.name}</h1>
+              </div>
+            </div>
+
+            {/* LEVEL UP ICON */}
+            <div className={localStorage.getItem('id') ?
+              'hidden sm:inline' :
+              'hidden'}
+            >
+              <Level user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
             </div>
           </div>
         </div>
