@@ -96,45 +96,28 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
   return (
     <>
       {/* GAME INFO */}
-      <div
-        className={user_admin && localStorage.getItem('token') ?
-          'mb-4 hover:opacity-50 cursor-pointer transform transition' :
-          'mb-4'
-        }
-        onClick={() => user_admin && localStorage.getItem('token') ? setOpenGameEdit(true) : null}
-      >
-        {user_admin && localStorage.getItem('token') ? (
-          <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
-            EDIT
-          </p>
-        ) : null}
-        <div>
+      <div className='mb-4'>
+        <div
+          className={user_admin && localStorage.getItem('token') ?
+            'hover:opacity-50 cursor-pointer transform transition' :
+            ''
+          }
+          onClick={() => user_admin && localStorage.getItem('token') ? setOpenGameEdit(true) : null}
+        >
+          {user_admin && localStorage.getItem('token') ? (
+            <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
+              EDIT
+            </p>
+          ) : null}
           <img
             className='object-cover h-72 w-full rounded-t-md'
             src={game.banner_pic_URL}
             alt='banner for a single game'
           />
         </div>
-        {/* <div className='px-0 sm:px-10 bg-profiletwo rounded-b-lg'>
-          <div className='sm:flex justify-between'>
-            <div className='flex justify-center items-center py-3'>
-              {game.game_pic_URL ? (
-                <img
-                  className='inline-block object-fill w-12 h-12 rounded-md'
-                  alt='game avatar'
-                  src={game.game_pic_URL}
-                />
-              ) : (
-                <BlankUser className='inline-block object-fill w-12 h-12 rounded-md' />
-              )}
-              <div className='sm:hidden'>
-                <Level user_experience_points={user_game_experience_points} user={{ profile_color_two: null }} />
-              </div>
-              <h1 className='pl-5 text-3xl text-white'>{game.name}</h1>
-            </div>
-          </div>
-        </div> */}
-        <div className='px-10 bg-profiletwo rounded-b-lg'>
+
+
+        <div className='px-10 bg-profileone rounded-b-lg'>
           <div className='flex justify-center sm:justify-between py-3'>
 
             {/* Game Pic and Name Container */}
