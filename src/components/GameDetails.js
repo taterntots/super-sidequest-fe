@@ -10,19 +10,21 @@ import {
   gameSelector
 } from '../features/game/gameSlice';
 import {
+  fetchUsers,
   fetchUserAdminStatus,
   fetchUserEXPForGameById,
   userSelector
 } from '../features/user/userSlice';
 
 // ROUTING
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
 
 // COMPONENTS
 import GameChallengeSearchPage from './GameChallengeSearchPage';
 import EditGameModal from './utils/modals/EditGameModal';
 import DeleteGameModal from './utils/modals/DeleteGameModal';
 import LevelProgressBar from './utils/LevelProgressBar';
+import UserLeaderboard from '../features/user/UserLeaderboard';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
@@ -36,15 +38,17 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
   const history = useHistory();
   const route = useRouteMatch();
   const { game, challenges, popular_challenges, expire_challenges, loading } = useSelector(gameSelector);
-  const { user_admin, user_game_experience_points } = useSelector(userSelector)
+  const { users, user_admin, user_game_experience_points } = useSelector(userSelector)
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
   const [filteredPopularChallenges, setFilteredPopularChallenges] = useState(challenges);
   const [filteredExpireChallenges, setFilteredExpireChallenges] = useState(challenges);
   const [openGameEdit, setOpenGameEdit] = useState(false);
   const [openGameDelete, setOpenGameDelete] = useState(false);
+  const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
 
   // Grabs all necessary data from server
   useEffect(() => {
+    dispatch(fetchUsers())
     dispatch(fetchGameById(route.params.gameId))
     dispatch(fetchGameChallenges(route.params.gameId))
     dispatch(fetchGameChallengesByPopularity(route.params.gameId))
@@ -164,25 +168,68 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
         </div>
       </div>
 
+      {/* TAB CONTENT */}
+      <div className='flex flex-row items-center justify-start text-xl text-white'>
+        {/* ALL GAME QUESTS */}
+        <Link
+          to={`/games/${route.params.gameId}/challenges`}
+          onClick={() => handleClearSearchBar()}
+          className={url.includes('games') && !url.includes('leaderboard') ?
+            'px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md' :
+            'px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'}
+        >
+          Quests
+        </Link>
+        {/* GAME LEADERBOARD */}
+        <Link
+          to={`/games/${route.params.gameId}/leaderboard`}
+          onClick={() => handleClearSearchBar()}
+          className={url.includes('leaderboard') && url.includes('games') ?
+            'px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md' :
+            'px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'}
+        >
+          Leaderboard
+        </Link>
+      </div>
+
       {/* Modals */}
       <EditGameModal open={openGameEdit} setOpen={setOpenGameEdit} setOpenDelete={setOpenGameDelete} submitGameEdit={submitGameEdit} loading={loading} game={game} />
       <DeleteGameModal open={openGameDelete} setOpen={setOpenGameDelete} submitGameDelete={submitGameDelete} loading={loading} />
 
-      {/* RENDERS GAME CHALLENGES SEARCH PAGE */}
-      <div>
-        <GameChallengeSearchPage
-          challenges={challenges}
-          popular_challenges={popular_challenges}
-          expire_challenges={expire_challenges}
-          filteredChallenges={filteredChallenges}
-          filteredPopularChallenges={filteredPopularChallenges}
-          filteredExpireChallenges={filteredExpireChallenges}
-          setFilteredChallenges={setFilteredChallenges}
-          setFilteredPopularChallenges={setFilteredPopularChallenges}
-          setFilteredExpireChallenges={setFilteredExpireChallenges}
-          searchTerm={searchTerm}
-          handleClearSearchBar={handleClearSearchBar}
-        />
+      {/* PAGE ELEMENTS BASED ON TAB */}
+      <Route
+        exact
+        path={`/games/:gameId/challenges`}
+        render={(props) => (
+          <GameChallengeSearchPage
+            challenges={challenges}
+            popular_challenges={popular_challenges}
+            expire_challenges={expire_challenges}
+            filteredChallenges={filteredChallenges}
+            filteredPopularChallenges={filteredPopularChallenges}
+            filteredExpireChallenges={filteredExpireChallenges}
+            setFilteredChallenges={setFilteredChallenges}
+            setFilteredPopularChallenges={setFilteredPopularChallenges}
+            setFilteredExpireChallenges={setFilteredExpireChallenges}
+            searchTerm={searchTerm}
+            handleClearSearchBar={handleClearSearchBar}
+            {...props}
+          />
+        )}
+      />
+      <div className='p-4 rounded-md bg-profileone'>
+        <div className='p-4 bg-profiletwo rounded-lg'>
+          <Route
+            exact
+            path={`/games/:gameId/leaderboard`}
+            render={(props) => (
+              <UserLeaderboard
+                users={users}
+                {...props}
+              />
+            )}
+          />
+        </div>
       </div>
     </>
   );

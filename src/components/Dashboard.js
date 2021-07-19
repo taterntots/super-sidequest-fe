@@ -132,6 +132,19 @@ const Dashboard = () => {
           />
           <Route
             exact
+            path={`/games/:gameId/leaderboard`}
+            render={(props) => (
+              <GameDetails
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
+                setRefresh={setRefresh}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
             path={`/challenges/all`}
             render={(props) => (
               <AllChallengeDetails
