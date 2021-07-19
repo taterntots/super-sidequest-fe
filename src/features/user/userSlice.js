@@ -115,12 +115,10 @@ export const fetchUserEXPForAllGames = createAsyncThunk('users/fetchUserEXPForAl
 });
 
 // API call to calculate a user's experience points for a specific game
-export const fetchUserEXPForGameById= createAsyncThunk('users/fetchUserEXPForGameById', async (gameId) => {
-  const userId = localStorage.getItem('id')
-
+export const fetchUserEXPForGameById = createAsyncThunk('users/fetchUserEXPForGameById', async (data) => {
   const response = await axios({
     method: 'get',
-    url: process.env.REACT_APP_API + `users/${userId}/games/${gameId}/exp`,
+    url: process.env.REACT_APP_API + `users/${data.user_id}/games/${data.game_id}/exp`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY

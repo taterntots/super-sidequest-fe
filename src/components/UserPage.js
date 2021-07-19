@@ -5,6 +5,7 @@ import {
   fetchCheckIfFollowingUser,
   fetchUserByUsername,
   fetchUserEXPForAllGames,
+  fetchUserEXPForGameById,
   followUser,
   unfollowUser,
   updateUser,
@@ -51,13 +52,14 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, user_followers, user_experience_points, is_following_user, loading } = useSelector(userSelector);
+  const { user, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
   const [filteredCompletedChallenges, setFilteredCompletedChallenges] = useState(completed_challenges);
   const [sortOption, setSortOption] = useState('recent');
   const [currentGame, setCurrentGame] = useState({})
+  const [currentGameId, setCurrentGameId] = useState()
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
@@ -76,7 +78,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     } else {
       setCurrentGame({ game: 'All' })
     }
-  }, [refresh, location.search])
+  }, [refresh, location.search, completed_challenges])
+
+  // Sets current game ID based on game filter
+  useEffect(() => {
+    if (completed_challenges.length > 0) {
+      setCurrentGameId(completed_challenges.find(coc => coc.game_title === currentGame.game))
+    }
+  }, [refresh, currentGame, completed_challenges])
 
   // Grabs endpoints relying on userID after grabbing user in above useEffect
   useEffect(() => {
@@ -90,6 +99,15 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserEXPForAllGames(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
+
+  // Fetches experience points for game if URL is looking for a specific game
+  useEffect(() => {
+    if (Object.keys(user).length > 1) {
+      if (currentGameId && currentGame.game !== 'All') {
+        dispatch(fetchUserEXPForGameById({ user_id: user.id, game_id: currentGameId.game_id }))
+      }
+    }
+  }, [dispatch, user, currentGameId, currentGame, refresh])
 
   // UseEffect to check if the logged in user is following the current user profile
   useEffect(() => {
@@ -213,7 +231,12 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                   />
                 )}
                 <div className='sm:hidden self-center'>
-                  <Level user_experience_points={user_experience_points} user={user} />
+                  <Level user_experience_points={!location.search || currentGame.game === 'All' ?
+                    user_experience_points :
+                    location.search && currentGame.game !== 'All' && currentGameId ? user_game_experience_points :
+                      null}
+                    user={user}
+                  />
                 </div>
 
                 {/* Name and follower buttons */}
@@ -239,7 +262,12 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
               {/* LEVEL UP ICON */}
               <div className='hidden sm:inline self-center'>
-                <Level user_experience_points={user_experience_points} user={user} />
+                <Level user_experience_points={!location.search || currentGame.game === 'All' ?
+                  user_experience_points :
+                  location.search && currentGame.game !== 'All' && currentGameId ? user_game_experience_points :
+                    null}
+                  user={user}
+                />
               </div>
             </div>
           </div>

@@ -51,7 +51,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
     dispatch(fetchGameChallengesByExpiration(route.params.gameId))
     if (localStorage.getItem('id')) {
       dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
-      dispatch(fetchUserEXPForGameById(route.params.gameId))
+      dispatch(fetchUserEXPForGameById({ user_id: localStorage.getItem('id'), game_id: route.params.gameId }))
     }
   }, [dispatch, refresh])
 
