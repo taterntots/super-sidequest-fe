@@ -194,7 +194,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           `bg-profileone` :
           `bg-profileone rounded-b-lg`}
         >
-          <div className='px-10'>
+          <div className='sm:px-10'>
             <div className='flex justify-center sm:justify-between py-3'>
 
               {/* Profile Pic and Name Container */}
@@ -218,7 +218,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
                 {/* Name and follower buttons */}
                 <div className='self-center text-center ml-3'>
-                  <h1 className='pb-2 px-2 text-2xl sm:text-4xl text-white'>{user.username}</h1>
+                  <h1 className='pb-2 px-2 text-3xl sm:text-4xl text-white'>{user.username}</h1>
                   {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileUnfollowButton
                       className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'

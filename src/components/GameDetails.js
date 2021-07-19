@@ -117,7 +117,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
         </div>
 
 
-        <div className='px-10 bg-profileone rounded-b-lg'>
+        <div className='sm:px-10 bg-profileone rounded-b-lg'>
           <div className='flex justify-center sm:justify-between py-3'>
 
             {/* Game Pic and Name Container */}
@@ -149,7 +149,7 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
 
               {/* Name */}
               <div className='self-center text-center ml-3'>
-                <h1 className='pb-2 px-2 text-2xl sm:text-4xl text-white'>{game.name}</h1>
+                <h1 className='pb-2 px-2 text-3xl sm:text-4xl text-white'>{game.name}</h1>
               </div>
             </div>
 
