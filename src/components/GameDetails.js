@@ -217,20 +217,20 @@ const GameDetails = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) 
           />
         )}
       />
-      <div className='p-4 rounded-md bg-profileone'>
-        <div className='p-4 bg-profiletwo rounded-lg'>
-          <Route
-            exact
-            path={`/games/:gameId/leaderboard`}
-            render={(props) => (
+      <Route
+        exact
+        path={`/games/:gameId/leaderboard`}
+        render={(props) => (
+          <div className='p-4 rounded-md bg-profileone'>
+            <div className='p-4 bg-profiletwo rounded-lg'>
               <UserLeaderboard
                 users={users_with_game_experience}
                 {...props}
               />
-            )}
-          />
-        </div>
-      </div>
+            </div>
+          </div>
+        )}
+      />
     </>
   );
 }
