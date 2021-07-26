@@ -103,7 +103,7 @@ const ChallengeCard = ({ data, user }) => {
         </p>
         <div className='flex'>
           <UsersIcon className='self-center w-10 h-5' />
-          <p className='font-bold'>
+          <p className='self-center font-bold'>
             {active_users}
           </p>
         </div>

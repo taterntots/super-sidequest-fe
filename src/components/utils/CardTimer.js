@@ -44,7 +44,7 @@ const CardTimer = ({ end_date, setCountdownIsAfter }) => {
   }, [end_date]);
 
   return (
-    <div className='flex justify-evenly font-medium'>
+    <div className='flex flex-wrap justify-evenly font-medium'>
       {state.years > 0 ? (
         <p className='text-md mr-2'>
           {state.years}
