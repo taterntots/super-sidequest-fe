@@ -74,37 +74,56 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                 {score.username}
               </Link>
               {challenge.is_high_score ? (
-                <p className='w-3/12 py-1'>
-                  {score.high_score === null ? '---' : Number(score.high_score).toLocaleString()}
+                <p className={challenge.user_id === localStorage.getItem('id') ?
+                  'w-3/12 py-1 hover:text-removered cursor-pointer' :
+                  'w-3/12 py-1'}
+                  onMouseOver={challenge.user_id === localStorage.getItem('id') ?
+                    () => setRemoveText({ text: 'Remove', username: score.username }) :
+                    null}
+                  onMouseOut={challenge.user_id === localStorage.getItem('id') ?
+                    () => setRemoveText('') :
+                    null}
+                >
+                  {removeText.text && score.username === removeText.username ? removeText.text :
+                    score.high_score === null ? '---' : Number(score.high_score).toLocaleString()}
                 </p>
               ) : challenge.is_speedrun ? (
-                <p className='w-3/12 py-1'>
-                  {score.speedrun_hours === 0 &&
-                    score.speedrun_minutes === 0 &&
-                    score.speedrun_seconds === 0 &&
-                    score.speedrun_milliseconds === 0 ?
-                    '---'
-                    :
-                    score.speedrun_hours === null &&
-                      score.speedrun_minutes === null &&
-                      score.speedrun_seconds === null &&
-                      score.speedrun_milliseconds === null ?
+                <p className={challenge.user_id === localStorage.getItem('id') ?
+                  'w-3/12 py-1 hover:text-removered cursor-pointer' :
+                  'w-3/12 py-1'}
+                  onMouseOver={challenge.user_id === localStorage.getItem('id') ?
+                    () => setRemoveText({ text: 'Remove', username: score.username }) :
+                    null}
+                  onMouseOut={challenge.user_id === localStorage.getItem('id') ?
+                    () => setRemoveText('') :
+                    null}
+                >
+                  {removeText.text && score.username === removeText.username ? removeText.text :
+                    score.speedrun_hours === 0 &&
+                      score.speedrun_minutes === 0 &&
+                      score.speedrun_seconds === 0 &&
+                      score.speedrun_milliseconds === 0 ?
                       '---'
                       :
-                      score.speedrun_hours === 0 &&
-                        score.speedrun_minutes === 0 &&
-                        score.speedrun_seconds > 0 &&
-                        score.speedrun_milliseconds > 0 ?
-                        `${score.speedrun_seconds}s ${score.speedrun_milliseconds}ms`
+                      score.speedrun_hours === null &&
+                        score.speedrun_minutes === null &&
+                        score.speedrun_seconds === null &&
+                        score.speedrun_milliseconds === null ?
+                        '---'
                         :
                         score.speedrun_hours === 0 &&
                           score.speedrun_minutes === 0 &&
                           score.speedrun_seconds > 0 &&
-                          score.speedrun_milliseconds === 0 ?
-                          `${score.speedrun_seconds}s`
+                          score.speedrun_milliseconds > 0 ?
+                          `${score.speedrun_seconds}s ${score.speedrun_milliseconds}ms`
                           :
-                          `${score.speedrun_hours ? score.speedrun_hours + 'h' : ''} ${score.speedrun_minutes}m ${score.speedrun_seconds}s ${score.speedrun_milliseconds ? score.speedrun_milliseconds + 'ms' : ''}`
-                  }
+                          score.speedrun_hours === 0 &&
+                            score.speedrun_minutes === 0 &&
+                            score.speedrun_seconds > 0 &&
+                            score.speedrun_milliseconds === 0 ?
+                            `${score.speedrun_seconds}s`
+                            :
+                            `${score.speedrun_hours ? score.speedrun_hours + 'h' : ''} ${score.speedrun_minutes}m ${score.speedrun_seconds}s ${score.speedrun_milliseconds ? score.speedrun_milliseconds + 'ms' : ''}`}
                 </p>
               ) : (
                 <p className={challenge.user_id === localStorage.getItem('id') ?
@@ -114,7 +133,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                     () => setRemoveText({ text: 'Remove', username: score.username }) :
                     null}
                   onMouseOut={challenge.user_id === localStorage.getItem('id') ?
-                    () => setRemoveText(score.completed ? moment(score.updated_at).format("MM/DD/YYYY hh:mm:ss") : '---') :
+                    () => setRemoveText('') :
                     null}
                 >
                   {removeText.text && score.username === removeText.username ? removeText.text :
