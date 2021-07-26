@@ -62,6 +62,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [currentGameId, setCurrentGameId] = useState()
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
+  const [unfollowText, setUnfollowText] = useState('Following')
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
   const location = useLocation();
@@ -215,7 +216,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           <div className='sm:px-10'>
             <div className='flex justify-center sm:justify-between py-3'>
 
-              {/* Profile Pic and Name Container */}
+              {/* PROFILE PIC AND NAME CONTAINER */}
               <div className='flex'>
                 {user.profile_pic_URL ? (
                   <img
@@ -239,15 +240,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                   />
                 </div>
 
-                {/* Name and follower buttons */}
+                {/* NAME AND FOLLOWER BUTTONS */}
                 <div className='self-center text-center ml-3'>
                   <h1 className='pb-2 px-2 text-3xl sm:text-4xl text-white'>{user.username}</h1>
                   {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileUnfollowButton
                       className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
                       onClick={submitUnfollowUser}
+                      onMouseOver={() => setUnfollowText('Unfollow')}
+                      onMouseOut={() => setUnfollowText('Following')}
                     >
-                      Following
+                      {unfollowText}
                     </ProfileUnfollowButton>
                   ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileFollowButton
