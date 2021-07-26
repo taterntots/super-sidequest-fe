@@ -74,7 +74,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
               </Link>
               {challenge.is_high_score ? (
                 <p className='w-3/12'>
-                  {score.high_score === null ? '---' : score.high_score}
+                  {score.high_score === null ? '---' : Number(score.high_score).toLocaleString()}
                 </p>
               ) : challenge.is_speedrun ? (
                 <p className='w-3/12'>
