@@ -20,7 +20,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
       <div className='lg:flex justify-between'>
 
         {/* STATS */}
-        <ProfileTwo className='mr-3 w-full lg:w-2/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white'>
+        <ProfileTwo className='mr-3 w-full lg:w-2/5 h-full pb-4 px-4 sm:px-10 bg-profiletwo rounded-lg text-white'>
           <h1 className='text-center text-2xl font-medium py-4'>
             Stats
           </h1>
@@ -57,7 +57,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
           ) : null}
 
           {/* ACCEPTED CHALLENGES */}
-          <ProfileTwo className="px-10 pb-4 bg-profiletwo rounded-lg text-white">
+          <ProfileTwo className='px-4 sm:px-10 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Accepted Quests
             </h1>

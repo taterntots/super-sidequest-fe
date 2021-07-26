@@ -15,7 +15,7 @@ const FollowerPage = ({ user, user_followers, searchTerm, handleClearSearchBar, 
     >
       <div className='flex flex-col-reverse lg:flex-row lg:justify-between'>
         {/* CHALLENGE LIST */}
-        <ProfileTwo className='mr-3 w-full h-full pb-4 px-10 bg-profiletwo rounded-lg text-white'>
+        <ProfileTwo className='mr-3 w-full h-full pb-4 px-4 sm:px-10 bg-profiletwo rounded-lg text-white'>
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             Following
           </h1>

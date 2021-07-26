@@ -230,7 +230,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
     >
       <div className="flex flex-col-reverse lg:flex-row lg:justify-between">
         {/* CHALLENGE LIST */}
-        <ProfileTwo className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+        <ProfileTwo className="mr-3 w-full lg:w-4/5 h-full pb-4 px-4 sm:px-10 bg-profiletwo rounded-lg text-white">
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             {currentChallengeFilter === 'Created' ? 'Created Quests' :
               currentChallengeFilter === 'Accepted' ? 'Accepted Quests' :
@@ -321,7 +321,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           </ProfileTwo>
 
           {/* SORT OPTIONS */}
-          <ProfileTwo className="px-10 mb-3 mt-3 pb-4 bg-profiletwo rounded-lg text-white">
+          <ProfileTwo className='px-10 mb-3 mt-3 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
               Sort By
             </h1>
