@@ -217,8 +217,8 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   return (
     <>
       <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-        <div className="lg:flex justify-between">
-          <ProfileTwo className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
+        <div className='lg:flex justify-between'>
+          <ProfileTwo className='mr-3 w-full lg:w-2/5 h-full px-4 sm:px-10 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
               {challenge.name}
             </h1>

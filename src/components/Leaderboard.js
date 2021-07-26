@@ -25,6 +25,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
   const [openImage, setOpenImage] = useState(false);
   const [completedOn, setCompletedOn] = useState(acceptedChallenge.completed);
   const [currentPlayer, setCurrentPlayer] = useState({});
+  const [removeText, setRemoveText] = useState({ text: '', username: '' });
 
   // UseEffect that sets the toggle correctly on refresh based on whether a challenge is completed or not
   useEffect(() => {
@@ -33,7 +34,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
 
   return (
     <>
-      <ProfileTwo className="w-full lg:w-3/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+      <ProfileTwo className='w-full lg:w-3/5 h-full pb-4 px-4 sm:px-10 bg-profiletwo rounded-lg text-white'>
         <h1 className='text-center text-2xl font-medium pt-4 mt-4 lg:my-0'>
           Leaderboard
         </h1>
@@ -49,12 +50,12 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
         ) : null}
 
         <div className='rounded-lg bg-gray-700 mt-4'>
-          <div className='flex w-full text-center px-2 py-1 font-bold'>
-            <p className='w-1/12'>Rank</p>
-            <p className='w-6/12'>
+          <div className='flex w-full text-center font-bold'>
+            <p className='w-1/12 pl-2 py-1'>Rank</p>
+            <p className='w-6/12 py-1'>
               Player
             </p>
-            <p className='w-3/12'>
+            <p className='w-3/12 py-1'>
               {challenge.is_high_score ? 'High Score' : challenge.is_speedrun ? 'Time' : 'Date'}
             </p>
           </div>
@@ -62,22 +63,22 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
           {/* LEADERBOARD DATA */}
           {challengeScores ? challengeScores.map((score, index) => (
             <div key={score.id} className={score.username === localStorage.getItem('username') ?
-              `flex text-center font-medium text-graybutton bg-white px-2 py-1 hover:opacity-60 hover:bg-white hover:text-graybutton` :
-              `flex text-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:opacity-60`}>
-              <p className='w-1/12'>{index + 1}</p>
+              `flex text-center items-center font-medium text-graybutton bg-white hover:opacity-60 hover:bg-white hover:text-graybutton` :
+              `flex text-center items-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} hover:opacity-60`}>
+              <p className='w-1/12 pl-2 py-1'>{index + 1}</p>
               <Link
                 key={score.id}
                 to={`/${score.username}`}
-                className='w-6/12'
+                className='w-6/12 py-1'
               >
                 {score.username}
               </Link>
               {challenge.is_high_score ? (
-                <p className='w-3/12'>
+                <p className='w-3/12 py-1'>
                   {score.high_score === null ? '---' : Number(score.high_score).toLocaleString()}
                 </p>
               ) : challenge.is_speedrun ? (
-                <p className='w-3/12'>
+                <p className='w-3/12 py-1'>
                   {score.speedrun_hours === 0 &&
                     score.speedrun_minutes === 0 &&
                     score.speedrun_seconds === 0 &&
@@ -106,29 +107,43 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                   }
                 </p>
               ) : (
-                <p className='w-3/12'>
-                  {score.completed ? moment(score.updated_at).format("MM/DD/YYYY hh:mm:ss") : '---'}
+                <p className={challenge.user_id === localStorage.getItem('id') ?
+                  'w-3/12 py-1 hover:text-removered cursor-pointer' :
+                  'w-3/12 py-1'}
+                  onMouseOver={challenge.user_id === localStorage.getItem('id') ?
+                    () => setRemoveText({ text: 'Remove', username: score.username }) :
+                    null}
+                  onMouseOut={challenge.user_id === localStorage.getItem('id') ?
+                    () => setRemoveText(score.completed ? moment(score.updated_at).format("MM/DD/YYYY hh:mm:ss") : '---') :
+                    null}
+                >
+                  {removeText.text && score.username === removeText.username ? removeText.text :
+                    score.completed ? moment(score.updated_at).format("MM/DD/YYYY hh:mm:ss") : '---'}
                 </p>
               )}
 
-              {score.video_URL ? (
-                <VideoIcon className='w-1/12 h-6 cursor-pointer' onClick={() => {
-                  setOpenVideo(true)
-                  setCurrentPlayer(score)
-                }}
-                />
-              ) : (
-                <VideoIcon className='invisible w-1/12 h-6' />
-              )}
-              {score.image_URL ? (
-                <ImageIcon className='w-1/12 h-6 cursor-pointer' onClick={() => {
-                  setOpenImage(true)
-                  setCurrentPlayer(score)
-                }}
-                />
-              ) : (
-                <ImageIcon className='invisible w-1/12 h-6' />
-              )}
+              {/* PROOF ICONS */}
+              <div className='sm:flex w-2/12 justify-evenly'>
+                {score.video_URL ? (
+                  <VideoIcon className='w-full h-7 cursor-pointer hover:text-addgreen' onClick={() => {
+                    setOpenVideo(true)
+                    setCurrentPlayer(score)
+                  }}
+                  />
+                ) : (
+                  <VideoIcon className='invisible h-7' />
+                )}
+                {score.image_URL ? (
+                  <ImageIcon className='w-full h-7 cursor-pointer hover:text-addgreen' onClick={() => {
+                    setOpenImage(true)
+                    setCurrentPlayer(score)
+                  }}
+                  />
+                ) : (
+                  <ImageIcon className='invisible h-7' />
+                )}
+              </div>
+
             </div>
           )) : null}
           <p className='invisible'>
