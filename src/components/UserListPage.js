@@ -52,7 +52,7 @@ const UserListPage = ({ searchTerm, refresh, handleClearSearchBar }) => {
       </div>
 
       {/* PAGE ELEMENTS BASED ON TAB */}
-      <div className='p-4 rounded-md bg-profileone'>
+      <div className='p-4 rounded-b-md rounded-tr-md bg-profileone'>
         <div className='p-4 bg-profiletwo rounded-lg'>
           <Route
             exact
