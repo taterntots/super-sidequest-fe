@@ -1,26 +1,35 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { useDispatch } from 'react-redux';
+import {
+  resetUserChallengeProgress
+} from '../../../features/challenge/challengeSlice';
 
 // ----------------------------------------------------------------------------------
 // ------------------------- REMOVE USER FROM CHALLENGE MODAL -----------------------
 // ----------------------------------------------------------------------------------
 
-const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved }) => {
+const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved, challenge, refresh, setRefresh }) => {
+  const dispatch = useDispatch();
   const cancelButtonRef = useRef(null)
 
   // Function to handle removing a user from a challenge
   const submitUserRemoval = async () => {
-    // data.challenge_id = route.params.challengeId
-    console.log(userToBeRemoved)
+    let data = {
+      challenge_id: challenge.challenge_id,
+      user_id: userToBeRemoved.user_id,
+      username: userToBeRemoved.username
+    }
 
-    // dispatch(updateUserChallengeCompletion(data))
-    //   .then(res => {
-    //     setRefresh(!refresh)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    dispatch(resetUserChallengeProgress(data))
+      .then(res => {
+        setRefresh(!refresh)
+        setOpen(false);
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   return (

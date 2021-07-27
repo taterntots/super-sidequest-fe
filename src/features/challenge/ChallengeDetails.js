@@ -321,7 +321,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
           </ProfileTwo>
 
           {/* LEADERBOARD */}
-          <Leaderboard challenge_high_scores={challenge_high_scores} challenge_speedruns={challenge_speedruns} challenge_for_glorys={challenge_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} setOpenAccept={setOpenAccept} countdownIsAfter={countdownIsAfter} setCountdownIsAfter={setCountdownIsAfter} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
+          <Leaderboard challenge_high_scores={challenge_high_scores} challenge_speedruns={challenge_speedruns} challenge_for_glorys={challenge_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} setOpenAccept={setOpenAccept} countdownIsAfter={countdownIsAfter} setCountdownIsAfter={setCountdownIsAfter} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} refresh={refresh} setRefresh={setRefresh} />
         </div >
       </ProfileOne>
 

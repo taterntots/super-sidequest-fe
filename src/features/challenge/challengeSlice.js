@@ -425,6 +425,34 @@ export const updateUserChallengeFeatured = createAsyncThunk('challenges/updateUs
   }
 });
 
+// API call to reset a user's challenge progress
+export const resetUserChallengeProgress = createAsyncThunk('challenges/resetUserChallengeProgress', async (data) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/users/${data.user_id}/reset`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token
+      }
+    })
+    cogoToast.success(`Leaderboard stats for ${data.username} have been reset!`, {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // API call to edit a challenge
 export const editChallenge = createAsyncThunk('challenges/editChallenge', async (data) => {
   const token = localStorage.getItem('token');
@@ -739,6 +767,17 @@ export const challengeSlice = createSlice({
       state.error = false
     },
     [updateUserChallengeFeatured.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [resetUserChallengeProgress.pending]: (state, action) => {
+      state.loading = true
+    },
+    [resetUserChallengeProgress.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.error = false
+    },
+    [resetUserChallengeProgress.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

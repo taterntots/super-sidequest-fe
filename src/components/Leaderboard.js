@@ -20,7 +20,7 @@ import Timer from './utils/Timer';
 // ---------------------------------- LEADERBOARD -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for_glorys, challenge, setOpen, setOpenAccept, acceptedChallenge, submitChallengeCompleted, countdownIsAfter, setCountdownIsAfter, ProfileTwo, ProfileOneButton }) => {
+const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for_glorys, challenge, setOpen, setOpenAccept, acceptedChallenge, submitChallengeCompleted, countdownIsAfter, setCountdownIsAfter, ProfileTwo, ProfileOneButton, refresh, setRefresh }) => {
   const challengeScores = challenge.is_high_score ? challenge_high_scores : challenge.is_speedrun ? challenge_speedruns : challenge_for_glorys;
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
@@ -80,10 +80,10 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                 <p className={challenge.user_id === localStorage.getItem('id') ?
                   'w-3/12 py-1 hover:text-removered cursor-pointer' :
                   'w-3/12 py-1'}
-                  onClick={() => {
+                  onClick={challenge.user_id === localStorage.getItem('id') ? () => {
                     setOpenUserRemoval(true)
                     setUserToBeRemoved({ username: score.username, user_id: score.user_id })
-                  }}
+                  } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText({ text: 'Remove', username: score.username }) :
                     null}
@@ -98,10 +98,10 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                 <p className={challenge.user_id === localStorage.getItem('id') ?
                   'w-3/12 py-1 hover:text-removered cursor-pointer' :
                   'w-3/12 py-1'}
-                  onClick={() => {
+                  onClick={challenge.user_id === localStorage.getItem('id') ? () => {
                     setOpenUserRemoval(true)
                     setUserToBeRemoved({ username: score.username, user_id: score.user_id })
-                  }}
+                  } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText({ text: 'Remove', username: score.username }) :
                     null}
@@ -140,10 +140,10 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                 <p className={challenge.user_id === localStorage.getItem('id') ?
                   'w-3/12 py-1 hover:text-removered cursor-pointer' :
                   'w-3/12 py-1'}
-                  onClick={() => {
+                  onClick={challenge.user_id === localStorage.getItem('id') ? () => {
                     setOpenUserRemoval(true)
                     setUserToBeRemoved({ username: score.username, user_id: score.user_id })
-                  }}
+                  } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText({ text: 'Remove', username: score.username }) :
                     null}
@@ -225,7 +225,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
       {/* Modals */}
       <VideoModal open={openVideo} setOpen={setOpenVideo} currentPlayer={currentPlayer} />
       <ImageModal open={openImage} setOpen={setOpenImage} currentPlayer={currentPlayer} />
-      <RemoveUserFromChallengeModal open={openUserRemoval} setOpen={setOpenUserRemoval} userToBeRemoved={userToBeRemoved} />
+      <RemoveUserFromChallengeModal open={openUserRemoval} setOpen={setOpenUserRemoval} userToBeRemoved={userToBeRemoved} challenge={challenge} refresh={refresh} setRefresh={setRefresh} />
     </>
   );
 };
