@@ -70,10 +70,10 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved, challeng
             <div className='inline-block w-full mx-6 mt-14 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-lg'>
               <div className='p-10 bg-taterpurple rounded-lg text-white'>
                 <h4 className='text-2xl text-center mb-4'>
-                  {`Remove ${userToBeRemoved.username}`}
+                  {`Reset ${userToBeRemoved.username}`}
                 </h4>
                 <p className='text-center mb-4'>
-                  {`Are you sure you want remove ${userToBeRemoved.username} from the leaderboard? This will reset their score for this challenge.`}
+                  {`Are you sure you want remove ${userToBeRemoved.username}'s entry from the leaderboard? This will reset their score for this challenge.`}
                 </p>
                 <div className='sm:flex sm:justify-evenly'>
                   <button
@@ -89,7 +89,7 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved, challeng
                     className='flex w-full sm:w-auto justify-center items-center rounded-lg text-lg sm:px-12 py-3 mb-4 sm:mb-0 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out'
                     onClick={submitUserRemoval}
                   >
-                    Remove
+                    Reset
                   </button>
                 </div>
               </div>

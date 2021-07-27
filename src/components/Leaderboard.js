@@ -85,7 +85,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                     setUserToBeRemoved({ username: score.username, user_id: score.user_id })
                   } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
-                    () => setRemoveText({ text: 'Remove', username: score.username }) :
+                    () => setRemoveText({ text: 'Reset', username: score.username }) :
                     null}
                   onMouseOut={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText('') :
@@ -103,7 +103,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                     setUserToBeRemoved({ username: score.username, user_id: score.user_id })
                   } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
-                    () => setRemoveText({ text: 'Remove', username: score.username }) :
+                    () => setRemoveText({ text: 'Reset', username: score.username }) :
                     null}
                   onMouseOut={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText('') :
@@ -145,7 +145,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                     setUserToBeRemoved({ username: score.username, user_id: score.user_id })
                   } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
-                    () => setRemoveText({ text: 'Remove', username: score.username }) :
+                    () => setRemoveText({ text: 'Reset', username: score.username }) :
                     null}
                   onMouseOut={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText('') :
