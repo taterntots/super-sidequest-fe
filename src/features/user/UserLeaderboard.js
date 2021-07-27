@@ -36,8 +36,8 @@ const UserLeaderboard = ({ users }) => {
               to={`/${score.username}`}
             >
               <div key={score.id} className={score.username === localStorage.getItem('username') ?
-                `flex text-center font-medium text-graybutton bg-white px-2 py-1 hover:opacity-60 hover:bg-white hover:text-graybutton` :
-                `flex text-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:opacity-60`}>
+                `flex text-center font-medium text-graybutton bg-white px-2 py-1 hover:opacity-90 hover:bg-white hover:text-graybutton` :
+                `flex text-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-2 py-1 hover:opacity-90`}>
                 <p className='w-2/12 sm:w-1/12'>{index + 1}</p>
                 <p className='w-8/12 sm:w-10/12'>
                   {score.username}

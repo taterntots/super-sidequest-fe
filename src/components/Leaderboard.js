@@ -66,13 +66,13 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
           {/* LEADERBOARD DATA */}
           {challengeScores ? challengeScores.map((score, index) => (
             <div key={score.id} className={score.username === localStorage.getItem('username') ?
-              `flex text-center items-center font-medium text-graybutton bg-white hover:opacity-60 hover:bg-white hover:text-graybutton` :
-              `flex text-center items-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} hover:opacity-60`}>
+              `flex text-center items-center font-medium text-graybutton bg-white hover:opacity-90 hover:bg-white hover:text-graybutton` :
+              `flex text-center items-center font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} hover:opacity-90`}>
               <p className='w-1/12 pl-2 py-1'>{index + 1}</p>
               <Link
                 key={score.id}
                 to={`/${score.username}`}
-                className='w-6/12 py-1'
+                className='w-6/12 py-1 hover:text-addgreen'
               >
                 {score.username}
               </Link>

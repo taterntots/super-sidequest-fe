@@ -37,7 +37,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
               <Link
                 key={gameStat.game}
                 to={`${user.username}/challenges?game=${gameStat.game}`}
-                className={`flex justify-between font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:opacity-60`}
+                className={`flex justify-between font-medium ${index % 2 ? 'bg-gray-600' : 'bg-gray-500'} px-4 py-1 hover:opacity-90`}
               >
                 <p>{gameStat.game}</p>
                 <p className='pl-4'>{levelUp(gameStat.total_points).level}</p>
