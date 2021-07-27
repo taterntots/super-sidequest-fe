@@ -54,7 +54,7 @@ const AuthModal = ({ open, setOpen, authPage, setAuthPage, refresh, setRefresh }
           >
             <div className='inline-block w-full mx-6 mt-14 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-xl'>
               {authPage === 'login' ? (
-                <Login setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} />
+                <Login setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} setCurrentUserEmail={setCurrentUserEmail} />
               ) : authPage === 'signup' ? (
                 <Signup setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} setCurrentUserEmail={setCurrentUserEmail} />
               ) : authPage === 'forgot_password' ? (
