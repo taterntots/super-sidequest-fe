@@ -112,7 +112,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // UseEffect to check if the logged in user is following the current user profile
   useEffect(() => {
-    if (Object.keys(user).length > 1) {
+    if (Object.keys(user).length > 1 && localStorage.getItem('id')) {
       dispatch(fetchCheckIfFollowingUser(user.id))
     }
   }, [user, isFollowingToggle])

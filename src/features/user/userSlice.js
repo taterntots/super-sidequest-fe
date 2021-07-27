@@ -252,10 +252,37 @@ export const signUpUser = createAsyncThunk('users/signUpUser', async (credential
     }
   })
     .then(res => {
+      // localStorage.setItem('id', res.data.id);
+      // localStorage.setItem('token', res.data.token);
+      // localStorage.setItem('username', res.data.username);
+      cogoToast.success('Successfully created account', {
+        hideAfter: 5,
+      });
+      return res.data
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.errorMessage, {
+        hideAfter: 5,
+      });
+      return err.response.data.errorMessage
+    })
+  return response
+});
+
+// API call to verify a user account
+export const verifyUser = createAsyncThunk('users/verifyUser', async (data) => {
+  const response = await axios({
+    method: 'post',
+    url: process.env.REACT_APP_API + `auth/verify/${data.email}/${data.verification_code}`,
+    headers: {
+      Accept: 'application/json'
+    }
+  })
+    .then(res => {
       localStorage.setItem('id', res.data.id);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username);
-      cogoToast.success('Successfully created account', {
+      cogoToast.success('Successfully verified account', {
         hideAfter: 5,
       });
       return res.data
@@ -529,6 +556,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [signUpUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [verifyUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [verifyUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [verifyUser.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

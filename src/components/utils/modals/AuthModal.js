@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef } from 'react';
+import { Fragment, useState, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 // COMPONENTS
@@ -7,6 +7,7 @@ import Login from '../../Auth/Login';
 import Signup from '../../Auth/Signup';
 import ForgotPassword from '../../Auth/ForgotPassword';
 import ResetPassword from '../../Auth/ResetPassword';
+import Verify from '../../Auth/Verify';
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------- AUTH MODAL -----------------------------------
@@ -14,6 +15,7 @@ import ResetPassword from '../../Auth/ResetPassword';
 
 const AuthModal = ({ open, setOpen, authPage, setAuthPage, refresh, setRefresh }) => {
   const cancelButtonRef = useRef(null)
+  const [currentUserEmail, setCurrentUserEmail] = useState('')
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -54,11 +56,13 @@ const AuthModal = ({ open, setOpen, authPage, setAuthPage, refresh, setRefresh }
               {authPage === 'login' ? (
                 <Login setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} />
               ) : authPage === 'signup' ? (
-                <Signup setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} />
+                <Signup setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} setCurrentUserEmail={setCurrentUserEmail} />
               ) : authPage === 'forgot_password' ? (
                 <ForgotPassword setAuthPage={setAuthPage} setOpenAuth={setOpen} />
               ) : authPage === 'reset_password' ? (
                 <ResetPassword setAuthPage={setAuthPage} />
+              ) : authPage === 'verify' ? (
+                <Verify setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} currentUserEmail={currentUserEmail} />
               ) : null}
             </div>
           </Transition.Child>
