@@ -107,7 +107,7 @@ const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmai
           </p>
           <p
             onClick={() => {
-              setAuthPage('signup')
+              setAuthPage('login')
             }}
             className='sm:ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
           >

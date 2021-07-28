@@ -238,6 +238,26 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
                   null
             }
           </h1>
+          {currentChallengeFilter === 'Created' && filteredCreatedChallenges.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are no created quests
+              </p>
+            </div>
+          ) : currentChallengeFilter === 'Accepted' && filteredAcceptedChallenges.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are no accepted quests
+              </p>
+            </div>
+          ) : currentChallengeFilter === 'Completed' && filteredCompletedChallenges.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are no completed quests
+              </p>
+            </div>
+          ) : null}
+
           <ChallengeList
             challenges={
               currentChallengeFilter === 'Created' ? filteredCreatedChallenges :

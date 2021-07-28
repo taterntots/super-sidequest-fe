@@ -19,11 +19,19 @@ const FollowerPage = ({ user, user_followers, searchTerm, handleClearSearchBar, 
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             Following
           </h1>
-          <UserList
-            searchTerm={searchTerm}
-            handleClearSearchBar={handleClearSearchBar}
-            users={user_followers}
-          />
+          {user_followers.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are no players being followed
+              </p>
+            </div>
+          ) : (
+            <UserList
+              searchTerm={searchTerm}
+              handleClearSearchBar={handleClearSearchBar}
+              users={user_followers}
+            />
+          )}
         </ProfileTwo>
       </div >
     </div>

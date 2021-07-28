@@ -145,6 +145,14 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             All Quests
           </h1>
+          {filteredChallenges.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are currently no quests for this game
+              </p>
+            </div>
+          ) : null}
+
           <ChallengeList
             challenges={
               currentChallengeFilter === 'All' ? filteredChallenges :
