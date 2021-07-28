@@ -29,8 +29,8 @@ const Login = ({ setAuthPage, setOpenAuth, refresh, setRefresh, setCurrentUserEm
           setOpenAuth(false)
           setRefresh(!refresh)
         } else if (res.payload.includes('verify')) {
-          setAuthPage('verify')
           setCurrentUserEmail(res.meta.arg.email)
+          setAuthPage('verify')
           setRefresh(!refresh)
         }
       })

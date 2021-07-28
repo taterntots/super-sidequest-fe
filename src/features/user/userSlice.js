@@ -252,9 +252,6 @@ export const signUpUser = createAsyncThunk('users/signUpUser', async (credential
     }
   })
     .then(res => {
-      // localStorage.setItem('id', res.data.id);
-      // localStorage.setItem('token', res.data.token);
-      // localStorage.setItem('username', res.data.username);
       cogoToast.success('Successfully created account', {
         hideAfter: 5,
       });

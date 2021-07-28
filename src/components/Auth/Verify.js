@@ -16,7 +16,7 @@ import LoadSpinner from '../../components/LoadSpinner';
 // ------------------------------------ VERIFY ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmail }) => {
+const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmail, setCurrentUserEmail }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
@@ -29,6 +29,7 @@ const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmai
     dispatch(verifyUser(data))
       .then(res => {
         if (res.payload.token) {
+          setCurrentUserEmail('')
           setOpenAuth(false)
           setRefresh(!refresh)
         }

@@ -62,7 +62,7 @@ const AuthModal = ({ open, setOpen, authPage, setAuthPage, refresh, setRefresh }
               ) : authPage === 'reset_password' ? (
                 <ResetPassword setAuthPage={setAuthPage} />
               ) : authPage === 'verify' ? (
-                <Verify setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} currentUserEmail={currentUserEmail} />
+                <Verify setAuthPage={setAuthPage} setOpenAuth={setOpen} refresh={refresh} setRefresh={setRefresh} currentUserEmail={currentUserEmail} setCurrentUserEmail={setCurrentUserEmail} />
               ) : null}
             </div>
           </Transition.Child>
