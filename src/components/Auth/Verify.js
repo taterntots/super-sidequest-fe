@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   verifyUser,
+  resendUserAccountVerificationCode,
   userSelector
 } from '../../features/user/userSlice';
 
@@ -24,7 +25,7 @@ const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmai
   // Function to handle submitting Verification form
   const onSubmit = async (data) => {
     data.email = currentUserEmail
-    
+
     dispatch(verifyUser(data))
       .then(res => {
         if (res.payload.token) {
@@ -35,6 +36,11 @@ const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmai
       .catch(err => {
         console.log(err)
       })
+  };
+
+  // Function to handle resending verification code
+  const resendVerificationCode = async () => {
+    dispatch(resendUserAccountVerificationCode(currentUserEmail));
   };
 
   return (
@@ -85,7 +91,7 @@ const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmai
         </p>
         <p
           onClick={() => {
-            setAuthPage('forgot_password')
+            resendVerificationCode()
           }}
           className='sm:ml-2 mb-7 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
         >

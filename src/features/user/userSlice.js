@@ -296,6 +296,30 @@ export const verifyUser = createAsyncThunk('users/verifyUser', async (data) => {
   return response
 });
 
+// API call to resend a new verification code upon account creation
+export const resendUserAccountVerificationCode = createAsyncThunk('users/resendUserAccountVerificationCode', async (email) => {
+  const response = await axios({
+    method: 'post',
+    url: process.env.REACT_APP_API + `auth/${email}/resend-verification`,
+    headers: {
+      Accept: 'application/json'
+    }
+  })
+    .then(res => {
+      cogoToast.success(res.data.message, {
+        hideAfter: 5,
+      });
+      return res.data
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.errorMessage, {
+        hideAfter: 5,
+      });
+      return err.response.data.errorMessage
+    })
+  return response
+});
+
 // API call to request password reset
 export const forgotPassword = createAsyncThunk('users/forgotPassword', async (credentials) => {
   try {
@@ -567,6 +591,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [verifyUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [resendUserAccountVerificationCode.pending]: (state, action) => {
+      state.loading = true
+    },
+    [resendUserAccountVerificationCode.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [resendUserAccountVerificationCode.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
