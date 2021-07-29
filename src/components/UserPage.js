@@ -214,7 +214,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           `bg-profileone rounded-b-lg`}
         >
           <div className='sm:px-10'>
-            <div className='flex justify-center sm:justify-between py-3'>
+            <div className='flex justify-center sm:justify-between pt-3 pb-1 sm:pb-3'>
 
               {/* PROFILE PIC AND NAME CONTAINER */}
               <div className='flex'>
@@ -261,6 +261,16 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                     </ProfileFollowButton>
                   ) : null}
                 </div>
+
+                {/* FOLLOWER AND FOLLOWING STATS */}
+                <div className='hidden sm:inline ml-6 self-end text-white'>
+                  <p>
+                    <span className='font-bold text-lg'>321</span> Following
+                  </p>
+                  <p>
+                    <span className='font-bold text-lg'>4K</span> Followers
+                  </p>
+                </div>
               </div>
 
               {/* LEVEL UP ICON */}
@@ -272,6 +282,16 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                   user={user}
                 />
               </div>
+            </div>
+
+            {/* FOLLOWER AND FOLLOWING STATS (MOBILE)*/}
+            <div className='sm:hidden flex justify-center text-white pb-3'>
+              <p>
+                <span className='font-bold text-lg'>321</span> Following
+              </p>
+              <p className='ml-6'>
+                <span className='font-bold text-lg'>4K</span> Followers
+              </p>
             </div>
           </div>
         </ProfileOne>
