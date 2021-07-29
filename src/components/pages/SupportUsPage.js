@@ -7,11 +7,11 @@ import Hero from '../HeroCard';
 // ---------------------------------- SUPPORT PAGE ----------------------------------
 // ----------------------------------------------------------------------------------
 
-const HomePage = () => {
+const SupportPage = ({ refresh, setRefresh }) => {
   return (
     <>
       {/* HERO */}
-      <Hero />
+      <Hero refresh={refresh} setRefresh={setRefresh} />
 
       {/* BODY */}
       <div className='px-4 py-4 bg-profiletwo rounded-lg text-white'>
@@ -50,4 +50,4 @@ const HomePage = () => {
   );
 }
 
-export default HomePage;
+export default SupportPage;

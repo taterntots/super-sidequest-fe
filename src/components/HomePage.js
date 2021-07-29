@@ -21,7 +21,7 @@ import Hero from '../components/HeroCard';
 // ------------------------------------ HOMEPAGE ------------------------------------
 // ----------------------------------------------------------------------------------
 
-const HomePage = ({ refresh }) => {
+const HomePage = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const { recent_challenges, tater_featured_challenge } = useSelector(challengeSelector)
 
@@ -33,7 +33,7 @@ const HomePage = ({ refresh }) => {
   return (
     <>
       {/* HERO */}
-      <Hero />
+      <Hero refresh={refresh} setRefresh={setRefresh} />
 
       {/* BODY */}
       <div className='xl:flex justify-between'>

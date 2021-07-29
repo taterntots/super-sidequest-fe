@@ -14,7 +14,7 @@ import Tots from '../img/Tots.png';
 // ------------------------------------- HERO ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const HeroCard = () => {
+const HeroCard = ({ refresh, setRefresh }) => {
   const [openAuth, setOpenAuth] = useState(false);
   const [authPage, setAuthPage] = useState('signup');
   const history = useHistory();
@@ -55,7 +55,7 @@ const HeroCard = () => {
       </div>
 
       {/* Modals */}
-      <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} />
+      <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
     </>
   );
 }

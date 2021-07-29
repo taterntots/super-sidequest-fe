@@ -7,11 +7,11 @@ import Hero from '../HeroCard';
 // ---------------------------------- ABOUT US PAGE ---------------------------------
 // ----------------------------------------------------------------------------------
 
-const AboutUsPage = () => {
+const AboutUsPage = ({ refresh, setRefresh }) => {
   return (
     <>
       {/* HERO */}
-      <Hero />
+      <Hero refresh={refresh} setRefresh={setRefresh} />
 
       {/* BODY */}
       <div className='px-4 py-4 bg-profiletwo rounded-lg text-white'>
