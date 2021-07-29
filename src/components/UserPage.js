@@ -518,6 +518,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         render={(props) => (
           <FollowerPage
             user_followings={user_followings}
+            user_followers={user_followers}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
             ProfileTwo={ProfileTwo}

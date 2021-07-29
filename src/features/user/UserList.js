@@ -13,7 +13,9 @@ import SearchError from '../../components/SearchError';
 
 const UserList = ({ searchTerm, handleClearSearchBar, users }) => {
   const [searchResults, setSearchResults] = useState([]);
+  const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
 
+  console.log(url)
   // User search function
   useEffect(() => {
     const results = users.filter(user =>
@@ -28,7 +30,10 @@ const UserList = ({ searchTerm, handleClearSearchBar, users }) => {
       {searchResults.length === 0 && searchTerm !== '' ? (
         <SearchError searchTerm={searchTerm} />
       ) : (
-        <div className='grid justify-center gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+        <div className={url.includes('friends') ?
+          'grid justify-center gap-5 grid-cols-1 md:grid-cols-2 2xl:grid-cols-3' :
+          'grid justify-center gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'}
+        >
           {/* USER LIST */}
           {searchResults.map((i) => (
             <Link
