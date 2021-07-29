@@ -410,16 +410,24 @@ export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (da
 // API call to update a user's profile
 export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
   const token = localStorage.getItem('token');
+  const userId = data.admin_override ? data.user_id : localStorage.getItem('id')
 
   try {
     const response = await axios({
       method: 'put',
-      url: process.env.REACT_APP_API + `users/${localStorage.getItem('id')}`,
+      url: process.env.REACT_APP_API + `users/${userId}`,
       headers: {
         Accept: 'application/json',
         Authorization: token
       }, data: {
-        ...data
+        profile_pic_URL: data.profile_pic_URL,
+        banner_pic_URL: data.banner_pic_URL,
+        twitter_URL: data.twitter_URL,
+        twitch_URL: data.twitch_URL,
+        discord_URL: data.discord_URL,
+        youtube_URL: data.youtube_URL,
+        profile_color_one: data.profile_color_one,
+        profile_color_two: data.profile_color_two
       }
     })
     cogoToast.success('Profile updated!', {

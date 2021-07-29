@@ -148,6 +148,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Function to handle submitting changes to the user's profile
   const submitUserProfile = async (data) => {
+    data.admin_override = user_admin
+    data.user_id = user.id
+
     dispatch(updateUser(data))
       .then(res => {
         setOpenProfileEdit(false)
