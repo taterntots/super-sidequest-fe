@@ -13,6 +13,7 @@ export const initialState = {
   users: [],
   users_with_game_experience: [],
   user_followings: [],
+  user_followers: [],
   user_experience_points: 0,
   user_game_experience_points: 0,
   user: {},
@@ -53,6 +54,19 @@ export const fetchUserFollowings = createAsyncThunk('users/fetchUserFollowings',
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/${userId}/followings`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to grab all of a user's followers (people following the user)
+export const fetchUserFollowers = createAsyncThunk('users/fetchUserFollowers', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/followers`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -461,6 +475,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUserFollowings.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserFollowers.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserFollowers.fulfilled]: (state, { payload }) => {
+      state.user_followers = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserFollowers.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

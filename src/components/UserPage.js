@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchUserFollowings,
+  fetchUserFollowers,
   fetchCheckIfFollowingUser,
   fetchUserByUsername,
   fetchUserEXPForAllGames,
@@ -52,7 +53,7 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, user_followings, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
+  const { user, user_followings, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -97,6 +98,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
       dispatch(fetchUserFollowings(user.id))
+      dispatch(fetchUserFollowers(user.id))
       dispatch(fetchUserEXPForAllGames(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
@@ -265,10 +267,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                 {/* FOLLOWER AND FOLLOWING STATS */}
                 <div className='hidden sm:inline ml-6 self-end text-white'>
                   <p>
-                    <span className='font-bold text-lg'>321</span> Following
+                    <span className='font-bold text-lg'>{user_followings.length}</span> Following
                   </p>
                   <p>
-                    <span className='font-bold text-lg'>4K</span> Followers
+                    <span className='font-bold text-lg'>{user_followers.length}</span> Followers
                   </p>
                 </div>
               </div>
@@ -287,10 +289,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
             {/* FOLLOWER AND FOLLOWING STATS (MOBILE)*/}
             <div className='sm:hidden flex justify-center text-white pb-3'>
               <p>
-                <span className='font-bold text-lg'>321</span> Following
+                <span className='font-bold text-lg'>{user_followings.length}</span> Following
               </p>
               <p className='ml-6'>
-                <span className='font-bold text-lg'>4K</span> Followers
+                <span className='font-bold text-lg'>{user_followers.length}</span> Followers
               </p>
             </div>
           </div>
