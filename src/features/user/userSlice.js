@@ -12,7 +12,7 @@ import cogoToast from 'cogo-toast';
 export const initialState = {
   users: [],
   users_with_game_experience: [],
-  user_followers: [],
+  user_followings: [],
   user_experience_points: 0,
   user_game_experience_points: 0,
   user: {},
@@ -48,11 +48,11 @@ export const fetchUsersWithGameExperience = createAsyncThunk('users/fetchUsersWi
   return response.data
 });
 
-// API call to grab all of a user's followers
-export const fetchUserFollowers = createAsyncThunk('users/fetchUserFollowers', async (userId) => {
+// API call to grab all of a user's followings (people the user follows)
+export const fetchUserFollowings = createAsyncThunk('users/fetchUserFollowings', async (userId) => {
   const response = await axios({
     method: 'get',
-    url: process.env.REACT_APP_API + `users/${userId}/followers`,
+    url: process.env.REACT_APP_API + `users/${userId}/followings`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -452,15 +452,15 @@ export const userSlice = createSlice({
       state.loading = false
       state.error = true
     },
-    [fetchUserFollowers.pending]: (state, action) => {
+    [fetchUserFollowings.pending]: (state, action) => {
       state.loading = true
     },
-    [fetchUserFollowers.fulfilled]: (state, { payload }) => {
-      state.user_followers = payload
+    [fetchUserFollowings.fulfilled]: (state, { payload }) => {
+      state.user_followings = payload
       state.loading = false
       state.error = false
     },
-    [fetchUserFollowers.rejected]: (state, action) => {
+    [fetchUserFollowings.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

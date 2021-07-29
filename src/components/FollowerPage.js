@@ -7,7 +7,7 @@ import UserList from '../features/user/UserList';
 // --------------------------------- FOLLOWER PAGE ----------------------------------
 // ----------------------------------------------------------------------------------
 
-const FollowerPage = ({ user, user_followers, searchTerm, handleClearSearchBar, ProfileTwo }) => {
+const FollowerPage = ({ user, user_followings, searchTerm, handleClearSearchBar, ProfileTwo }) => {
   return (
     <div
       className='p-4 rounded-tr-md bg-profileone rounded-b-md'
@@ -19,7 +19,7 @@ const FollowerPage = ({ user, user_followers, searchTerm, handleClearSearchBar, 
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             Following
           </h1>
-          {user_followers.length === 0 ? (
+          {user_followings.length === 0 ? (
             <div className='text-center text-white'>
               <p className='text-lg leading-6'>
                 There are no players being followed
@@ -29,7 +29,7 @@ const FollowerPage = ({ user, user_followers, searchTerm, handleClearSearchBar, 
             <UserList
               searchTerm={searchTerm}
               handleClearSearchBar={handleClearSearchBar}
-              users={user_followers}
+              users={user_followings}
             />
           )}
         </ProfileTwo>

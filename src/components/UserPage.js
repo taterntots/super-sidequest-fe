@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  fetchUserFollowers,
+  fetchUserFollowings,
   fetchCheckIfFollowingUser,
   fetchUserByUsername,
   fetchUserEXPForAllGames,
@@ -52,7 +52,7 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
+  const { user, user_followings, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -96,7 +96,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallenges({ user_id: user.id, sort_option: sortOption }))
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
-      dispatch(fetchUserFollowers(user.id))
+      dispatch(fetchUserFollowings(user.id))
       dispatch(fetchUserEXPForAllGames(user.id))
     }
   }, [dispatch, user, sortOption, refresh])
@@ -483,7 +483,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         path={`/:username/friends`}
         render={(props) => (
           <FollowerPage
-            user_followers={user_followers}
+            user_followings={user_followings}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
             ProfileTwo={ProfileTwo}
