@@ -59,7 +59,7 @@ const FollowerPage = ({ user, user_followings, user_followers, searchTerm, handl
 
         {/* FRIEND TYPE */}
         <div className='w-full lg:w-1/5'>
-          <ProfileTwo className='px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white'>
+          <ProfileTwo className='px-4 sm:px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
               Friend Type
             </h1>

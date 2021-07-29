@@ -139,9 +139,9 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
 
   return (
     <div className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-      <div className="flex flex-col-reverse lg:flex-row lg:justify-between">
+      <div className='flex flex-col-reverse lg:flex-row lg:justify-between'>
         {/* CHALLENGE LIST */}
-        <div className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+        <div className='mr-3 w-full lg:w-4/5 h-full pb-4 px-4 sm:px-10 bg-profiletwo rounded-lg text-white'>
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             All Quests
           </h1>
@@ -166,7 +166,7 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
 
         {/* CHALLENGE TYPE */}
         <div className='w-full lg:w-1/5'>
-          <div className="px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white">
+          <div className='px-4 sm:px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
               Sort By
             </h1>
@@ -211,7 +211,7 @@ const GameChallengeSearchPage = ({ challenges, popular_challenges, expire_challe
           </div>
 
           {/* FILTERS */}
-          <div className="px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white">
+          <div className='px-4 sm:px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>
               Filter By
             </h1>
