@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  signInUser,
+  verifyUser,
+  resendUserAccountVerificationCode,
   userSelector
 } from '../../features/user/userSlice';
 
@@ -12,25 +13,24 @@ import { useForm } from 'react-hook-form';
 import LoadSpinner from '../../components/LoadSpinner';
 
 // ----------------------------------------------------------------------------------
-// ------------------------------------ LOGIN ---------------------------------------
+// ------------------------------------ VERIFY ---------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Login = ({ setAuthPage, setOpenAuth, refresh, setRefresh, setCurrentUserEmail }) => {
+const Verify = ({ setAuthPage, setOpenAuth, refresh, setRefresh, currentUserEmail, setCurrentUserEmail }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  // Function to handle submitting Login form
+  // Function to handle submitting Verification form
   const onSubmit = async (data) => {
-    dispatch(signInUser(data))
+    data.email = currentUserEmail
+
+    dispatch(verifyUser(data))
       .then(res => {
         if (res.payload.token) {
+          setCurrentUserEmail('')
           setOpenAuth(false)
-          setRefresh(!refresh)
-        } else if (res.payload.includes('verify')) {
-          setCurrentUserEmail(res.meta.arg.email)
-          setAuthPage('verify')
           setRefresh(!refresh)
         }
       })
@@ -39,9 +39,14 @@ const Login = ({ setAuthPage, setOpenAuth, refresh, setRefresh, setCurrentUserEm
       })
   };
 
+  // Function to handle resending verification code
+  const resendVerificationCode = async () => {
+    dispatch(resendUserAccountVerificationCode(currentUserEmail));
+  };
+
   return (
     <form className='p-10 bg-taterpurple rounded-lg text-white' onSubmit={handleSubmit(onSubmit)}>
-      <h4 className='text-2xl mb-4'>Sign in to your account</h4>
+      <h4 className='text-2xl mb-4'>Verify your account</h4>
       <div className='form-group'>
         <label className='mr-3'>Email address</label>
         {errors.email && (
@@ -51,57 +56,62 @@ const Login = ({ setAuthPage, setOpenAuth, refresh, setRefresh, setCurrentUserEm
           name='email'
           type='email'
           placeholder='Enter your email'
+          defaultValue={currentUserEmail}
+          disabled={true}
           className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
-          {...register('email', {
+          {...register('email')}
+        />
+      </div>
+      <div className='form-group'>
+        <label className='mr-3'>Verification Code</label>
+        {errors.verification_code && (
+          <span className='text-red-500'>{errors.verification_code.message}</span>
+        )}
+        <input
+          name='verification_code'
+          type='verification_code'
+          placeholder='Enter your verification code'
+          className='form-control text-black w-full flex items-center mb-3 mt-3 p-2 rounded-md text-lg'
+          {...register('verification_code', {
             required: 'Required field',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: '(Invalid email address)'
+            maxLength: {
+              value: 6,
+              message: 'Codes must be six digits long'
+            },
+            minLength: {
+              value: 6,
+              message: 'Codes must be six digits long'
             }
           })}
         />
       </div>
-      <div className='form-group'>
-        <label className='mr-3'>Password</label>
-        {errors.password && (
-          <span className='text-red-500'>{errors.password.message}</span>
-        )}
-        <input
-          name='password'
-          type='password'
-          placeholder='Enter your password'
-          className='form-control text-black w-full flex items-center mb-3 mt-3 p-2 rounded-md text-lg'
-          {...register('password', {
-            required: 'Required field'
-          })} />
-      </div>
 
       <div className='sm:mr-20 sm:mb-0 sm:flex text-center sm:text-left sm:justify-start'>
         <p className='sm:mb-7'>
-          Forgot your password?
+          Code expired?
         </p>
         <p
           onClick={() => {
-            setAuthPage('forgot_password')
+            resendVerificationCode()
           }}
           className='sm:ml-2 mb-7 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
         >
-          Reset password
+          Resend code
         </p>
       </div>
 
       <div className='sm:mx-0 sm:flex sm:justify-between text-center sm:items-center'>
         <div className='mb-7 sm:mb-0 sm:flex justify-center text-xl'>
           <p>
-            No account?
+            Have an account?
           </p>
           <p
             onClick={() => {
-              setAuthPage('signup')
+              setAuthPage('login')
             }}
             className='sm:ml-2 cursor-pointer text-logintext hover:text-purplebutton focus:outline-none'
           >
-            Create account
+            Login
           </p>
         </div>
         <button
@@ -114,11 +124,11 @@ const Login = ({ setAuthPage, setOpenAuth, refresh, setRefresh, setCurrentUserEm
             <div className='h-7 mr-6'>
               <LoadSpinner />
             </div>
-          ) : 'SIGN IN'}
+          ) : 'VERIFY'}
         </button>
       </div>
     </form>
   );
 }
 
-export default Login;
+export default Verify;

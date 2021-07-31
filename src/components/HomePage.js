@@ -21,7 +21,7 @@ import Hero from '../components/HeroCard';
 // ------------------------------------ HOMEPAGE ------------------------------------
 // ----------------------------------------------------------------------------------
 
-const HomePage = ({ refresh }) => {
+const HomePage = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const { recent_challenges, tater_featured_challenge } = useSelector(challengeSelector)
 
@@ -33,7 +33,7 @@ const HomePage = ({ refresh }) => {
   return (
     <>
       {/* HERO */}
-      <Hero />
+      <Hero refresh={refresh} setRefresh={setRefresh} />
 
       {/* BODY */}
       <div className='xl:flex justify-between'>
@@ -44,7 +44,7 @@ const HomePage = ({ refresh }) => {
           ) : null}
 
           {/* TATER'S STREAM */}
-          <div className='px-10 mb-3 pb-4 bg-profiletwo rounded-xl text-white'>
+          <div className='px-4 sm:px-10 mb-3 pb-4 bg-profiletwo rounded-xl text-white'>
             <h1 className='text-center text-2xl font-medium py-4'>
               Tater & Tots
             </h1>
@@ -59,7 +59,7 @@ const HomePage = ({ refresh }) => {
 
         {/* RECENT QUESTS */}
         <div className='w-full xl:w-5/12'>
-          <div className='px-10 pb-4 bg-profiletwo rounded-xl text-white'>
+          <div className='px-4 sm:px-10 pb-4 bg-profiletwo rounded-xl text-white'>
             <h1 className='text-center text-2xl font-medium py-4'>
               Recent Quests
             </h1>

@@ -16,19 +16,21 @@ import cogoToast from 'cogo-toast';
 // ------------------------------------ SIGNUP --------------------------------------
 // ----------------------------------------------------------------------------------
 
-const Signup = ({ setAuthPage, setOpenAuth, refresh, setRefresh }) => {
+const Signup = ({ setAuthPage, refresh, setRefresh, setCurrentUserEmail }) => {
   // State
   const dispatch = useDispatch();
   const { loading } = useSelector(userSelector)
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  // Function to handle submitting Login form
+  // Function to handle submitting Signup form
   const onSubmit = async (data) => {
     if (data.password === data.password2) {
       dispatch(signUpUser(data))
         .then(res => {
+          console.log(res)
           if (res.payload.token) {
-            setOpenAuth(false)
+            setCurrentUserEmail(res.payload.email)
+            setAuthPage('verify')
             setRefresh(!refresh)
           }
         })

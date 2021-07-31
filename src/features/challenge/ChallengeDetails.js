@@ -217,8 +217,8 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
   return (
     <>
       <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-        <div className="lg:flex justify-between">
-          <ProfileTwo className="mr-3 w-full lg:w-2/5 h-full px-10 pb-4 bg-profiletwo rounded-lg text-white">
+        <div className='lg:flex justify-between'>
+          <ProfileTwo className='mr-3 w-full lg:w-2/5 h-full px-4 sm:px-10 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium pt-4 lg:my-0'>
               {challenge.name}
             </h1>
@@ -321,7 +321,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
           </ProfileTwo>
 
           {/* LEADERBOARD */}
-          <Leaderboard challenge_high_scores={challenge_high_scores} challenge_speedruns={challenge_speedruns} challenge_for_glorys={challenge_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} setOpenAccept={setOpenAccept} countdownIsAfter={countdownIsAfter} setCountdownIsAfter={setCountdownIsAfter} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} />
+          <Leaderboard challenge_high_scores={challenge_high_scores} challenge_speedruns={challenge_speedruns} challenge_for_glorys={challenge_for_glorys} challenge={challenge} setOpen={setOpenProgress} acceptedChallenge={acceptedChallenge} submitChallengeCompleted={submitChallengeCompleted} setOpenAccept={setOpenAccept} countdownIsAfter={countdownIsAfter} setCountdownIsAfter={setCountdownIsAfter} ProfileTwo={ProfileTwo} ProfileOneButton={ProfileOneButton} refresh={refresh} setRefresh={setRefresh} />
         </div >
       </ProfileOne>
 

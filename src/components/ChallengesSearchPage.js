@@ -228,9 +228,9 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
       className='p-4 rounded-tr-md bg-profileone rounded-b-md'
       style={{ backgroundColor: user.profile_color_one ? user.profile_color_one : null }}
     >
-      <div className="flex flex-col-reverse lg:flex-row lg:justify-between">
+      <div className='flex flex-col-reverse lg:flex-row lg:justify-between'>
         {/* CHALLENGE LIST */}
-        <ProfileTwo className="mr-3 w-full lg:w-4/5 h-full pb-4 px-10 bg-profiletwo rounded-lg text-white">
+        <ProfileTwo className='mr-3 w-full lg:w-4/5 h-full pb-4 px-4 sm:px-10 bg-profiletwo rounded-lg text-white'>
           <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
             {currentChallengeFilter === 'Created' ? 'Created Quests' :
               currentChallengeFilter === 'Accepted' ? 'Accepted Quests' :
@@ -238,13 +238,32 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
                   null
             }
           </h1>
+          {currentChallengeFilter === 'Created' && filteredCreatedChallenges.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are no created quests
+              </p>
+            </div>
+          ) : currentChallengeFilter === 'Accepted' && filteredAcceptedChallenges.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are no accepted quests
+              </p>
+            </div>
+          ) : currentChallengeFilter === 'Completed' && filteredCompletedChallenges.length === 0 ? (
+            <div className='text-center text-white'>
+              <p className='text-lg leading-6'>
+                There are no completed quests
+              </p>
+            </div>
+          ) : null}
+
           <ChallengeList
             challenges={
               currentChallengeFilter === 'Created' ? filteredCreatedChallenges :
                 currentChallengeFilter === 'Accepted' ? filteredAcceptedChallenges :
                   currentChallengeFilter === 'Completed' ? filteredCompletedChallenges :
-                    null
-            }
+                    null}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}
             user={user}
@@ -254,7 +273,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
         {/* CHOSEN GAME */}
         <div className='w-full lg:w-1/5'>
           <div
-            className={`px-10 pb-4 lg:mb-0 bg-profiletwo rounded-lg text-white`}
+            className={`px-4 sm:px-10 pb-4 lg:mb-0 bg-profiletwo rounded-lg text-white`}
             style={{ backgroundColor: user.profile_color_two ? user.profile_color_two : null }}
           >
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
@@ -276,15 +295,15 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           </div>
 
           {/* CHALLENGE TYPE */}
-          <ProfileTwo className="px-10 mb-3 mt-3 pb-4 bg-profiletwo rounded-lg text-white">
+          <ProfileTwo className='px-4 sm:px-10 mb-3 mt-3 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
               Quest Type
             </h1>
             <div className='flex flex-col'>
               <ProfileOneCreatedButton
                 className={currentChallengeFilter === 'Created' ?
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out" :
-                  "items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out"}
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-profileone focus:outline-none transition duration-150 ease-in-out' :
+                  'items-center rounded-lg text-lg mb-4 py-2 text-center font-medium bg-graybutton hover:bg-white hover:text-graybutton focus:outline-none transition duration-150 ease-in-out'}
                 onClick={() => {
                   setCurrentChallengeFilter('Created')
                   filterReset()
@@ -321,7 +340,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
           </ProfileTwo>
 
           {/* SORT OPTIONS */}
-          <ProfileTwo className="px-10 mb-3 mt-3 pb-4 bg-profiletwo rounded-lg text-white">
+          <ProfileTwo className='px-4 sm:px-10 mb-3 mt-3 pb-4 bg-profiletwo rounded-lg text-white'>
             <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
               Sort By
             </h1>
@@ -367,7 +386,7 @@ const ChallengesSearchPage = ({ accepted_challenges, created_challenges, complet
 
           {/* FILTERS */}
           <div
-            className={`px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white`}
+            className={`px-4 sm:px-10 pb-4 mb-3 lg:mb-0 bg-profiletwo rounded-lg text-white`}
             style={{ backgroundColor: user.profile_color_two ? user.profile_color_two : null }}
           >
             <h1 className='text-center text-2xl font-medium py-4 mt-4 lg:my-0'>

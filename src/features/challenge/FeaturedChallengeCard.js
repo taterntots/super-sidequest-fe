@@ -37,7 +37,7 @@ const FeaturedChallengeCard = ({ data }) => {
 
   return (
     <>
-      <ProfileTwo className='px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white'>
+      <ProfileTwo className='px-4 sm:px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white'>
         <h1 className='text-center text-2xl font-medium pt-4 mt-4 lg:my-0'>
           {name}
         </h1>

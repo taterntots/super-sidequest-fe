@@ -15,10 +15,10 @@ const SearchError = ({ searchTerm }) => {
         src={Derp}
         alt='banner for a user'
       />
-      <p className='text-lg font-bold leading-6 mt-4 text-emptySearchResults'>
+      <p className='text-lg font-bold leading-6 mt-4'>
         Couldn't find
       </p>
-      <p className='text-lg font-bold text-emptySearchResults'>"{searchTerm}"</p>
+      <p className='text-lg font-bold'>"{searchTerm}"</p>
     </div>
   );
 }

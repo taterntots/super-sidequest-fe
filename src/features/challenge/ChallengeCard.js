@@ -54,8 +54,8 @@ const ChallengeCard = ({ data, user }) => {
 
   return (
     <div className={countdownIsAfter || !end_date ?
-      'p-2 rounded-lg hover:bg-gray-600 transform transition duration-500 hover:scale-105' :
-      'opacity-60 p-2 rounded-lg hover:bg-gray-600 transform transition duration-500 hover:scale-105'}
+      'p-2 rounded-lg hover:bg-sitewidebackground transform transition duration-500 hover:scale-105' :
+      'opacity-60 p-2 rounded-lg hover:bg-sitewidebackground transform transition duration-500 hover:scale-105'}
     >
       <div
         key={challenge_id}
@@ -103,7 +103,7 @@ const ChallengeCard = ({ data, user }) => {
         </p>
         <div className='flex'>
           <UsersIcon className='self-center w-10 h-5' />
-          <p className='font-bold'>
+          <p className='self-center font-bold'>
             {active_users}
           </p>
         </div>

@@ -12,6 +12,7 @@ import cogoToast from 'cogo-toast';
 export const initialState = {
   users: [],
   users_with_game_experience: [],
+  user_followings: [],
   user_followers: [],
   user_experience_points: 0,
   user_game_experience_points: 0,
@@ -48,7 +49,20 @@ export const fetchUsersWithGameExperience = createAsyncThunk('users/fetchUsersWi
   return response.data
 });
 
-// API call to grab all of a user's followers
+// API call to grab all of a user's followings (people the user follows)
+export const fetchUserFollowings = createAsyncThunk('users/fetchUserFollowings', async (userId) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/${userId}/followings`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to grab all of a user's followers (people following the user)
 export const fetchUserFollowers = createAsyncThunk('users/fetchUserFollowers', async (userId) => {
   const response = await axios({
     method: 'get',
@@ -252,10 +266,58 @@ export const signUpUser = createAsyncThunk('users/signUpUser', async (credential
     }
   })
     .then(res => {
+      cogoToast.success('Successfully created account', {
+        hideAfter: 5,
+      });
+      return res.data
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.errorMessage, {
+        hideAfter: 5,
+      });
+      return err.response.data.errorMessage
+    })
+  return response
+});
+
+// API call to verify a user account
+export const verifyUser = createAsyncThunk('users/verifyUser', async (data) => {
+  const response = await axios({
+    method: 'post',
+    url: process.env.REACT_APP_API + `auth/verify/${data.email}/${data.verification_code}`,
+    headers: {
+      Accept: 'application/json'
+    }
+  })
+    .then(res => {
       localStorage.setItem('id', res.data.id);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username);
-      cogoToast.success('Successfully created account', {
+      cogoToast.success('Successfully verified account', {
+        hideAfter: 5,
+      });
+      return res.data
+    })
+    .catch(err => {
+      cogoToast.error(err.response.data.errorMessage, {
+        hideAfter: 5,
+      });
+      return err.response.data.errorMessage
+    })
+  return response
+});
+
+// API call to resend a new verification code upon account creation
+export const resendUserAccountVerificationCode = createAsyncThunk('users/resendUserAccountVerificationCode', async (email) => {
+  const response = await axios({
+    method: 'post',
+    url: process.env.REACT_APP_API + `auth/${email}/resend-verification`,
+    headers: {
+      Accept: 'application/json'
+    }
+  })
+    .then(res => {
+      cogoToast.success(res.data.message, {
         hideAfter: 5,
       });
       return res.data
@@ -348,16 +410,24 @@ export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (da
 // API call to update a user's profile
 export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
   const token = localStorage.getItem('token');
+  const userId = data.admin_override ? data.user_id : localStorage.getItem('id')
 
   try {
     const response = await axios({
       method: 'put',
-      url: process.env.REACT_APP_API + `users/${localStorage.getItem('id')}`,
+      url: process.env.REACT_APP_API + `users/${userId}`,
       headers: {
         Accept: 'application/json',
         Authorization: token
       }, data: {
-        ...data
+        profile_pic_URL: data.profile_pic_URL,
+        banner_pic_URL: data.banner_pic_URL,
+        twitter_URL: data.twitter_URL,
+        twitch_URL: data.twitch_URL,
+        discord_URL: data.discord_URL,
+        youtube_URL: data.youtube_URL,
+        profile_color_one: data.profile_color_one,
+        profile_color_two: data.profile_color_two
       }
     })
     cogoToast.success('Profile updated!', {
@@ -401,6 +471,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUsersWithGameExperience.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchUserFollowings.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchUserFollowings.fulfilled]: (state, { payload }) => {
+      state.user_followings = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchUserFollowings.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
@@ -529,6 +611,28 @@ export const userSlice = createSlice({
       state.error = false
     },
     [signUpUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [verifyUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [verifyUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [verifyUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [resendUserAccountVerificationCode.pending]: (state, action) => {
+      state.loading = true
+    },
+    [resendUserAccountVerificationCode.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [resendUserAccountVerificationCode.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

@@ -91,7 +91,7 @@ const ContactUsPage = ({ refresh, setRefresh }) => {
   return (
     <>
       {/* HERO */}
-      <Hero />
+      <Hero refresh={refresh} setRefresh={setRefresh} />
 
       {/* CONTACT BODY */}
       <div className='px-4 py-4 bg-profiletwo rounded-lg text-white'>

@@ -7,11 +7,11 @@ import Hero from '../HeroCard';
 // ----------------------------------- TERMS PAGE -----------------------------------
 // ----------------------------------------------------------------------------------
 
-const TermsPage = () => {
+const TermsPage = ({ refresh, setRefresh }) => {
   return (
     <>
       {/* HERO */}
-      <Hero />
+      <Hero refresh={refresh} setRefresh={setRefresh} />
 
       <div className='px-4 py-4 bg-profiletwo rounded-lg text-white'>
         {/* PRIVACY POLICY */}

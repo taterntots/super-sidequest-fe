@@ -61,6 +61,7 @@ const Dashboard = () => {
               <HomePage
                 searchTerm={searchTerm}
                 refresh={refresh}
+                setRefresh={setRefresh}
                 handleClearSearchBar={handleClearSearchBar}
                 {...props}
               />
@@ -161,6 +162,8 @@ const Dashboard = () => {
             path={`/support`}
             render={(props) => (
               <SupportUsPage
+                refresh={refresh}
+                setRefresh={setRefresh}
                 {...props}
               />
             )}
@@ -170,6 +173,8 @@ const Dashboard = () => {
             path={`/about`}
             render={(props) => (
               <AboutUsPage
+                refresh={refresh}
+                setRefresh={setRefresh}
                 {...props}
               />
             )}
@@ -179,6 +184,8 @@ const Dashboard = () => {
             path={`/faq`}
             render={(props) => (
               <FAQPage
+                refresh={refresh}
+                setRefresh={setRefresh}
                 {...props}
               />
             )}
@@ -188,6 +195,8 @@ const Dashboard = () => {
             path={`/terms`}
             render={(props) => (
               <TermsPage
+                refresh={refresh}
+                setRefresh={setRefresh}
                 {...props}
               />
             )}

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  fetchUserFollowings,
   fetchUserFollowers,
   fetchCheckIfFollowingUser,
   fetchUserByUsername,
   fetchUserEXPForAllGames,
   fetchUserEXPForGameById,
+  fetchUserAdminStatus,
   followUser,
   unfollowUser,
   updateUser,
@@ -37,6 +39,7 @@ import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 import LevelProgressBar from './utils/LevelProgressBar';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
+import AuthModal from './utils/modals/AuthModal';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
@@ -52,7 +55,7 @@ import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { user, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
+  const { user, user_admin, user_followings, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
   const [filteredAcceptedChallenges, setFilteredAcceptedChallenges] = useState(accepted_challenges);
@@ -62,6 +65,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [currentGameId, setCurrentGameId] = useState()
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
+  const [unfollowText, setUnfollowText] = useState('Following')
+  const [openAuth, setOpenAuth] = useState(false);
+  const [authPage, setAuthPage] = useState('login');
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
   const route = useRouteMatch();
   const location = useLocation();
@@ -87,6 +93,13 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     }
   }, [currentGame, completed_challenges])
 
+  // Grabs user admin status
+  useEffect(() => {
+    if (localStorage.getItem('id')) {
+      dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+    }
+  }, [dispatch, refresh])
+
   // Grabs endpoints relying on userID after grabbing user in above useEffect
   useEffect(() => {
     if (Object.keys(user).length > 1) {
@@ -95,8 +108,12 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       dispatch(fetchUserCompletedChallenges({ user_id: user.id, sort_option: sortOption }))
       dispatch(fetchUserCompletedChallengeTotal(user.id))
       dispatch(fetchUserFeaturedChallenge(user.id))
+      dispatch(fetchUserFollowings(user.id))
       dispatch(fetchUserFollowers(user.id))
       dispatch(fetchUserEXPForAllGames(user.id))
+      if (localStorage.getItem('id')) {
+        dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+      }
     }
   }, [dispatch, user, sortOption, refresh])
 
@@ -111,7 +128,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // UseEffect to check if the logged in user is following the current user profile
   useEffect(() => {
-    if (Object.keys(user).length > 1) {
+    if (Object.keys(user).length > 1 && localStorage.getItem('id')) {
       dispatch(fetchCheckIfFollowingUser(user.id))
     }
   }, [user, isFollowingToggle])
@@ -131,6 +148,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Function to handle submitting changes to the user's profile
   const submitUserProfile = async (data) => {
+    data.admin_override = user_admin
+    data.user_id = user.id
+
     dispatch(updateUser(data))
       .then(res => {
         setOpenProfileEdit(false)
@@ -191,17 +211,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       {/* USER INFO */}
       <div className='mb-4'>
         <div
-          className={localStorage.getItem('id') === user.id ?
+          className={user_admin ?
             'hover:opacity-50 cursor-pointer transform transition' :
             ''}
-          onClick={() => localStorage.getItem('id') === user.id ? setOpenProfileEdit(true) : null}
+          onClick={() => user_admin ? setOpenProfileEdit(true) : null}
         >
           <img
             className='object-cover h-72 w-full rounded-t-lg'
             src={user.banner_pic_URL ? user.banner_pic_URL : UserBannerPlaceholder}
             alt='banner for a user'
           />
-          {localStorage.getItem('id') === user.id ? (
+          {user_admin ? (
             <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
               EDIT
             </p>
@@ -213,9 +233,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
           `bg-profileone rounded-b-lg`}
         >
           <div className='sm:px-10'>
-            <div className='flex justify-center sm:justify-between py-3'>
+            <div className='flex justify-center sm:justify-between pt-3 pb-1 sm:pb-3'>
 
-              {/* Profile Pic and Name Container */}
+              {/* PROFILE PIC AND NAME CONTAINER */}
               <div className='flex'>
                 {user.profile_pic_URL ? (
                   <img
@@ -239,15 +259,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                   />
                 </div>
 
-                {/* Name and follower buttons */}
+                {/* NAME AND FOLLOWER BUTTONS */}
                 <div className='self-center text-center ml-3'>
                   <h1 className='pb-2 px-2 text-3xl sm:text-4xl text-white'>{user.username}</h1>
                   {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileUnfollowButton
                       className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
                       onClick={submitUnfollowUser}
+                      onMouseOver={() => setUnfollowText('Unfollow')}
+                      onMouseOut={() => setUnfollowText('Following')}
                     >
-                      Following
+                      {unfollowText}
                     </ProfileUnfollowButton>
                   ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileFollowButton
@@ -256,7 +278,31 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                     >
                       Follow
                     </ProfileFollowButton>
-                  ) : null}
+                  ) : user.id === localStorage.getItem('id') && localStorage.getItem('token') ? (
+                    <ProfileFollowButton
+                      className='w-full px-3 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                      onClick={() => setOpenProfileEdit(true)}
+                    >
+                      Edit Profile
+                    </ProfileFollowButton>
+                  ) : (
+                    <ProfileFollowButton
+                      className='w-full px-3 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                      onClick={() => setOpenAuth(true)}
+                    >
+                      Follow
+                    </ProfileFollowButton>
+                  )}
+                </div>
+
+                {/* FOLLOWER AND FOLLOWING STATS */}
+                <div className='hidden sm:inline ml-6 self-end text-white'>
+                  <p>
+                    <span className='font-bold text-lg'>{user_followings.length}</span> Following
+                  </p>
+                  <p>
+                    <span className='font-bold text-lg'>{user_followers.length}</span> Followers
+                  </p>
                 </div>
               </div>
 
@@ -269,6 +315,16 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                   user={user}
                 />
               </div>
+            </div>
+
+            {/* FOLLOWER AND FOLLOWING STATS (MOBILE)*/}
+            <div className='sm:hidden flex justify-center text-white pb-3'>
+              <p>
+                <span className='font-bold text-lg'>{user_followings.length}</span> Following
+              </p>
+              <p className='ml-6'>
+                <span className='font-bold text-lg'>{user_followers.length}</span> Followers
+              </p>
             </div>
           </div>
         </ProfileOne>
@@ -399,6 +455,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
       {/* Modals */}
       <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} submitUserProfile={submitUserProfile} loading={loading} user={user} />
+      <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}
       <Route
@@ -460,6 +517,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         path={`/:username/friends`}
         render={(props) => (
           <FollowerPage
+            user_followings={user_followings}
             user_followers={user_followers}
             searchTerm={searchTerm}
             handleClearSearchBar={handleClearSearchBar}

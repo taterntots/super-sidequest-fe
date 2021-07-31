@@ -74,8 +74,10 @@ const ChallengeForm = ({ refresh, setRefresh, ProfileOne, ProfileTwoForm, Profil
 
   return (
     <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
-      <ProfileTwoForm className='p-10 bg-profiletwo rounded-lg text-white' onSubmit={handleSubmit(onSubmit)}>
-        <h4 className='text-2xl mb-4'>Create a quest</h4>
+      <ProfileTwoForm className='px-4 sm:px-10 pb-4 bg-profiletwo rounded-lg text-white' onSubmit={handleSubmit(onSubmit)}>
+        <h1 className='text-center text-2xl font-medium py-4 lg:my-0'>
+          Create a quest
+        </h1>
         <div className='sm:flex sm:justify-between'>
           <div className='form-group sm:w-5/12'>
             <label className='mr-3'>Game<span className='text-red-500'>*</span></label>
