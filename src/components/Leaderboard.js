@@ -164,18 +164,14 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                     setCurrentPlayer(score)
                   }}
                   />
-                ) : (
-                  <VideoIcon className='invisible h-7' />
-                )}
+                ) : null}
                 {score.image_URL ? (
                   <ImageIcon className='w-full h-7 cursor-pointer hover:text-addgreen' onClick={() => {
                     setOpenImage(true)
                     setCurrentPlayer(score)
                   }}
                   />
-                ) : (
-                  <ImageIcon className='invisible h-7' />
-                )}
+                ) : null}
               </div>
 
             </div>
