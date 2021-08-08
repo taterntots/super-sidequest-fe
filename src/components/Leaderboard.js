@@ -126,7 +126,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                           score.speedrun_minutes === 0 &&
                           score.speedrun_seconds > 0 &&
                           score.speedrun_milliseconds > 0 ?
-                          `${score.speedrun_seconds}s ${score.speedrun_milliseconds}ms`
+                          `${score.speedrun_seconds}s ${score.speedrun_milliseconds.toString().length < 3 ? '0' : ''}${score.speedrun_milliseconds}ms`
                           :
                           score.speedrun_hours === 0 &&
                             score.speedrun_minutes === 0 &&
@@ -134,7 +134,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                             score.speedrun_milliseconds === 0 ?
                             `${score.speedrun_seconds}s`
                             :
-                            `${score.speedrun_hours ? score.speedrun_hours + 'h' : ''} ${score.speedrun_minutes}m ${score.speedrun_seconds}s ${score.speedrun_milliseconds ? score.speedrun_milliseconds + 'ms' : ''}`}
+                            `${score.speedrun_hours ? score.speedrun_hours + 'h' : ''} ${score.speedrun_minutes}m ${score.speedrun_seconds}s ${score.speedrun_milliseconds.toString().length < 3 ? '0' : ''}${score.speedrun_milliseconds ? score.speedrun_milliseconds + 'ms' : ''}`}
                 </p>
               ) : (
                 <p className={challenge.user_id === localStorage.getItem('id') ?
@@ -164,18 +164,14 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                     setCurrentPlayer(score)
                   }}
                   />
-                ) : (
-                  <VideoIcon className='invisible h-7' />
-                )}
+                ) : null}
                 {score.image_URL ? (
                   <ImageIcon className='w-full h-7 cursor-pointer hover:text-addgreen' onClick={() => {
                     setOpenImage(true)
                     setCurrentPlayer(score)
                   }}
                   />
-                ) : (
-                  <ImageIcon className='invisible h-7' />
-                )}
+                ) : null}
               </div>
 
             </div>

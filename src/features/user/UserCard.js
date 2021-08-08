@@ -11,6 +11,7 @@ import styled from '@emotion/styled';
 import Tater from '../../img/Tater.png';
 import Tots from '../../img/Tots.png';
 import { ReactComponent as QuestListIcon } from '../../img/QuestList.svg';
+import { ReactComponent as PatreonLogo } from '../../img/PatreonLogo.svg';
 
 // ----------------------------------------------------------------------------------
 // ------------------------------------ USER CARD -----------------------------------
@@ -25,6 +26,7 @@ const UserCard = ({ data }) => {
     profile_color_one,
     total_experience_points,
     total_created_challenges,
+    is_patreon,
     created_at
   } = data;
 
@@ -63,11 +65,18 @@ const UserCard = ({ data }) => {
       </ProfileOne>
 
       {/* color bar */}
-      <div className={`flex items-center justify-end px-4 py-2 text-sm text-white rounded-b-lg bg-gray-600`}>
-        <QuestListIcon className='self-center ml-2 mr-1 w-5 h-5' />
-        <span className='font-bold'>
-          {total_created_challenges}
-        </span>
+      <div className='flex items-center justify-between px-4 py-2 text-sm text-white rounded-b-lg bg-gray-600'>
+        {is_patreon ? (
+          <PatreonLogo />
+        ) : (
+          <PatreonLogo className='invisible' />
+        )}
+        <div className='flex items-center'>
+          <QuestListIcon className='self-center mr-1 w-5 h-5' />
+          <span className='font-bold'>
+            {total_created_challenges}
+          </span>
+        </div>
       </div>
     </div>
   );

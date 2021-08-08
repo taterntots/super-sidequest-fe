@@ -48,6 +48,7 @@ import { ReactComponent as TwitterLogo } from '../img/TwitterLogo.svg';
 import { ReactComponent as DiscordLogo } from '../img/DiscordLogo.svg';
 import { ReactComponent as YouTubeLogo } from '../img/YouTubeLogo.svg';
 import { ReactComponent as TwitchLogo } from '../img/TwitchLogo.svg';
+import { ReactComponent as PatreonLogo } from '../img/PatreonLogo.svg';
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------- USER PAGE-------------------------------------
@@ -304,6 +305,12 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                     <span className='font-bold text-lg'>{user_followers.length}</span> Followers
                   </p>
                 </div>
+                {/* BADGES */}
+                {user.is_patreon ? (
+                  <div className='hidden sm:block self-center ml-6 border-l-2 py-4 px-5 h-full'>
+                    <PatreonLogo className='h-full w-8 md:w-12' />
+                  </div>
+                ) : null}
               </div>
 
               {/* LEVEL UP ICON */}
@@ -319,6 +326,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
             {/* FOLLOWER AND FOLLOWING STATS (MOBILE)*/}
             <div className='sm:hidden flex justify-center text-white pb-3'>
+              {user.is_patreon ? (
+                <PatreonLogo className='sm:hidden self-center mr-5 pt-1 h-6 w-6' />
+              ) : null}
               <p>
                 <span className='font-bold text-lg'>{user_followings.length}</span> Following
               </p>
