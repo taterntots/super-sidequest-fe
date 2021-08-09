@@ -39,6 +39,7 @@ import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 import LevelProgressBar from './utils/LevelProgressBar';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
+import DeleteUserModal from './utils/modals/DeleteUserModal';
 import AuthModal from './utils/modals/AuthModal';
 
 // IMAGES
@@ -65,6 +66,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [currentGame, setCurrentGame] = useState({})
   const [currentGameId, setCurrentGameId] = useState()
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
+  const [openUserDelete, setOpenUserDelete] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const [unfollowText, setUnfollowText] = useState('Following')
   const [openAuth, setOpenAuth] = useState(false);
@@ -182,6 +184,19 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       .catch(err => {
         console.log(err)
       })
+  };
+
+  // Function to handle deleting a user
+  const submitUserDelete = async () => {
+    // dispatch(deleteGame(route.params.gameId))
+    //   .then(res => {
+    //     history.push(`/games`)
+    //     setOpenGameDelete(false);
+    //     setRefresh(!refresh)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
   };
 
   const ProfileOne = styled.div`
@@ -464,7 +479,8 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       </div>
 
       {/* Modals */}
-      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} submitUserProfile={submitUserProfile} loading={loading} user={user} />
+      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} setOpenDelete={setOpenUserDelete} submitUserProfile={submitUserProfile} loading={loading} user={user} user_admin={user_admin} />
+      <DeleteUserModal open={openUserDelete} setOpen={setOpenUserDelete} submitUserDelete={submitUserDelete} loading={loading} />
       <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}

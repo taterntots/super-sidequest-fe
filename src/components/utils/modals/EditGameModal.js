@@ -55,7 +55,7 @@ const EditGameModal = ({ open, setOpen, setOpenDelete, submitGameEdit, loading, 
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
             <div className='inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all mb-6 mt-20 sm:mt-20 max-w-lg'>
-              <form className='p-10 bg-taterpurple text-white' onSubmit={handleSubmit(submitGameEdit)}>
+              <form className='p-7 bg-taterpurple text-white' onSubmit={handleSubmit(submitGameEdit)}>
                 <h4 className='text-2xl mb-4'>
                   Edit Game
                 </h4>
