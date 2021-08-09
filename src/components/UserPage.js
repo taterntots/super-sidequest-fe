@@ -11,6 +11,7 @@ import {
   followUser,
   unfollowUser,
   updateUser,
+  deleteUser,
   userSelector
 } from '../features/user/userSlice';
 import {
@@ -23,7 +24,7 @@ import {
 } from '../features/challenge/challengeSlice';
 
 // ROUTING
-import { Route, Link, useRouteMatch, useLocation } from 'react-router-dom';
+import { Route, Link, useRouteMatch, useLocation, useHistory } from 'react-router-dom';
 
 // UTILS
 import queryString from 'query-string';
@@ -57,6 +58,7 @@ import { ReactComponent as PatreonLogo } from '../img/PatreonLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { user, user_admin, user_followings, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
@@ -188,15 +190,15 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Function to handle deleting a user
   const submitUserDelete = async () => {
-    // dispatch(deleteGame(route.params.gameId))
-    //   .then(res => {
-    //     history.push(`/games`)
-    //     setOpenGameDelete(false);
-    //     setRefresh(!refresh)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    dispatch(deleteUser(user.id))
+      .then(res => {
+        history.push(`/users`)
+        setOpenUserDelete(false);
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   const ProfileOne = styled.div`

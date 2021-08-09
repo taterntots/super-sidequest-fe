@@ -381,6 +381,32 @@ export const resetPassword = createAsyncThunk('users/resetPassword', async (cred
   }
 });
 
+// API call to delete/remove a user
+export const deleteUser = createAsyncThunk('gamess/deleteUser', async (userId) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: process.env.REACT_APP_API + `users/${userId}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+      }
+    })
+    cogoToast.success('User successfully deleted!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // API call to send a contact email
 export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (data) => {
   try {
@@ -655,6 +681,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [resetPassword.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [deleteUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [deleteUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [deleteUser.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
