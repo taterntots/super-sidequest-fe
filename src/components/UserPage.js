@@ -43,7 +43,7 @@ import AuthModal from './utils/modals/AuthModal';
 
 // IMAGES
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
-import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
+import SuperSidequestBanner from '../img/SuperSidequestBanner.jpeg';
 import { ReactComponent as TwitterLogo } from '../img/TwitterLogo.svg';
 import { ReactComponent as DiscordLogo } from '../img/DiscordLogo.svg';
 import { ReactComponent as YouTubeLogo } from '../img/YouTubeLogo.svg';
@@ -219,7 +219,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
         >
           <img
             className='object-cover h-72 w-full rounded-t-lg'
-            src={user.banner_pic_URL ? user.banner_pic_URL : UserBannerPlaceholder}
+            src={user.banner_pic_URL ? user.banner_pic_URL : SuperSidequestBanner}
             alt='banner for a user'
           />
           {user_admin ? (
