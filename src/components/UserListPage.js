@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchUsers,
   fetchBannedUsers,
+  fetchUserAdminStatus,
   userSelector
 } from '../features/user/userSlice';
 
@@ -19,12 +20,15 @@ import UserLeaderboard from '../features/user/UserLeaderboard';
 
 const UserListPage = ({ searchTerm, refresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
-  const { users, banned_users } = useSelector(userSelector)
+  const { users, user_admin, banned_users } = useSelector(userSelector)
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
 
   useEffect(() => {
     dispatch(fetchUsers())
     dispatch(fetchBannedUsers())
+    if (localStorage.getItem('id')) {
+      dispatch(fetchUserAdminStatus(localStorage.getItem('id')))
+    }
   }, [dispatch, refresh])
 
   return (
@@ -42,15 +46,17 @@ const UserListPage = ({ searchTerm, refresh, handleClearSearchBar }) => {
           Users
         </Link>
         {/* BANNED USERS */}
-        <Link
-          to={`/users/banned`}
-          onClick={() => handleClearSearchBar()}
-          className={url.includes('banned') && url.includes('users') ?
-            'px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md' :
-            'px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'}
-        >
-          Banned
-        </Link>
+        {user_admin && localStorage.getItem('token') ? (
+          <Link
+            to={`/users/banned`}
+            onClick={() => handleClearSearchBar()}
+            className={url.includes('banned') && url.includes('users') ?
+              'px-5 hover:text-navbarbuttonhighlight bg-profileone rounded-t-md' :
+              'px-5 hover:text-navbarbuttonhighlight bg-graybutton rounded-t-md'}
+          >
+            Banned
+          </Link>
+        ) : null}
         {/* USER LEADERBOARD */}
         <Link
           to={`/users/leaderboard`}

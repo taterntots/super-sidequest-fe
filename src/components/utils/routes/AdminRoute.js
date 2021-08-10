@@ -16,9 +16,8 @@ const AdminRoute = ({ component: Component, location, ...rest }) => {
 
   return (
     <>
-      {user_admin ? (
-        <Route {...rest}
-        />
+      {user_admin && localStorage.getItem('token') ? (
+        <Route {...rest} />
       ) : (
         <Redirect to='/' />
       )}

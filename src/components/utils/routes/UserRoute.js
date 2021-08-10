@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchUserByUsername
+  fetchUserByUsername,
+  userSelector
 } from '../../../features/user/userSlice';
 
 // ROUTING
@@ -13,6 +14,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 const UserRoute = ({ component: Component, location, ...rest }) => {
   const dispatch = useDispatch();
+  const { user_admin } = useSelector(userSelector)
   const [user, setUser] = useState({})
 
   useEffect(() => {
@@ -24,11 +26,16 @@ const UserRoute = ({ component: Component, location, ...rest }) => {
 
   return (
     <>
-      {/* IF THE USER IS BANNED FROM THE SITE, DON'T LET THEM VIEW THEIR PROFILE */}
-      {user && user.is_banned ? (
+      {/* IF A USER ADMIN IS TRYING TO ACCESS A BANNED USERS PROFILE, LET THEM */}
+      {user && user_admin && localStorage.getItem('token') ? (
+        <Route {...rest} />
+        // IF THE USER IS BANNED FROM THE SITE, DON'T LET THEM VIEW THEIR PROFILE
+      ) : user && user.is_banned ? (
         <Redirect to='/banned' />
+        // OTHERWISE DIRECT TO THE PATH
       ) : user ? (
         <Route {...rest} />
+        // IF ALL ELSE FAILS, THE USER DOES NOT EXIST, SO REROUTE TO HOMEPAGE
       ) : (
         <Redirect to='/' />
       )}

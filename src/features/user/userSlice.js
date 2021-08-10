@@ -18,7 +18,7 @@ export const initialState = {
   user_experience_points: 0,
   user_game_experience_points: 0,
   user: {},
-  user_admin: true,
+  user_admin: false,
   is_following_user: false,
   loading: false,
   error: false

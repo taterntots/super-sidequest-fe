@@ -82,7 +82,7 @@ const Dashboard = () => {
               />
             )}
           />
-          <Route
+          <AdminRoute
             exact
             path={`/users/banned`}
             render={(props) => (

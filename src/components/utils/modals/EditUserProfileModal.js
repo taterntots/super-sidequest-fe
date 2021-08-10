@@ -176,7 +176,7 @@ const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, submit
               </form>
 
               {/* DELETE BUTTON */}
-              {user_admin ? (
+              {user_admin && localStorage.getItem('token') ? (
                 <div className=''>
                   <button
                     onClick={() => {

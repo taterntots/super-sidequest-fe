@@ -245,17 +245,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       {/* USER INFO */}
       <div className='mb-4'>
         <div
-          className={user_admin ?
+          className={user_admin && localStorage.getItem('token') ?
             'hover:opacity-50 cursor-pointer transform transition' :
             ''}
-          onClick={() => user_admin ? setOpenProfileEdit(true) : null}
+          onClick={() => user_admin && localStorage.getItem('token') ? setOpenProfileEdit(true) : null}
         >
           <img
             className='object-cover h-72 w-full rounded-t-lg'
             src={user.banner_pic_URL ? user.banner_pic_URL : SuperSidequestBanner}
             alt='banner for a user'
           />
-          {user_admin ? (
+          {user_admin && localStorage.getItem('token') ? (
             <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
               EDIT
             </p>
