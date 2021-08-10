@@ -12,6 +12,7 @@ import {
   unfollowUser,
   updateUser,
   deleteUser,
+  banUser,
   userSelector
 } from '../features/user/userSlice';
 import {
@@ -205,15 +206,15 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
 
   // Function to handle banning a user
   const submitUserBan = async () => {
-    // dispatch(deleteUser(user.id))
-    //   .then(res => {
-    //     history.push(`/users`)
-    //     setOpenUserDelete(false);
-    //     setRefresh(!refresh)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    dispatch(banUser(user.id))
+      .then(res => {
+        history.push(`/users`)
+        setOpenUserBan(false);
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   const ProfileOne = styled.div`
