@@ -13,6 +13,7 @@ import GameListPage from './GameListPage';
 import UserListPage from './UserListPage';
 import AdminRoute from './utils/routes/AdminRoute';
 import UserRoute from './utils/routes/UserRoute';
+import BannedUserPage from './utils/BannedUserPage';
 import GameDetails from './GameDetails';
 import AllChallengeDetails from './AllChallengeDetails';
 import SupportUsPage from './pages/SupportUsPage';
@@ -209,6 +210,14 @@ const Dashboard = () => {
               <ContactUsPage
                 refresh={refresh}
                 setRefresh={setRefresh}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path={`/banned`}
+            render={(props) => (
+              <BannedUserPage
                 {...props}
               />
             )}

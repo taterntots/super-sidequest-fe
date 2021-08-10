@@ -24,10 +24,13 @@ const UserRoute = ({ component: Component, location, ...rest }) => {
 
   return (
     <>
-      {user.is_banned ? (
-        <Redirect to='/' />
-      ) : (
+      {/* IF THE USER IS BANNED FROM THE SITE, DON'T LET THEM VIEW THEIR PROFILE */}
+      {user && user.is_banned ? (
+        <Redirect to='/banned' />
+      ) : user ? (
         <Route {...rest} />
+      ) : (
+        <Redirect to='/' />
       )}
     </>
   );
