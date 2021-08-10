@@ -84,6 +84,18 @@ const Dashboard = () => {
           />
           <Route
             exact
+            path={`/users/banned`}
+            render={(props) => (
+              <UserListPage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
             path={`/users/leaderboard`}
             render={(props) => (
               <UserListPage

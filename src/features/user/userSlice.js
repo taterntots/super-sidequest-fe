@@ -11,6 +11,7 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   users: [],
+  banned_users: [],
   users_with_game_experience: [],
   user_followings: [],
   user_followers: [],
@@ -28,6 +29,19 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to grab all banned users
+export const fetchBannedUsers = createAsyncThunk('users/fetchBannedUsers', async () => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/all/banned`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -515,6 +529,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUsers.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchBannedUsers.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchBannedUsers.fulfilled]: (state, { payload }) => {
+      state.banned_users = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchBannedUsers.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

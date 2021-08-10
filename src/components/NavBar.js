@@ -200,6 +200,7 @@ const NavBar = ({ refresh, setRefresh, handleClearSearchBar, handleInputChange }
               location.pathname === ('/games/private') ||
               location.pathname === ('/challenges/all') ||
               location.pathname === ('/users') ||
+              location.pathname === ('/users/banned') ||
               location.pathname.includes('/friends')
               ? 'px-3 py-1 w-full lg:w-1/4 ml-4 lg:ml-0 rounded text-black'
               : 'invisible px-3 py-1 w-1/4 rounded text-black'}
