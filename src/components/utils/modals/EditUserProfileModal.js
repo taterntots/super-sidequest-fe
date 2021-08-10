@@ -12,7 +12,7 @@ import LoadSpinner from '../../LoadSpinner';
 // ----------------------------- EDIT USER PROFILE MODAL ----------------------------
 // ----------------------------------------------------------------------------------
 
-const EditUserProfileModal = ({ open, setOpen, setOpenDelete, submitUserProfile, loading, user, user_admin }) => {
+const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, submitUserProfile, loading, user, user_admin }) => {
   const { register, handleSubmit, reset } = useForm();
   const cancelButtonRef = useRef(null)
 
@@ -177,16 +177,28 @@ const EditUserProfileModal = ({ open, setOpen, setOpenDelete, submitUserProfile,
 
               {/* DELETE BUTTON */}
               {user_admin ? (
-                <button
-                  onClick={() => {
-                    setOpen(false)
-                    setOpenDelete(true)
-                    reset()
-                  }}
-                  className={'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'}
-                >
-                  Delete
-                </button>
+                <div className=''>
+                  <button
+                    onClick={() => {
+                      setOpen(false)
+                      setOpenBan(true)
+                      reset()
+                    }}
+                    className='w-1/2 py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered border-r-2'
+                  >
+                    Ban
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOpen(false)
+                      setOpenDelete(true)
+                      reset()
+                    }}
+                    className='w-1/2 py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'
+                  >
+                    Delete
+                  </button>
+                </div>
               ) : null}
             </div>
           </Transition.Child>

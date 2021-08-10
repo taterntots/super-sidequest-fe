@@ -41,11 +41,12 @@ import ChallengeForm from '../features/challenge/ChallengeForm';
 import LevelProgressBar from './utils/LevelProgressBar';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 import DeleteUserModal from './utils/modals/DeleteUserModal';
+import BanUserModal from './utils/modals/BanUserModal';
 import AuthModal from './utils/modals/AuthModal';
 
 // IMAGES
-import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 import SuperSidequestBanner from '../img/SuperSidequestBanner.jpeg';
+import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
 import { ReactComponent as TwitterLogo } from '../img/TwitterLogo.svg';
 import { ReactComponent as DiscordLogo } from '../img/DiscordLogo.svg';
 import { ReactComponent as YouTubeLogo } from '../img/YouTubeLogo.svg';
@@ -69,6 +70,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [currentGameId, setCurrentGameId] = useState()
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const [openUserDelete, setOpenUserDelete] = useState(false);
+  const [openUserBan, setOpenUserBan] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const [unfollowText, setUnfollowText] = useState('Following')
   const [openAuth, setOpenAuth] = useState(false);
@@ -199,6 +201,19 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       .catch(err => {
         console.log(err)
       })
+  };
+
+  // Function to handle banning a user
+  const submitUserBan = async () => {
+    // dispatch(deleteUser(user.id))
+    //   .then(res => {
+    //     history.push(`/users`)
+    //     setOpenUserDelete(false);
+    //     setRefresh(!refresh)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
   };
 
   const ProfileOne = styled.div`
@@ -481,8 +496,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       </div>
 
       {/* Modals */}
-      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} setOpenDelete={setOpenUserDelete} submitUserProfile={submitUserProfile} loading={loading} user={user} user_admin={user_admin} />
+      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} setOpenDelete={setOpenUserDelete} setOpenBan={setOpenUserBan} submitUserProfile={submitUserProfile} loading={loading} user={user} user_admin={user_admin} />
       <DeleteUserModal open={openUserDelete} setOpen={setOpenUserDelete} submitUserDelete={submitUserDelete} loading={loading} />
+      <BanUserModal open={openUserBan} setOpen={setOpenUserBan} submitUserBan={submitUserBan} loading={loading} />
       <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}
