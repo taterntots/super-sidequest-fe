@@ -12,6 +12,7 @@ import UserPage from './UserPage';
 import GameListPage from './GameListPage';
 import UserListPage from './UserListPage';
 import AdminRoute from './utils/routes/AdminRoute';
+import UserRoute from './utils/routes/UserRoute';
 import GameDetails from './GameDetails';
 import AllChallengeDetails from './AllChallengeDetails';
 import SupportUsPage from './pages/SupportUsPage';
@@ -212,7 +213,7 @@ const Dashboard = () => {
               />
             )}
           />
-          <Route
+          <UserRoute
             path={`/:username`}
             render={(props) => (
               <UserPage

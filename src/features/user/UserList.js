@@ -15,7 +15,6 @@ const UserList = ({ searchTerm, handleClearSearchBar, users }) => {
   const [searchResults, setSearchResults] = useState([]);
   const url = window.location.href; // GRABS REFERENCE TO THE CURRENT URL TO CHECK WHICH TAB TO SELECT FOR STYLING
 
-  console.log(url)
   // User search function
   useEffect(() => {
     const results = users.filter(user =>
