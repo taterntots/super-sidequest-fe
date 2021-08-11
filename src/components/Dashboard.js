@@ -1,9 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchFindIfUserBannedByUsername,
-  userSelector
-} from '../features/user/userSlice';
+import React, { useState } from 'react';
 
 // ROUTING
 import { Route, Switch } from 'react-router-dom';
@@ -33,22 +28,8 @@ import ContactUsPage from './pages/ContactUsPage';
 
 const Dashboard = () => {
   // State
-  const dispatch = useDispatch();
-  const { user_is_banned } = useSelector(userSelector)
   const [searchTerm, setSearchTerm] = useState('');
   const [refresh, setRefresh] = useState(false)
-
-  // Finds out if the logged in user is banned and forces them to sign out immediately upon attempting to navigate the site
-  useEffect(() => {
-    if (localStorage.getItem('username')) {
-      dispatch(fetchFindIfUserBannedByUsername(localStorage.getItem('username')))
-        .then(res => {
-          if (res.payload === true) {
-            localStorage.clear()
-          }
-        })
-    }
-  }, [refresh])
 
   // Function for handling search input
   const handleInputChange = (event) => {
