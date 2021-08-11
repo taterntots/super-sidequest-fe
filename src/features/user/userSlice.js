@@ -19,6 +19,7 @@ export const initialState = {
   user_game_experience_points: 0,
   user: {},
   user_admin: false,
+  user_is_banned: false,
   is_following_user: false,
   loading: false,
   error: false
@@ -545,6 +546,19 @@ export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
   }
 });
 
+// API call to find out if a signed in user is banned
+export const fetchFindIfUserBannedByUsername = createAsyncThunk('users/fetchFindIfUserBannedByUsername', async (username) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/username/${username}/banned`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
 // User slice for state change
 export const userSlice = createSlice({
   name: 'users',
@@ -822,6 +836,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [updateUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchFindIfUserBannedByUsername.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchFindIfUserBannedByUsername.fulfilled]: (state, { payload }) => {
+      state.user_is_banned = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchFindIfUserBannedByUsername.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }
