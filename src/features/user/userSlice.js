@@ -451,6 +451,36 @@ export const banUser = createAsyncThunk('users/banUser', async (userId) => {
   }
 });
 
+// API call to unban a user from the site
+export const unbanUser = createAsyncThunk('users/unbanUser', async (userId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `users/${userId}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token
+      }, data: {
+        is_banned: false
+      }
+    })
+    cogoToast.success('User successfully unbanned!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // API call to send a contact email
 export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (data) => {
   try {
@@ -759,6 +789,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [banUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [unbanUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [unbanUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [unbanUser.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },

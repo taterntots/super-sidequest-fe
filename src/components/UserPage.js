@@ -13,6 +13,7 @@ import {
   updateUser,
   deleteUser,
   banUser,
+  unbanUser,
   userSelector
 } from '../features/user/userSlice';
 import {
@@ -43,6 +44,7 @@ import LevelProgressBar from './utils/LevelProgressBar';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
 import DeleteUserModal from './utils/modals/DeleteUserModal';
 import BanUserModal from './utils/modals/BanUserModal';
+import UnbanUserModal from './utils/modals/UnbanUserModal';
 import AuthModal from './utils/modals/AuthModal';
 
 // IMAGES
@@ -72,6 +74,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const [openUserDelete, setOpenUserDelete] = useState(false);
   const [openUserBan, setOpenUserBan] = useState(false);
+  const [openUserUnban, setOpenUserUnban] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const [unfollowText, setUnfollowText] = useState('Following')
   const [openAuth, setOpenAuth] = useState(false);
@@ -208,8 +211,21 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const submitUserBan = async () => {
     dispatch(banUser(user.id))
       .then(res => {
-        history.push(`/users`)
+        history.push(`/users/banned`)
         setOpenUserBan(false);
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle unbanning a user
+  const submitUserUnban = async () => {
+    dispatch(unbanUser(user.id))
+      .then(res => {
+        history.push(`/users`)
+        setOpenUserUnban(false);
         setRefresh(!refresh)
       })
       .catch(err => {
@@ -497,9 +513,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       </div>
 
       {/* Modals */}
-      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} setOpenDelete={setOpenUserDelete} setOpenBan={setOpenUserBan} submitUserProfile={submitUserProfile} loading={loading} user={user} user_admin={user_admin} />
+      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} setOpenDelete={setOpenUserDelete} setOpenBan={setOpenUserBan} setOpenUnban={setOpenUserUnban} submitUserProfile={submitUserProfile} loading={loading} user={user} user_admin={user_admin} />
       <DeleteUserModal open={openUserDelete} setOpen={setOpenUserDelete} submitUserDelete={submitUserDelete} loading={loading} />
       <BanUserModal open={openUserBan} setOpen={setOpenUserBan} submitUserBan={submitUserBan} loading={loading} />
+      <UnbanUserModal open={openUserUnban} setOpen={setOpenUserUnban} submitUserUnban={submitUserUnban} loading={loading} />
       <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}

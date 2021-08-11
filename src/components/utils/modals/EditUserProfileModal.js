@@ -12,7 +12,7 @@ import LoadSpinner from '../../LoadSpinner';
 // ----------------------------- EDIT USER PROFILE MODAL ----------------------------
 // ----------------------------------------------------------------------------------
 
-const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, submitUserProfile, loading, user, user_admin }) => {
+const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, setOpenUnban, submitUserProfile, loading, user, user_admin }) => {
   const { register, handleSubmit, reset } = useForm();
   const cancelButtonRef = useRef(null)
 
@@ -177,16 +177,22 @@ const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, submit
 
               {/* DELETE BUTTON */}
               {user_admin && localStorage.getItem('token') ? (
-                <div className=''>
+                <div>
                   <button
                     onClick={() => {
                       setOpen(false)
-                      setOpenBan(true)
+                      if (user.is_banned) {
+                        setOpenUnban(true)
+                      } else {
+                        setOpenBan(true)
+                      }
                       reset()
                     }}
                     className='w-1/2 py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered border-r-2'
                   >
-                    Ban
+                    {user.is_banned ? (
+                      'Unban'
+                    ) : 'Ban'}
                   </button>
                   <button
                     onClick={() => {
