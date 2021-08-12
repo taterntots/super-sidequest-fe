@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchUserByUsername,
+  fetchFindIfUserBannedByUsername,
   userSelector
 } from '../../../features/user/userSlice';
 
 // ROUTING
 import { Redirect, Route } from 'react-router-dom';
+
+// TOAST
+import cogoToast from 'cogo-toast';
 
 // ----------------------------------------------------------------------------------
 // --------------------------------- USER ROUTE -------------------------------------
@@ -18,10 +22,24 @@ const UserRoute = ({ component: Component, location, ...rest }) => {
   const [user, setUser] = useState({})
 
   useEffect(() => {
+    // Check if the user's profile page is banned
     dispatch(fetchUserByUsername(rest.computedMatch.params.username))
       .then(res => {
         setUser(res.payload)
       })
+
+    // Log out signed in user if they try to access their profile or quests when banned
+    if (localStorage.getItem('username')) {
+      dispatch(fetchFindIfUserBannedByUsername(localStorage.getItem('username')))
+        .then(res => {
+          if (res.payload === true) {
+            localStorage.clear()
+            cogoToast.error('Your account has been banned. You have been logged out.', {
+              hideAfter: 5,
+            });
+          }
+        })
+    }
   }, [rest.computedMatch.params.username])
 
   return (

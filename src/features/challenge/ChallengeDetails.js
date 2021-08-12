@@ -17,10 +17,6 @@ import {
   challengeSelector
 } from '../challenge/challengeSlice';
 
-import {
-  fetchFindIfUserBannedByUsername
-} from '../user/userSlice';
-
 // ROUTING
 import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 
@@ -59,18 +55,6 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
     user_id: localStorage.getItem('id'),
     challenge_id: route.params.challengeId
   }
-
-  // Finds out if the logged in user is banned and forces them to sign out immediately upon navigating to a challenge page
-  useEffect(() => {
-    if (localStorage.getItem('username')) {
-      dispatch(fetchFindIfUserBannedByUsername(localStorage.getItem('username')))
-        .then(res => {
-          if (res.payload === true) {
-            localStorage.clear()
-          }
-        })
-    }
-  }, [])
 
   // Grabs all necessary data from server
   useEffect(() => {

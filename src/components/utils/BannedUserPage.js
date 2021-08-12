@@ -1,8 +1,4 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  fetchFindIfUserBannedByUsername
-} from '../../features/user/userSlice';
+import React from 'react';
 
 // IMAGES
 import Derp from '../../img/Derp.png'
@@ -12,21 +8,6 @@ import Derp from '../../img/Derp.png'
 // ----------------------------------------------------------------------------------
 
 const BannedUserPage = () => {
-  // State
-  const dispatch = useDispatch();
-
-  // Finds out if the logged in user is banned and forces them to sign out immediately upon navigating to their profile page
-  useEffect(() => {
-    if (localStorage.getItem('username')) {
-      dispatch(fetchFindIfUserBannedByUsername(localStorage.getItem('username')))
-        .then(res => {
-          if (res.payload === true) {
-            localStorage.clear()
-          }
-        })
-    }
-  }, [])
-
   return (
     <div className='text-center text-white'>
       <img
