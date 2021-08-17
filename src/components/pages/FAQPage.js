@@ -19,7 +19,7 @@ const FAQPage = ({ refresh, setRefresh }) => {
           <h1 className='px-4 py-2 bg-profileone rounded-md text-white text-2xl font-bold'>
             FAQ
           </h1>
-          <ul className='list-inside list-disc font-medium my-4 mx-2'>
+          <ul className='list-outside list-disc font-medium my-4 mx-6'>
             <li><a href='#what' className='text-texthighlight hover:text-texthighlighthover cursor-pointer'>What is Super Sidequest?</a></li>
             <li><a href='#gamerequest' className='text-texthighlight hover:text-texthighlighthover cursor-pointer'>How do I create a quest for a game that is not featured on the site?</a></li>
             <li><a href='#featured' className='text-texthighlight hover:text-texthighlighthover cursor-pointer'>How do featured quests work?</a></li>
