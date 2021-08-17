@@ -49,7 +49,7 @@ const HomePage = ({ refresh, setRefresh }) => {
             </h1>
             <ul className='pl-4 list-outside list-disc mb-4'>
               <li>
-                Challenge friends and family to custom quests
+                Challenge friends and communities to custom quests
               </li>
               <li>
                 Quests can be speedruns, high scores, or simply for bragging rights

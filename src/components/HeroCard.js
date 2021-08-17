@@ -23,7 +23,7 @@ const HeroCard = ({ refresh, setRefresh }) => {
       {/* HERO */}
       <div className='mb-3 cursor-pointer'>
         <img
-          className='object-contain rounded-md'
+          className='w-full object-contain rounded-md'
           src={SuperSidequestBanner}
           alt='img for Super Sidequest Banner'
           onClick={() =>
