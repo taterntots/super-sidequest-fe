@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchRecentChallenges,
@@ -7,7 +7,7 @@ import {
 } from '../features/challenge/challengeSlice';
 
 // ROUTING
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // REACT PLAYER
 import ReactPlayer from 'react-player/twitch';
@@ -15,6 +15,7 @@ import ReactPlayer from 'react-player/twitch';
 // COMPONENTS
 import ChallengeCard from '../features/challenge/ChallengeCard.js';
 import FeaturedChallengeCard from '../features/challenge/FeaturedChallengeCard.js';
+import AuthModal from '../components/utils/modals/AuthModal';
 import Hero from '../components/HeroCard';
 
 // ----------------------------------------------------------------------------------
@@ -24,6 +25,9 @@ import Hero from '../components/HeroCard';
 const HomePage = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const { recent_challenges, tater_featured_challenge } = useSelector(challengeSelector)
+  const [openAuth, setOpenAuth] = useState(false);
+  const [authPage, setAuthPage] = useState('signup');
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchRecentChallenges())
@@ -35,10 +39,41 @@ const HomePage = ({ refresh, setRefresh }) => {
       {/* HERO */}
       <Hero refresh={refresh} setRefresh={setRefresh} />
 
-      {/* BODY */}
+      {/* LEFT SIDE */}
       <div className='xl:flex justify-between'>
-        {/* TATER'S QUEST */}
         <div className='w-full xl:w-7/12 mr-3'>
+          {/* SITE DESCRIPTION */}
+          <div className='px-4 sm:px-10 pb-4 mb-3 bg-profiletwo rounded-xl text-white'>
+            <h1 className='text-center text-2xl font-medium py-4'>
+              Create Gaming Challenges
+            </h1>
+            <ul className='pl-4 list-outside list-disc mb-4'>
+              <li>
+                Challenge friends and family to custom quests
+              </li>
+              <li>
+                Quests can be speedruns, high scores, or simply for bragging rights
+              </li>
+              <li>
+                Accept and track quests from other users
+              </li>
+              <li>
+                Compete in leaderboards for ultimate glory
+              </li>
+            </ul>
+            <div className='flex justify-center'>
+              <button
+                className='bg-profileone text-center w-10/12 font-bold rounded-full py-4 uppercase tracking-wider transform transition duration-500 hover:scale-105'
+                onClick={() =>
+                  localStorage.getItem('token') ? history.push(`/${localStorage.getItem('username')}`) :
+                    setOpenAuth(true)
+                }
+              >
+                {localStorage.getItem('token') ? 'My Quests' : 'Get Started'}
+              </button>
+            </div>
+          </div>
+          {/* TATER'S QUEST */}
           {tater_featured_challenge.challenge_id ? (
             <FeaturedChallengeCard data={tater_featured_challenge} />
           ) : null}
@@ -57,8 +92,9 @@ const HomePage = ({ refresh, setRefresh }) => {
           </div>
         </div>
 
-        {/* RECENT QUESTS */}
+        {/* RIGHT SIDE */}
         <div className='w-full xl:w-5/12'>
+          {/* RECENT QUESTS */}
           <div className='px-4 sm:px-10 pb-4 bg-profiletwo rounded-xl text-white'>
             <h1 className='text-center text-2xl font-medium py-4'>
               Recent Quests
@@ -79,6 +115,9 @@ const HomePage = ({ refresh, setRefresh }) => {
           </div>
         </div>
       </div >
+
+      {/* Modals */}
+      <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
     </>
   );
 }
