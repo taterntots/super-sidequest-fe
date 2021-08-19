@@ -13,7 +13,7 @@ import { ReactComponent as ImageIcon } from '../img/ImageIcon.svg'
 // COMPONENTS
 import VideoModal from './utils/modals/VideoModal';
 import ImageModal from './utils/modals/ImageModal';
-import RemoveUserFromChallengeModal from './utils/modals/RemoveUserFromChallengeModal';
+import ResetUserChallengeModal from './utils/modals/ResetUserChallengeModal';
 import Timer from './utils/Timer';
 
 // ----------------------------------------------------------------------------------
@@ -24,11 +24,11 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
   const challengeScores = challenge.is_high_score ? challenge_high_scores : challenge.is_speedrun ? challenge_speedruns : challenge_for_glorys;
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
-  const [openUserRemoval, setOpenUserRemoval] = useState(false);
+  const [openUserReset, setOpenUserReset] = useState(false);
   const [completedOn, setCompletedOn] = useState(acceptedChallenge.completed);
   const [currentPlayer, setCurrentPlayer] = useState({});
   const [removeText, setRemoveText] = useState({ text: '', username: '' });
-  const [userToBeRemoved, setUserToBeRemoved] = useState({});
+  const [userToBeReset, setUserToBeReset] = useState({});
 
   // UseEffect that sets the toggle correctly on refresh based on whether a challenge is completed or not
   useEffect(() => {
@@ -81,8 +81,8 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                   'w-3/12 py-1 hover:text-removered cursor-pointer' :
                   'w-3/12 py-1'}
                   onClick={challenge.user_id === localStorage.getItem('id') ? () => {
-                    setOpenUserRemoval(true)
-                    setUserToBeRemoved({ username: score.username, user_id: score.user_id })
+                    setOpenUserReset(true)
+                    setUserToBeReset({ username: score.username, user_id: score.user_id })
                   } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText({ text: 'Reset', username: score.username }) :
@@ -99,8 +99,8 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                   'w-3/12 py-1 hover:text-removered cursor-pointer' :
                   'w-3/12 py-1'}
                   onClick={challenge.user_id === localStorage.getItem('id') ? () => {
-                    setOpenUserRemoval(true)
-                    setUserToBeRemoved({ username: score.username, user_id: score.user_id })
+                    setOpenUserReset(true)
+                    setUserToBeReset({ username: score.username, user_id: score.user_id })
                   } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText({ text: 'Reset', username: score.username }) :
@@ -141,8 +141,8 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
                   'w-3/12 py-1 hover:text-removered cursor-pointer' :
                   'w-3/12 py-1'}
                   onClick={challenge.user_id === localStorage.getItem('id') ? () => {
-                    setOpenUserRemoval(true)
-                    setUserToBeRemoved({ username: score.username, user_id: score.user_id })
+                    setOpenUserReset(true)
+                    setUserToBeReset({ username: score.username, user_id: score.user_id })
                   } : null}
                   onMouseOver={challenge.user_id === localStorage.getItem('id') ?
                     () => setRemoveText({ text: 'Reset', username: score.username }) :
@@ -221,7 +221,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
       {/* Modals */}
       <VideoModal open={openVideo} setOpen={setOpenVideo} currentPlayer={currentPlayer} />
       <ImageModal open={openImage} setOpen={setOpenImage} currentPlayer={currentPlayer} />
-      <RemoveUserFromChallengeModal open={openUserRemoval} setOpen={setOpenUserRemoval} userToBeRemoved={userToBeRemoved} challenge={challenge} refresh={refresh} setRefresh={setRefresh} />
+      <ResetUserChallengeModal open={openUserReset} setOpen={setOpenUserReset} userToBeReset={userToBeReset} challenge={challenge} refresh={refresh} setRefresh={setRefresh} />
     </>
   );
 };

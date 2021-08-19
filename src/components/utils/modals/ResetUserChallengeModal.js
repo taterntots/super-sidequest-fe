@@ -7,19 +7,19 @@ import {
 } from '../../../features/challenge/challengeSlice';
 
 // ----------------------------------------------------------------------------------
-// ------------------------- REMOVE USER FROM CHALLENGE MODAL -----------------------
+// ------------------------- RESET USER CHALLENGE MODAL -----------------------------
 // ----------------------------------------------------------------------------------
 
-const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved, challenge, refresh, setRefresh }) => {
+const ResetUserChallengeModal = ({ open, setOpen, userToBeReset, challenge, refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const cancelButtonRef = useRef(null)
 
-  // Function to handle removing a user from a challenge
-  const submitUserRemoval = async () => {
+  // Function to handle resetting a user's challenge
+  const submitUserReset = async () => {
     let data = {
       challenge_id: challenge.challenge_id,
-      user_id: userToBeRemoved.user_id,
-      username: userToBeRemoved.username
+      user_id: userToBeReset.user_id,
+      username: userToBeReset.username
     }
 
     dispatch(resetUserChallengeProgress(data))
@@ -70,10 +70,10 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved, challeng
             <div className='inline-block w-full mx-6 mt-14 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-lg'>
               <div className='p-10 bg-taterpurple rounded-lg text-white'>
                 <h4 className='text-2xl text-center mb-4'>
-                  {`Reset ${userToBeRemoved.username}`}
+                  {`Reset ${userToBeReset.username}`}
                 </h4>
                 <p className='text-center mb-4'>
-                  {`Are you sure you want remove ${userToBeRemoved.username}'s entry from the leaderboard? This will reset their score for this challenge.`}
+                  {`Are you sure you want reset ${userToBeReset.username}'s entry? This will reset their submitted data for this challenge.`}
                 </p>
                 <div className='sm:flex sm:justify-evenly'>
                   <button
@@ -87,7 +87,7 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved, challeng
                   <button
                     type='button'
                     className='flex w-full sm:w-auto justify-center items-center rounded-lg text-lg sm:px-12 py-3 mb-4 sm:mb-0 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out'
-                    onClick={submitUserRemoval}
+                    onClick={submitUserReset}
                   >
                     Reset
                   </button>
@@ -101,4 +101,4 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeRemoved, challeng
   )
 }
 
-export default RemoveUserFromChallengeModal;
+export default ResetUserChallengeModal;
