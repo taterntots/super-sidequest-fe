@@ -7,29 +7,29 @@ import {
 } from '../../../features/challenge/challengeSlice';
 
 // ----------------------------------------------------------------------------------
-// ------------------------- RESET USER CHALLENGE MODAL -----------------------------
+// ------------------------- REMOVE USER FROM CHALLENGE MODAL -----------------------
 // ----------------------------------------------------------------------------------
 
-const ResetUserChallengeModal = ({ open, setOpen, setOpenUserRemoval, userToBeReset, challenge, refresh, setRefresh }) => {
+const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeReset, challenge, refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const cancelButtonRef = useRef(null)
 
   // Function to handle resetting a user's challenge
-  const submitUserReset = async () => {
-    let data = {
-      challenge_id: challenge.challenge_id,
-      user_id: userToBeReset.user_id,
-      username: userToBeReset.username
-    }
+  const submitUserRemoval = async () => {
+    // let data = {
+    //   challenge_id: challenge.challenge_id,
+    //   user_id: userToBeReset.user_id,
+    //   username: userToBeReset.username
+    // }
 
-    dispatch(resetUserChallengeProgress(data))
-      .then(res => {
-        setRefresh(!refresh)
-        setOpen(false);
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    // dispatch(resetUserChallengeProgress(data))
+    //   .then(res => {
+    //     setRefresh(!refresh)
+    //     setOpen(false);
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
   };
 
   return (
@@ -70,10 +70,10 @@ const ResetUserChallengeModal = ({ open, setOpen, setOpenUserRemoval, userToBeRe
             <div className='inline-block w-full mx-6 mt-14 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-lg'>
               <div className='p-7 bg-taterpurple rounded-t-lg text-white'>
                 <h4 className='text-2xl text-center mb-4'>
-                  {`Reset ${userToBeReset.username}`}
+                  {`Remove ${userToBeReset.username}`}
                 </h4>
                 <p className='text-center mb-7'>
-                  {`Are you sure you want reset ${userToBeReset.username}'s entry? This will reset their submitted data for this quest.`}
+                  {`Are you sure you want remove ${userToBeReset.username} from this quest? This will delete their score and force them to abandon the quest.`}
                 </p>
                 <div className='sm:flex sm:justify-evenly'>
                   <button
@@ -87,23 +87,12 @@ const ResetUserChallengeModal = ({ open, setOpen, setOpenUserRemoval, userToBeRe
                   <button
                     type='button'
                     className='flex w-full sm:w-auto justify-center items-center rounded-lg text-lg sm:px-12 py-3 mb-4 sm:mb-0 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out'
-                    onClick={submitUserReset}
+                    onClick={submitUserRemoval}
                   >
-                    Reset
+                    Remove
                   </button>
                 </div>
               </div>
-
-              {/* DELETE BUTTON */}
-              <button
-                onClick={() => {
-                  setOpen(false)
-                  setOpenUserRemoval(true)
-                }}
-                className={'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'}
-              >
-                Delete
-              </button>
             </div>
           </Transition.Child>
         </div>
@@ -112,4 +101,4 @@ const ResetUserChallengeModal = ({ open, setOpen, setOpenUserRemoval, userToBeRe
   )
 }
 
-export default ResetUserChallengeModal;
+export default RemoveUserFromChallengeModal;

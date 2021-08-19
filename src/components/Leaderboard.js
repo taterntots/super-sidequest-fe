@@ -14,6 +14,7 @@ import { ReactComponent as ImageIcon } from '../img/ImageIcon.svg'
 import VideoModal from './utils/modals/VideoModal';
 import ImageModal from './utils/modals/ImageModal';
 import ResetUserChallengeModal from './utils/modals/ResetUserChallengeModal';
+import RemoveUserFromChallengeModal from './utils/modals/RemoveUserFromChallengeModal';
 import Timer from './utils/Timer';
 
 // ----------------------------------------------------------------------------------
@@ -25,6 +26,7 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openUserReset, setOpenUserReset] = useState(false);
+  const [openUserRemoval, setOpenUserRemoval] = useState(false);
   const [completedOn, setCompletedOn] = useState(acceptedChallenge.completed);
   const [currentPlayer, setCurrentPlayer] = useState({});
   const [removeText, setRemoveText] = useState({ text: '', username: '' });
@@ -221,7 +223,8 @@ const Leaderboard = ({ challenge_high_scores, challenge_speedruns, challenge_for
       {/* Modals */}
       <VideoModal open={openVideo} setOpen={setOpenVideo} currentPlayer={currentPlayer} />
       <ImageModal open={openImage} setOpen={setOpenImage} currentPlayer={currentPlayer} />
-      <ResetUserChallengeModal open={openUserReset} setOpen={setOpenUserReset} userToBeReset={userToBeReset} challenge={challenge} refresh={refresh} setRefresh={setRefresh} />
+      <ResetUserChallengeModal open={openUserReset} setOpen={setOpenUserReset} setOpenUserRemoval={setOpenUserRemoval} userToBeReset={userToBeReset} challenge={challenge} refresh={refresh} setRefresh={setRefresh} />
+      <RemoveUserFromChallengeModal open={openUserRemoval} setOpen={setOpenUserRemoval} userToBeReset={userToBeReset} challenge={challenge} refresh={refresh} setRefresh={setRefresh} />
     </>
   );
 };
