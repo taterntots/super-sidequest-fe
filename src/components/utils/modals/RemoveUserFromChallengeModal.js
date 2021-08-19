@@ -3,7 +3,7 @@ import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useDispatch } from 'react-redux';
 import {
-  resetUserChallengeProgress
+  abandonChallenge
 } from '../../../features/challenge/challengeSlice';
 
 // ----------------------------------------------------------------------------------
@@ -14,22 +14,21 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeReset, challenge,
   const dispatch = useDispatch();
   const cancelButtonRef = useRef(null)
 
-  // Function to handle resetting a user's challenge
+  // Function to handle removing a user from a challenge
   const submitUserRemoval = async () => {
-    // let data = {
-    //   challenge_id: challenge.challenge_id,
-    //   user_id: userToBeReset.user_id,
-    //   username: userToBeReset.username
-    // }
+    let data = {
+      challenge_id: challenge.challenge_id,
+      user_id: userToBeReset.user_id
+    }
 
-    // dispatch(resetUserChallengeProgress(data))
-    //   .then(res => {
-    //     setRefresh(!refresh)
-    //     setOpen(false);
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    dispatch(abandonChallenge(data))
+      .then(res => {
+        setRefresh(!refresh)
+        setOpen(false);
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   return (

@@ -304,18 +304,18 @@ export const acceptChallenge = createAsyncThunk('challenges/acceptChallenge', as
 });
 
 // API call to abandon a challenge (requires token from valid user being signed in)
-export const abandonChallenge = createAsyncThunk('challenges/abandonChallenge', async (challengeId) => {
+export const abandonChallenge = createAsyncThunk('challenges/abandonChallenge', async (data) => {
   const token = localStorage.getItem('token');
 
   try {
     const response = await axios({
       method: 'delete',
-      url: process.env.REACT_APP_API + `challenges/${challengeId}/abandon`,
+      url: process.env.REACT_APP_API + `challenges/${data.challenge_id}/abandon`,
       headers: {
         Accept: 'application/json',
         Authorization: token,
       }, data: {
-        user_id: localStorage.getItem('id')
+        user_id: data.user_id
       }
     })
     cogoToast.success('Challenge abandoned!', {

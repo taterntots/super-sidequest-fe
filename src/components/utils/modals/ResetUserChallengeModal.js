@@ -102,7 +102,7 @@ const ResetUserChallengeModal = ({ open, setOpen, setOpenUserRemoval, userToBeRe
                 }}
                 className={'w-full py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'}
               >
-                Delete
+                Remove
               </button>
             </div>
           </Transition.Child>
