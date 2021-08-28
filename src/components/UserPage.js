@@ -8,9 +8,13 @@ import {
   fetchUserEXPForAllGames,
   fetchUserEXPForGameById,
   fetchUserAdminStatus,
+  findIfUsernameExists,
   followUser,
   unfollowUser,
   updateUser,
+  deleteUser,
+  banUser,
+  unbanUser,
   userSelector
 } from '../features/user/userSlice';
 import {
@@ -23,13 +27,14 @@ import {
 } from '../features/challenge/challengeSlice';
 
 // ROUTING
-import { Route, Link, useRouteMatch, useLocation } from 'react-router-dom';
+import { Route, Link, useRouteMatch, useLocation, useHistory } from 'react-router-dom';
 
 // UTILS
 import queryString from 'query-string';
 
 // STYLING
 import styled from '@emotion/styled';
+import cogoToast from 'cogo-toast';
 
 // COMPONENTS
 import ProfilePage from './ProfilePage';
@@ -39,11 +44,14 @@ import FollowerPage from './FollowerPage';
 import ChallengeForm from '../features/challenge/ChallengeForm';
 import LevelProgressBar from './utils/LevelProgressBar';
 import EditUserProfileModal from './utils/modals/EditUserProfileModal';
+import DeleteUserModal from './utils/modals/DeleteUserModal';
+import BanUserModal from './utils/modals/BanUserModal';
+import UnbanUserModal from './utils/modals/UnbanUserModal';
 import AuthModal from './utils/modals/AuthModal';
 
 // IMAGES
+import SuperSidequestBanner from '../img/SuperSidequestBanner.jpeg';
 import { ReactComponent as BlankUser } from '../img/BlankUser.svg';
-import UserBannerPlaceholder from '../img/UserBannerPlaceholder.jpg';
 import { ReactComponent as TwitterLogo } from '../img/TwitterLogo.svg';
 import { ReactComponent as DiscordLogo } from '../img/DiscordLogo.svg';
 import { ReactComponent as YouTubeLogo } from '../img/YouTubeLogo.svg';
@@ -56,6 +64,7 @@ import { ReactComponent as PatreonLogo } from '../img/PatreonLogo.svg';
 
 const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { user, user_admin, user_followings, user_followers, user_experience_points, user_game_experience_points, is_following_user, loading } = useSelector(userSelector);
   const { created_challenges, accepted_challenges, completed_challenges, challenge_game_stats, featured_challenge } = useSelector(challengeSelector);
   const [filteredCreatedChallenges, setFilteredCreatedChallenges] = useState(created_challenges);
@@ -65,6 +74,9 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
   const [currentGame, setCurrentGame] = useState({})
   const [currentGameId, setCurrentGameId] = useState()
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
+  const [openUserDelete, setOpenUserDelete] = useState(false);
+  const [openUserBan, setOpenUserBan] = useState(false);
+  const [openUserUnban, setOpenUserUnban] = useState(false);
   const [isFollowingToggle, setIsFollowingToggle] = useState(false);
   const [unfollowText, setUnfollowText] = useState('Following')
   const [openAuth, setOpenAuth] = useState(false);
@@ -152,14 +164,53 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     data.admin_override = user_admin
     data.user_id = user.id
 
-    dispatch(updateUser(data))
-      .then(res => {
-        setOpenProfileEdit(false)
-        setRefresh(!refresh)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    // If the username being entered matches the signed in username, go ahead and make the updates without changing local storage
+    if (data.username === route.params.username) {
+      dispatch(updateUser(data))
+        .then(res => {
+          if (res.payload.updatedUser) {
+            setOpenProfileEdit(false)
+            setRefresh(!refresh)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      // Else run the API to find if the entered username already exists
+    } else {
+      dispatch(findIfUsernameExists(data.username))
+        .then(res => {
+          // If the entered username already exists, return an error message that it already exists
+          if (res.payload === true) {
+            cogoToast.error('username already exists. Please pick a different username.', {
+              hideAfter: 5,
+            });
+            // Else run the update function
+          } else {
+            dispatch(updateUser(data))
+              .then(res => {
+                if (res.payload.updatedUser) {
+                  setOpenProfileEdit(false)
+                  setRefresh(!refresh)
+                  history.push(`${res.payload.updatedUser.username}`)
+                  // If the user making the change is not an admin, update their localstorage for username
+                  if (!user_admin) {
+                    localStorage.setItem('username', res.payload.updatedUser.username)
+                    // Else if the user making the change is an admin updating their own username, update their localstorage for username
+                  } else if (user_admin && user.username === localStorage.getItem('username')) {
+                    localStorage.setItem('username', res.payload.updatedUser.username)
+                  }
+                }
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   };
 
   // Function to handle following a user
@@ -178,6 +229,45 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     dispatch(unfollowUser(user.id))
       .then(res => {
         setIsFollowingToggle(!isFollowingToggle)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle deleting a user
+  const submitUserDelete = async () => {
+    dispatch(deleteUser(user.id))
+      .then(res => {
+        history.push(`/users`)
+        setOpenUserDelete(false);
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle banning a user
+  const submitUserBan = async () => {
+    dispatch(banUser(user.id))
+      .then(res => {
+        history.push(`/users/banned`)
+        setOpenUserBan(false);
+        setRefresh(!refresh)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  };
+
+  // Function to handle unbanning a user
+  const submitUserUnban = async () => {
+    dispatch(unbanUser(user.id))
+      .then(res => {
+        history.push(`/users`)
+        setOpenUserUnban(false);
+        setRefresh(!refresh)
       })
       .catch(err => {
         console.log(err)
@@ -212,17 +302,17 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       {/* USER INFO */}
       <div className='mb-4'>
         <div
-          className={user_admin ?
+          className={user_admin && localStorage.getItem('token') ?
             'hover:opacity-50 cursor-pointer transform transition' :
             ''}
-          onClick={() => user_admin ? setOpenProfileEdit(true) : null}
+          onClick={() => user_admin && localStorage.getItem('token') ? setOpenProfileEdit(true) : null}
         >
           <img
             className='object-cover h-72 w-full rounded-t-lg'
-            src={user.banner_pic_URL ? user.banner_pic_URL : UserBannerPlaceholder}
+            src={user.banner_pic_URL ? user.banner_pic_URL : SuperSidequestBanner}
             alt='banner for a user'
           />
-          {user_admin ? (
+          {user_admin && localStorage.getItem('token') ? (
             <p className='opacity-0 hover:opacity-100 absolute text-5xl font-bold text-white flex justify-center items-center bottom-0 top-0 right-0 left-0'>
               EDIT
             </p>
@@ -464,7 +554,10 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
       </div>
 
       {/* Modals */}
-      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} submitUserProfile={submitUserProfile} loading={loading} user={user} />
+      <EditUserProfileModal open={openProfileEdit} setOpen={setOpenProfileEdit} setOpenDelete={setOpenUserDelete} setOpenBan={setOpenUserBan} setOpenUnban={setOpenUserUnban} submitUserProfile={submitUserProfile} loading={loading} user={user} user_admin={user_admin} />
+      <DeleteUserModal open={openUserDelete} setOpen={setOpenUserDelete} submitUserDelete={submitUserDelete} loading={loading} />
+      <BanUserModal open={openUserBan} setOpen={setOpenUserBan} submitUserBan={submitUserBan} loading={loading} />
+      <UnbanUserModal open={openUserUnban} setOpen={setOpenUserUnban} submitUserUnban={submitUserUnban} loading={loading} />
       <AuthModal open={openAuth} setOpen={setOpenAuth} authPage={authPage} setAuthPage={setAuthPage} refresh={refresh} setRefresh={setRefresh} />
 
       {/* PAGE ELEMENTS BASED ON TAB */}

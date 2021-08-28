@@ -12,6 +12,8 @@ import UserPage from './UserPage';
 import GameListPage from './GameListPage';
 import UserListPage from './UserListPage';
 import AdminRoute from './utils/routes/AdminRoute';
+import UserRoute from './utils/routes/UserRoute';
+import BannedUserPage from './utils/BannedUserPage';
 import GameDetails from './GameDetails';
 import AllChallengeDetails from './AllChallengeDetails';
 import SupportUsPage from './pages/SupportUsPage';
@@ -71,6 +73,18 @@ const Dashboard = () => {
           <Route
             exact
             path={`/users`}
+            render={(props) => (
+              <UserListPage
+                searchTerm={searchTerm}
+                handleClearSearchBar={handleClearSearchBar}
+                refresh={refresh}
+                {...props}
+              />
+            )}
+          />
+          <AdminRoute
+            exact
+            path={`/users/banned`}
             render={(props) => (
               <UserListPage
                 searchTerm={searchTerm}
@@ -213,6 +227,14 @@ const Dashboard = () => {
             )}
           />
           <Route
+            path={`/banned`}
+            render={(props) => (
+              <BannedUserPage
+                {...props}
+              />
+            )}
+          />
+          <UserRoute
             path={`/:username`}
             render={(props) => (
               <UserPage

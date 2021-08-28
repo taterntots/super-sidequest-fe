@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
   fetchChallengeById,
   fetchIfChallengeAlreadyAccepted,
@@ -102,7 +101,12 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
 
   // Function to handle abandoning a challenge
   const submitChallengeAbandoned = async () => {
-    dispatch(abandonChallenge(route.params.challengeId))
+    let data = {
+      challenge_id: route.params.challengeId,
+      user_id: localStorage.getItem('id')
+    }
+
+    dispatch(abandonChallenge(data))
       .then(res => {
         setRefresh(!refresh)
         setOpenAbandon(false);

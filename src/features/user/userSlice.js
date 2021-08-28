@@ -11,13 +11,15 @@ import cogoToast from 'cogo-toast';
 // Initial state
 export const initialState = {
   users: [],
+  banned_users: [],
   users_with_game_experience: [],
   user_followings: [],
   user_followers: [],
   user_experience_points: 0,
   user_game_experience_points: 0,
   user: {},
-  user_admin: true,
+  user_admin: false,
+  user_is_banned: false,
   is_following_user: false,
   loading: false,
   error: false
@@ -28,6 +30,19 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to grab all banned users
+export const fetchBannedUsers = createAsyncThunk('users/fetchBannedUsers', async () => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/all/banned`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -381,6 +396,92 @@ export const resetPassword = createAsyncThunk('users/resetPassword', async (cred
   }
 });
 
+// API call to delete/remove a user
+export const deleteUser = createAsyncThunk('gamess/deleteUser', async (userId) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: process.env.REACT_APP_API + `users/${userId}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+      }
+    })
+    cogoToast.success('User successfully deleted!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
+// API call to ban a user from the site
+export const banUser = createAsyncThunk('users/banUser', async (userId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `users/${userId}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token
+      }, data: {
+        is_banned: true
+      }
+    })
+    cogoToast.success('User successfully banned!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
+// API call to unban a user from the site
+export const unbanUser = createAsyncThunk('users/unbanUser', async (userId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios({
+      method: 'put',
+      url: process.env.REACT_APP_API + `users/${userId}`,
+      headers: {
+        Accept: 'application/json',
+        Authorization: token
+      }, data: {
+        is_banned: false
+      }
+    })
+    cogoToast.success('User successfully unbanned!', {
+      hideAfter: 3,
+    });
+    return response.data
+  } catch (err) {
+    cogoToast.error(err.response.data.errorMessage, {
+      hideAfter: 5,
+    });
+    if (err.response.data.errorMessage.includes('expired')) {
+      localStorage.clear()
+    }
+    return isRejectedWithValue(err.response.data.errorMessage)
+  }
+});
+
 // API call to send a contact email
 export const contactUsEmail = createAsyncThunk('users/contactUsEmail', async (data) => {
   try {
@@ -420,6 +521,7 @@ export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
         Accept: 'application/json',
         Authorization: token
       }, data: {
+        username: data.username,
         profile_pic_URL: data.profile_pic_URL,
         banner_pic_URL: data.banner_pic_URL,
         twitter_URL: data.twitter_URL,
@@ -445,6 +547,32 @@ export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
   }
 });
 
+// API call to find out if a signed in user is banned
+export const fetchFindIfUserBannedByUsername = createAsyncThunk('users/fetchFindIfUserBannedByUsername', async (username) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/username/${username}/banned`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to find out if a username exists
+export const findIfUsernameExists = createAsyncThunk('users/findIfUsernameExists', async (username) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/username/${username}/exists`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
 // User slice for state change
 export const userSlice = createSlice({
   name: 'users',
@@ -459,6 +587,18 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchUsers.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchBannedUsers.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchBannedUsers.fulfilled]: (state, { payload }) => {
+      state.banned_users = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchBannedUsers.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     },
@@ -658,6 +798,39 @@ export const userSlice = createSlice({
       state.loading = false
       state.error = true
     },
+    [deleteUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [deleteUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [deleteUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [banUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [banUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [banUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [unbanUser.pending]: (state, action) => {
+      state.loading = true
+    },
+    [unbanUser.fulfilled]: (state) => {
+      state.loading = false
+      state.error = false
+    },
+    [unbanUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
     [contactUsEmail.pending]: (state, action) => {
       state.loading = true
     },
@@ -677,6 +850,29 @@ export const userSlice = createSlice({
       state.error = false
     },
     [updateUser.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [fetchFindIfUserBannedByUsername.pending]: (state, action) => {
+      state.loading = true
+    },
+    [fetchFindIfUserBannedByUsername.fulfilled]: (state, { payload }) => {
+      state.user_is_banned = payload
+      state.loading = false
+      state.error = false
+    },
+    [fetchFindIfUserBannedByUsername.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [findIfUsernameExists.pending]: (state, action) => {
+      state.loading = true
+    },
+    [findIfUsernameExists.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.error = false
+    },
+    [findIfUsernameExists.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }

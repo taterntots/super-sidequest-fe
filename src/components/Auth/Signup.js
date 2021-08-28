@@ -27,7 +27,6 @@ const Signup = ({ setAuthPage, refresh, setRefresh, setCurrentUserEmail }) => {
     if (data.password === data.password2) {
       dispatch(signUpUser(data))
         .then(res => {
-          console.log(res)
           if (res.payload.token) {
             setCurrentUserEmail(res.payload.email)
             setAuthPage('verify')

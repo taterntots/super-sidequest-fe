@@ -1,35 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { useDispatch } from 'react-redux';
-import {
-  abandonChallenge
-} from '../../../features/challenge/challengeSlice';
+
+// IMAGES
+import LoadSpinner from '../../LoadSpinner';
 
 // ----------------------------------------------------------------------------------
-// ------------------------- REMOVE USER FROM CHALLENGE MODAL -----------------------
+// ------------------------------- DELETE USER MODAL --------------------------------
 // ----------------------------------------------------------------------------------
 
-const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeReset, challenge, refresh, setRefresh }) => {
-  const dispatch = useDispatch();
+const DeleteUserModal = ({ open, setOpen, submitUserDelete, loading }) => {
   const cancelButtonRef = useRef(null)
-
-  // Function to handle removing a user from a challenge
-  const submitUserRemoval = async () => {
-    let data = {
-      challenge_id: challenge.challenge_id,
-      user_id: userToBeReset.user_id
-    }
-
-    dispatch(abandonChallenge(data))
-      .then(res => {
-        setRefresh(!refresh)
-        setOpen(false);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -67,12 +48,13 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeReset, challenge,
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
             <div className='inline-block w-full mx-6 mt-14 align-middle rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-lg'>
-              <div className='p-7 bg-taterpurple rounded-t-lg text-white'>
+              <div className='p-10 bg-taterpurple rounded-lg text-white'>
                 <h4 className='text-2xl text-center mb-4'>
-                  {`Remove ${userToBeReset.username}`}
+                  Delete User
                 </h4>
-                <p className='text-center mb-7'>
-                  {`Are you sure you want remove ${userToBeReset.username} from this quest? This will delete their score and force them to abandon the quest.`}
+                <p className='text-center mb-4'>
+                  Are you sure you want to delete this user? This will delete all associated quests as well, and cannot
+                  be undone.
                 </p>
                 <div className='sm:flex sm:justify-evenly'>
                   <button
@@ -84,11 +66,17 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeReset, challenge,
                     Cancel
                   </button>
                   <button
-                    type='button'
-                    className='flex w-full sm:w-auto justify-center items-center rounded-lg text-lg sm:px-12 py-3 mb-4 sm:mb-0 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out'
-                    onClick={submitUserRemoval}
+                    type='submit'
+                    className={loading ? 'opacity-80 pointer-events-none flex w-full sm:w-auto justify-center items-center rounded-lg text-lg sm:px-12 py-3 mb-4 sm:mb-0 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out' :
+                      'flex w-full sm:w-auto justify-center items-center rounded-lg text-lg sm:px-12 py-3 mb-4 sm:mb-0 text-center font-medium bg-removered hover:bg-white hover:text-removered focus:ring transition duration-150 ease-in-out'
+                    }
+                    onClick={submitUserDelete}
                   >
-                    Remove
+                    {loading ? (
+                      <div className='h-7 mr-6'>
+                        <LoadSpinner />
+                      </div>
+                    ) : 'Delete'}
                   </button>
                 </div>
               </div>
@@ -100,4 +88,4 @@ const RemoveUserFromChallengeModal = ({ open, setOpen, userToBeReset, challenge,
   )
 }
 
-export default RemoveUserFromChallengeModal;
+export default DeleteUserModal;

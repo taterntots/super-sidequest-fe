@@ -12,8 +12,8 @@ import LoadSpinner from '../../LoadSpinner';
 // ----------------------------- EDIT USER PROFILE MODAL ----------------------------
 // ----------------------------------------------------------------------------------
 
-const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user }) => {
-  const { register, handleSubmit, reset } = useForm();
+const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, setOpenUnban, submitUserProfile, loading, user, user_admin }) => {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const cancelButtonRef = useRef(null)
 
   return (
@@ -55,10 +55,34 @@ const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user 
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
             <div className='inline-block w-full mx-6 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all mb-6 mt-20 sm:mt-20 max-w-lg'>
-              <form className='p-10 bg-taterpurple text-white' onSubmit={handleSubmit(submitUserProfile)}>
+              <form className='p-7 bg-taterpurple text-white' onSubmit={handleSubmit(submitUserProfile)}>
                 <h4 className='text-2xl mb-4'>
                   Edit Profile
                 </h4>
+                <div className='form-group'>
+                  <label className='mr-3'>Username</label>
+                  {errors.username && (
+                    <span className='text-red-500'>{errors.username.message}</span>
+                  )}
+                  <input
+                    name='username'
+                    type='username'
+                    defaultValue={user.username}
+                    placeholder='Enter your username'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('username', {
+                      required: 'Required field',
+                      minLength: {
+                        value: 4,
+                        message: 'Must be at least 4 characters long'
+                      },
+                      maxLength: {
+                        value: 16,
+                        message: 'Cannot be more than 16 characters'
+                      }
+                    })}
+                  />
+                </div>
                 <div className='mt-7 form-group'>
                   <label className='mr-3'>Avatar URL</label>
                   <input
@@ -174,6 +198,38 @@ const EditUserProfileModal = ({ open, setOpen, submitUserProfile, loading, user 
                   </button>
                 </div>
               </form>
+
+              {/* DELETE BUTTON */}
+              {user_admin && localStorage.getItem('token') ? (
+                <div>
+                  <button
+                    onClick={() => {
+                      setOpen(false)
+                      if (user.is_banned) {
+                        setOpenUnban(true)
+                      } else {
+                        setOpenBan(true)
+                      }
+                      reset()
+                    }}
+                    className='w-1/2 py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered border-r-2'
+                  >
+                    {user.is_banned ? (
+                      'Unban'
+                    ) : 'Ban'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOpen(false)
+                      setOpenDelete(true)
+                      reset()
+                    }}
+                    className='w-1/2 py-2 text-white text-lg font-medium bg-removered hover:bg-white hover:text-removered'
+                  >
+                    Delete
+                  </button>
+                </div>
+              ) : null}
             </div>
           </Transition.Child>
         </div>
