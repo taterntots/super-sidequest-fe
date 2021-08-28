@@ -13,7 +13,7 @@ import LoadSpinner from '../../LoadSpinner';
 // ----------------------------------------------------------------------------------
 
 const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, setOpenUnban, submitUserProfile, loading, user, user_admin }) => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const cancelButtonRef = useRef(null)
 
   return (
@@ -59,6 +59,30 @@ const EditUserProfileModal = ({ open, setOpen, setOpenDelete, setOpenBan, setOpe
                 <h4 className='text-2xl mb-4'>
                   Edit Profile
                 </h4>
+                <div className='form-group'>
+                  <label className='mr-3'>Username</label>
+                  {errors.username && (
+                    <span className='text-red-500'>{errors.username.message}</span>
+                  )}
+                  <input
+                    name='username'
+                    type='username'
+                    defaultValue={user.username}
+                    placeholder='Enter your username'
+                    className='form-control text-black w-full flex items-center mb-7 mt-3 p-2 rounded-md text-lg'
+                    {...register('username', {
+                      required: 'Required field',
+                      minLength: {
+                        value: 4,
+                        message: 'Must be at least 4 characters long'
+                      },
+                      maxLength: {
+                        value: 16,
+                        message: 'Cannot be more than 16 characters'
+                      }
+                    })}
+                  />
+                </div>
                 <div className='mt-7 form-group'>
                   <label className='mr-3'>Avatar URL</label>
                   <input

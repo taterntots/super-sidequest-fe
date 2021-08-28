@@ -521,6 +521,7 @@ export const updateUser = createAsyncThunk('users/updateUser', async (data) => {
         Accept: 'application/json',
         Authorization: token
       }, data: {
+        username: data.username,
         profile_pic_URL: data.profile_pic_URL,
         banner_pic_URL: data.banner_pic_URL,
         twitter_URL: data.twitter_URL,
@@ -551,6 +552,19 @@ export const fetchFindIfUserBannedByUsername = createAsyncThunk('users/fetchFind
   const response = await axios({
     method: 'get',
     url: process.env.REACT_APP_API + `users/username/${username}/banned`,
+    headers: {
+      Accept: 'application/json',
+      Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
+    },
+  })
+  return response.data
+});
+
+// API call to find out if a username exists
+export const findIfUsernameExists = createAsyncThunk('users/findIfUsernameExists', async (username) => {
+  const response = await axios({
+    method: 'get',
+    url: process.env.REACT_APP_API + `users/username/${username}/exists`,
     headers: {
       Accept: 'application/json',
       Authorization: process.env.REACT_APP_AUTHORIZATION_KEY
@@ -848,6 +862,17 @@ export const userSlice = createSlice({
       state.error = false
     },
     [fetchFindIfUserBannedByUsername.rejected]: (state, action) => {
+      state.loading = false
+      state.error = true
+    },
+    [findIfUsernameExists.pending]: (state, action) => {
+      state.loading = true
+    },
+    [findIfUsernameExists.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.error = false
+    },
+    [findIfUsernameExists.rejected]: (state, action) => {
       state.loading = false
       state.error = true
     }

@@ -8,6 +8,7 @@ import {
   fetchUserEXPForAllGames,
   fetchUserEXPForGameById,
   fetchUserAdminStatus,
+  findIfUsernameExists,
   followUser,
   unfollowUser,
   updateUser,
@@ -33,6 +34,7 @@ import queryString from 'query-string';
 
 // STYLING
 import styled from '@emotion/styled';
+import cogoToast from 'cogo-toast';
 
 // COMPONENTS
 import ProfilePage from './ProfilePage';
@@ -162,14 +164,47 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     data.admin_override = user_admin
     data.user_id = user.id
 
-    dispatch(updateUser(data))
-      .then(res => {
-        setOpenProfileEdit(false)
-        setRefresh(!refresh)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    // If the username being entered matches the signed in username, go ahead and make the updates without changing local storage
+    if (data.username === route.params.username) {
+      dispatch(updateUser(data))
+        .then(res => {
+          if (res.payload.updatedUser) {
+            setOpenProfileEdit(false)
+            setRefresh(!refresh)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      // Else run the API to find if the entered username already exists
+    } else {
+      dispatch(findIfUsernameExists(data.username))
+        .then(res => {
+          // If the entered username already exists, return an error message that it already exists
+          if (res.payload === true) {
+            cogoToast.error('username already exists. Please pick a different username.', {
+              hideAfter: 5,
+            });
+            // Else run the update function
+          } else {
+            dispatch(updateUser(data))
+              .then(res => {
+                if (res.payload.updatedUser) {
+                  setOpenProfileEdit(false)
+                  setRefresh(!refresh)
+                  localStorage.setItem('username', res.payload.updatedUser.username)
+                  history.push(`${res.payload.updatedUser.username}`)
+                }
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   };
 
   // Function to handle following a user
