@@ -192,8 +192,14 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                 if (res.payload.updatedUser) {
                   setOpenProfileEdit(false)
                   setRefresh(!refresh)
-                  localStorage.setItem('username', res.payload.updatedUser.username)
                   history.push(`${res.payload.updatedUser.username}`)
+                  // If the user making the change is not an admin, update their localstorage for username
+                  if (!user_admin) {
+                    localStorage.setItem('username', res.payload.updatedUser.username)
+                    // Else if the user making the change is an admin updating their own username, update their localstorage for username
+                  } else if (user_admin && user.username === localStorage.getItem('username')) {
+                    localStorage.setItem('username', res.payload.updatedUser.username)
+                  }
                 }
               })
               .catch(err => {
