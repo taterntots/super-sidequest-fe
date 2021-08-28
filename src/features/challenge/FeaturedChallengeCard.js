@@ -38,7 +38,7 @@ const FeaturedChallengeCard = ({ data }) => {
   return (
     <>
       <ProfileTwo className='px-4 sm:px-10 mb-3 pb-4 bg-profiletwo rounded-lg text-white'>
-        <h1 className='text-center text-2xl font-medium pt-4 mt-4 lg:my-0'>
+        <h1 className='text-center text-2xl font-medium pt-4 mt-4 lg:my-0 break-all'>
           {name}
         </h1>
         <h2 className='text-center text-lg font-medium pb-4 lg:my-0'>
@@ -56,7 +56,7 @@ const FeaturedChallengeCard = ({ data }) => {
             </p>
           </div>
         </Link>
-        <ProfileOne className='mb-4 p-1 border-2 text-center rounded-md bg-profileone'>
+        <ProfileOne className='mb-4 p-1 border-2 text-center rounded-md bg-profileone break-all'>
           {description}
         </ProfileOne>
         <div className='flex justify-evenly mb-4'>
