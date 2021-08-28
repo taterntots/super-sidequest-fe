@@ -86,8 +86,8 @@ const FAQPage = ({ refresh, setRefresh }) => {
           Can I change my username or email address?
         </h2>
         <p className='my-4 mx-2'>
-          No, not at the moment at least. Should you require a username or email change, reach out via the Contact
-          Form and I’ll make the swap for you as soon as I can.
+          Currently you can change your username at any time through your profile page. Should you require an
+          email change, reach out via the Contact Form and I’ll make the swap for you as soon as I can.
         </p>
       </div >
     </>
