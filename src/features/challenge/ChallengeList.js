@@ -31,7 +31,7 @@ const ChallengeList = ({ challenges, searchTerm, handleClearSearchBar, user }) =
       {searchResults.length === 0 && searchTerm !== '' ? (
         <SearchError searchTerm={searchTerm} />
       ) : (
-        <div className='grid gap-6 grig-cols-1 2xl:grid-cols-2'>
+        <div className='grid gap-6 grid-cols-1 2xl:grid-cols-2'>
           {searchResults.map((i) => (
             <Link
               key={i.challenge_id}

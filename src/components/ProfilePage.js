@@ -79,7 +79,7 @@ const ProfilePage = ({ acceptedChallenges, challenge_game_stats, featured_challe
                 </p>
               </div>
             ) : (
-              <div className='grid gap-6 grig-cols-1'>
+              <div className='grid gap-6 grid-cols-1'>
                 {acceptedChallenges.map(acceptedChallenge => (
                   <Link
                     key={acceptedChallenge.challenge_id}

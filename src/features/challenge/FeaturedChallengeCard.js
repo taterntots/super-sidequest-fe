@@ -56,7 +56,7 @@ const FeaturedChallengeCard = ({ data }) => {
             </p>
           </div>
         </Link>
-        <ProfileOne className='mb-4 p-1 border-2 text-center rounded-md bg-profileone break-words'>
+        <ProfileOne className='mb-4 p-1 px-10 border-2 text-center rounded-md bg-profileone break-words'>
           {description}
         </ProfileOne>
         <div className='flex justify-evenly mb-4'>
