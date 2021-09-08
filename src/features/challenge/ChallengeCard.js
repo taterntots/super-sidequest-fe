@@ -72,7 +72,7 @@ const ChallengeCard = ({ data, user }) => {
           alt='banner for a single challenge'
         />
         <div className='md:flex md:justify-between text-center md:text-left w-full'>
-          <div className='md:ml-4 self-center mt-4 md:mt-0 break-all'>
+          <div className='md:ml-4 self-center mt-4 md:mt-0 break-words'>
             <p>{name}</p>
             <p>{game_title}</p>
             <p>by {username}</p>
@@ -84,7 +84,7 @@ const ChallengeCard = ({ data, user }) => {
         </div>
       </div>
       <div className='text-center'>
-        <ProfileOne className='mt-4 p-1 border-2 px-10 rounded-md bg-profileone break-all'>
+        <ProfileOne className='mt-4 p-1 border-2 px-10 rounded-md bg-profileone break-words'>
           {description}
         </ProfileOne>
       </div>

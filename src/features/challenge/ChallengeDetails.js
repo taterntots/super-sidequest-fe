@@ -223,7 +223,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
       <ProfileOne className='p-4 rounded-tr-md bg-profileone rounded-b-md'>
         <div className='lg:flex justify-between'>
           <ProfileTwo className='mr-3 w-full lg:w-2/5 h-full px-4 sm:px-10 pb-4 bg-profiletwo rounded-lg text-white'>
-            <h1 className='text-center text-2xl font-medium pt-4 lg:my-0 break-all'>
+            <h1 className='text-center text-2xl font-medium pt-4 lg:my-0 break-words'>
               {challenge.name}
             </h1>
             <h2 className='text-center text-lg font-medium pb-4 lg:my-0'>
@@ -242,7 +242,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
               </div>
             </Link>
 
-            <ProfileOnePara className='mb-4 py-2 px-4 border-2 text-center rounded-md bg-profileone break-all'>
+            <ProfileOnePara className='mb-4 py-2 px-4 border-2 text-center rounded-md bg-profileone break-words'>
               {challenge.description}
             </ProfileOnePara>
             <div className='flex justify-evenly mb-4'>
@@ -258,7 +258,7 @@ const ChallengeDetails = ({ refresh, setRefresh, ProfileOne, ProfileTwo }) => {
                 {challenge.difficulty}
               </p>
             </div>
-            <p className='whitespace-pre-wrap mb-4 break-all'>
+            <p className='whitespace-pre-wrap mb-4 break-words'>
               {challenge.rules}
             </p>
             {challenge.prize ? (
