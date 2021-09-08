@@ -71,9 +71,9 @@ const ChallengeCard = ({ data, user }) => {
           src={banner_pic_URL}
           alt='banner for a single challenge'
         />
-        <div className='md:flex md:justify-between text-center md:text-left w-full'>
-          <div className='md:ml-4 self-center mt-4 md:mt-0 break-words'>
-            <p>{name}</p>
+        <div className='md:flex md:justify-between text-center md:text-left w-full overflow-hidden'>
+          <div className='md:mx-4 self-center mt-4 md:mt-0 min-w-0'>
+            <p className='break-words'>{name}</p>
             <p>{game_title}</p>
             <p>by {username}</p>
           </div>
