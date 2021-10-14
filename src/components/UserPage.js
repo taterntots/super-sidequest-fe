@@ -287,12 +287,6 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
     background-color: ${user.profile_color_one ? user.profile_color_one : null};
   `
   const ProfileFollowButton = styled.button`
-    &:hover {
-      background-color: ${user.profile_color_two ? user.profile_color_two : null};
-      border-color: ${user.profile_color_two ? user.profile_color_two : null};
-    }
-  `
-  const ProfileUnfollowButton = styled.button`
     background-color: ${user.profile_color_two ? user.profile_color_two : null};
     border-color: ${user.profile_color_two ? user.profile_color_two : null};
   `
@@ -354,24 +348,24 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                 <div className='self-center text-center ml-3'>
                   <h1 className='pb-2 px-2 text-3xl sm:text-4xl text-white'>{user.username}</h1>
                   {is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
-                    <ProfileUnfollowButton
-                      className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:border-white hover:bg-transparent font-medium border-2 rounded-xl'
+                    <button
+                      className='w-full px-3 text-white hover:border-red-600 hover:text-red-600 hover:bg-transparent font-medium border-2 rounded-xl'
                       onClick={submitUnfollowUser}
                       onMouseOver={() => setUnfollowText('Unfollow')}
                       onMouseOut={() => setUnfollowText('Following')}
                     >
                       {unfollowText}
-                    </ProfileUnfollowButton>
+                    </button>
                   ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileFollowButton
-                      className='w-full px-3 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                      className='w-full px-3 text-white hover:opacity-80 font-medium border-2 rounded-xl'
                       onClick={submitFollowUser}
                     >
                       Follow
                     </ProfileFollowButton>
                   ) : user.id === localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileFollowButton
-                      className='w-full px-3 text-white hover:bg-profiletwo hover:border-profiletwo font-medium border-2 rounded-xl'
+                      className='w-full px-3 text-white hover:opacity-80 font-medium border-2 rounded-xl'
                       onClick={() => setOpenProfileEdit(true)}
                     >
                       Edit Profile
