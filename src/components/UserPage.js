@@ -358,7 +358,7 @@ const UserPage = ({ searchTerm, refresh, setRefresh, handleClearSearchBar }) => 
                     </button>
                   ) : !is_following_user && user.id !== localStorage.getItem('id') && localStorage.getItem('token') ? (
                     <ProfileFollowButton
-                      className='w-full px-3 text-white hover:opacity-80 font-medium border-2 rounded-xl'
+                      className='w-full px-3 text-white bg-profiletwo border-profiletwo hover:opacity-80 font-medium border-2 rounded-xl'
                       onClick={submitFollowUser}
                     >
                       Follow
